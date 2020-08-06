@@ -96,6 +96,6 @@ const Routes: Routes = [
     }),
     RouterModule.forChild(Routes),
   ],
-  declarations: [LoginComponent, RegisterComponent, NbRegisterComponent],
+  declarations: [LoginComponent, RegisterComponent],
 })
 export class AuthModule {}
