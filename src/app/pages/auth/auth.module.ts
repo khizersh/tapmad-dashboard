@@ -77,10 +77,14 @@ const Routes: Routes = [
             // ...
             endpoint: "api/user/login",
             method: "POST",
+            redirect: {
+              success: "auth/register/",
+              failure: null,
+            },
           },
           register: {
             // ...
-            endpoint: "/api/auth/register",
+            endpoint: "api/user/register",
             method: "POST",
           },
         }),

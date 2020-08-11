@@ -19,6 +19,7 @@ export class RegisterComponent extends NbRegisterComponent {
         email: this.user.email,
         password: this.user.password,
         password2: this.user.confirmPassword,
+        role: "admin",
       })
       .subscribe((res) => {});
   }
