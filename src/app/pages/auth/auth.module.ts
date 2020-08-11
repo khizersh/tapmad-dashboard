@@ -70,12 +70,12 @@ const Routes: Routes = [
           name: "email",
           token: {
             class: NbAuthJWTToken,
-            key: "token",
+            key: "auth-token",
           },
-          baseEndpoint: "http://localhost:4200",
+          baseEndpoint: "http://18.194.3.90:3000/",
           login: {
             // ...
-            endpoint: "/api/auth/login",
+            endpoint: "api/user/login",
             method: "POST",
           },
           register: {
