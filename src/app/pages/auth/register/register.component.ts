@@ -7,9 +7,6 @@ import { NbRegisterComponent } from "@nebular/auth";
   styleUrls: ["./register.component.scss"],
 })
 export class RegisterComponent extends NbRegisterComponent {
-  myFunc() {
-    alert("memon");
-  }
   ngOnInit(): void {}
 
   register() {

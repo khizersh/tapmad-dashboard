@@ -2,13 +2,11 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterModule, Routes } from "@angular/router";
-
 import {
   NbAuthModule,
   NbAuthComponent,
   NbPasswordAuthStrategy,
   NbAuthJWTToken,
-  NbRegisterComponent,
 } from "@nebular/auth";
 import {
   NbAlertModule,
@@ -18,6 +16,9 @@ import {
 } from "@nebular/theme";
 import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
+import { ApiLinks } from "../../services/apilinks";
+
+const _api = new ApiLinks();
 
 const Routes: Routes = [
   {
@@ -34,26 +35,6 @@ const Routes: Routes = [
       },
     ],
   },
-  // {
-  //   path: 'login',
-  //   component: NbLoginComponent,
-  // },
-  // {
-  //   path: 'register',
-  //   component: NbRegisterComponent,
-  // },
-  // {
-  //   path: 'logout',
-  //   component: NbLogoutComponent,
-  // },
-  // {
-  //   path: 'request-password',
-  //   component: NbRequestPasswordComponent,
-  // },
-  // {
-  //   path: 'reset-password',
-  //   component: NbResetPasswordComponent,
-  // },
 ];
 @NgModule({
   imports: [
@@ -72,10 +53,10 @@ const Routes: Routes = [
             class: NbAuthJWTToken,
             key: "auth-token",
           },
-          baseEndpoint: "http://18.194.3.90:3000/",
+          baseEndpoint: _api.baseUrl,
           login: {
             // ...
-            endpoint: "api/user/login",
+            endpoint: _api.login,
             method: "POST",
             redirect: {
               success: "auth/register/",
@@ -84,7 +65,7 @@ const Routes: Routes = [
           },
           register: {
             // ...
-            endpoint: "api/user/register",
+            endpoint: _api.register,
             method: "POST",
           },
         }),
