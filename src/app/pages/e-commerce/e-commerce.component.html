@@ -1,4 +1,4 @@
-<div class="row">
+<!-- <div class="row">
   <div class="col-xxl-5">
     <div class="row">
       <div class="col-md-6">
@@ -34,5 +34,19 @@
 
   <div class="col-xxl-3">
     <ngx-user-activity></ngx-user-activity>
+  </div>
+</div> -->
+<div class="row">
+  <div class="col-12">
+    <nb-card>
+      <nb-card-header>
+        Top 100 Watched Movies
+      </nb-card-header>
+
+      <nb-card-body>
+        <ng2-smart-table [settings]="settings" [source]="source">
+        </ng2-smart-table>
+      </nb-card-body>
+    </nb-card>
   </div>
 </div>
