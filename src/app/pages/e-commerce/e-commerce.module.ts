@@ -8,6 +8,11 @@ import {
   NbIconModule,
   NbSelectModule,
   NbListModule,
+  NbCalendarModule,
+  NbCalendarKitModule,
+  NbCalendarRangeModule,
+  NbDatepickerModule,
+  NbInputModule,
 } from "@nebular/theme";
 import { NgxEchartsModule } from "ngx-echarts";
 import { NgxChartsModule } from "@swimlane/ngx-charts";
@@ -50,6 +55,8 @@ import { EarningPieChartComponent } from "./earning-card/back-side/earning-pie-c
 import { EarningCardFrontComponent } from "./earning-card/front-side/earning-card-front.component";
 import { EarningLiveUpdateChartComponent } from "./earning-card/front-side/earning-live-update-chart.component";
 import { Ng2SmartTableModule } from "ng2-smart-table";
+import { FormsModule } from "@angular/forms";
+import { DateRangeModule } from "../../components/date-range/date-range.module";
 
 @NgModule({
   imports: [
@@ -67,6 +74,10 @@ import { Ng2SmartTableModule } from "ng2-smart-table";
     NgxChartsModule,
     LeafletModule,
     Ng2SmartTableModule,
+    NbDatepickerModule,
+    NbInputModule,
+    FormsModule,
+    DateRangeModule,
   ],
   declarations: [
     ECommerceComponent,

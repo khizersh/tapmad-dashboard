@@ -1,0 +1,16 @@
+<h6>
+  Select Date Range
+</h6>
+<div>
+  <input
+    nbInput
+    placeholder="Range Picker"
+    [nbDatepicker]="rangepicker"
+    readonly
+  />
+  <nb-rangepicker
+    #rangepicker
+    [max]="max"
+    (rangeChange)="handleDateChange($event)"
+  ></nb-rangepicker>
+</div>

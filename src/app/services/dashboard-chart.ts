@@ -6,8 +6,22 @@ import { HttpClient } from "@angular/common/http";
 export class DashbaordChartService {
   constructor(private _api: ApiLinks, private _http: HttpClient) {}
 
-  getTop100Movies() {
-    console.log(`${this._api.baseUrl + this._api.top100}`);
-    return this._http.get(`${this._api.baseUrl + this._api.top100}`);
+  getCustomRangeData(data) {
+    return this._http.post(`${this._api.baseUrl + this._api.dateRange}`, data);
+  }
+  getByTagsName(data) {
+    return this._http.post(`${this._api.baseUrl + this._api.byTags}`, data);
+  }
+  getByPercentage(data) {
+    return this._http.post(`${this._api.byPercentage}`, data);
+  }
+  getByCountries(data) {
+    return this._http.post(`${this._api.byCountry}`, data);
+  }
+  getByCity(data) {
+    return this._http.post(`${this._api.byCity}`, data);
+  }
+  getByPlatform(data) {
+    return this._http.post(`${this._api.byPlatform}`, data);
   }
 }

@@ -2,10 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { DashbaordChartService } from "../../services/dashboard-chart";
 
 @Component({
-  selector: "ngx-ecommerce",
-  templateUrl: "./e-commerce.component.html",
+  selector: "ngx-views-by-percentage",
+  templateUrl: "./views-by-percentage.component.html",
+  styleUrls: ["./views-by-percentage.component.scss"],
 })
-export class ECommerceComponent implements OnInit {
+export class ViewsByPercentageComponent implements OnInit {
   max: Date;
   rows = "99";
   page = "1";
@@ -22,47 +23,28 @@ export class ECommerceComponent implements OnInit {
   source = [];
   settings = {
     actions: { delete: false, edit: false, add: false },
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
     columns: {
       MediaTitle: {
         title: "Movies Name",
         type: "string",
       },
-      play_rate: {
-        title: "Play Rate",
+      Totalviews_25: {
+        title: "25%",
         type: "string",
         filter: false,
       },
-      plays: {
-        title: "Total Plays",
+      Totalviews_50: {
+        title: "50%",
         type: "string",
         filter: false,
       },
-      embeds: {
-        title: "Embeds",
+      Totalviews_75: {
+        title: "75%",
         type: "string",
         filter: false,
       },
-      completes: {
-        title: "Completes",
-        type: "string",
-        filter: false,
-      },
-      time_watched: {
-        title: "Total Views",
+      Total_complete_rate: {
+        title: "Complete Rate",
         type: "string",
         filter: false,
       },
@@ -79,7 +61,7 @@ export class ECommerceComponent implements OnInit {
       page: this.page,
       page_length: this.rows,
     };
-    this._dashboard.getCustomRangeData(data).subscribe((res: any) => {
+    this._dashboard.getByPercentage(data).subscribe((res: any) => {
       this.source = res.Data;
       this.showTable = true;
     });

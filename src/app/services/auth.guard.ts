@@ -6,8 +6,8 @@ export class AuthGuard implements CanActivate {
   constructor(private _router: Router) {}
 
   canActivate() {
-    const token = JSON.parse(localStorage.getItem("auth_app_token")).value;
-    if (token) {
+    const token = JSON.parse(localStorage.getItem("auth_app_token"));
+    if (token && token.value) {
       return true;
     } else {
       this._router.navigate(["auth/login"]);

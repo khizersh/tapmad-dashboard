@@ -13,8 +13,34 @@ export const MENU_ITEMS: NbMenuItem[] = [
   //   link: '/pages/iot-dashboard',
   // },
   {
-    title: "FEATURES",
+    title: "VIEWS",
     group: true,
+  },
+  {
+    title: "Top Views",
+    icon: "layout-outline",
+    children: [
+      {
+        title: "Top 100 Movies",
+        link: "/pages/dashboard",
+      },
+      {
+        title: "Top Plays By Tags",
+        link: "/pages/tags",
+      },
+      {
+        title: "Videos By Percentage",
+        link: "/pages/percentage",
+      },
+      {
+        title: "Videos By Countries",
+        link: "/pages/countries",
+      },
+      {
+        title: "Videos By Platform",
+        link: "/pages/platform",
+      },
+    ],
   },
   {
     title: "Layout",

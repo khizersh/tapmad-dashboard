@@ -1,15 +1,14 @@
-import { Component } from '@angular/core';
-import { NbCalendarRange, NbDateService } from '@nebular/theme';
-import { DayCellComponent } from './day-cell/day-cell.component';
+import { Component } from "@angular/core";
+import { NbCalendarRange, NbDateService } from "@nebular/theme";
+import { DayCellComponent } from "./day-cell/day-cell.component";
 
 @Component({
-  selector: 'ngx-calendar',
-  templateUrl: 'calendar.component.html',
-  styleUrls: ['calendar.component.scss'],
+  selector: "ngx-calendar",
+  templateUrl: "calendar.component.html",
+  styleUrls: ["calendar.component.scss"],
   entryComponents: [DayCellComponent],
 })
 export class CalendarComponent {
-
   date = new Date();
   date2 = new Date();
   range: NbCalendarRange<Date>;
