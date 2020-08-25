@@ -10,6 +10,7 @@ import { ViewsByCountryModule } from "./views-by-country/views-by-county.module"
 import { ViewsByPercentageModule } from "./views-by-percentage/views-by-percentage.module";
 import { ViewsByPlatformModule } from "./views-by-platform/views-by-platform.module";
 import { ViewsByTagsModule } from "./views-by-tags/views-by-tags.module";
+import { SpinnerComponent } from "../utils/spinner/spinner.component";
 
 @NgModule({
   imports: [
@@ -24,6 +25,6 @@ import { ViewsByTagsModule } from "./views-by-tags/views-by-tags.module";
     ViewsByCountryModule,
     ViewsByPlatformModule,
   ],
-  declarations: [PagesComponent],
+  declarations: [PagesComponent, SpinnerComponent],
 })
 export class PagesModule {}

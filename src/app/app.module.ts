@@ -21,6 +21,7 @@ import { ThemeModule } from "./@theme/theme.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { AuthInterceptor } from "./pages/auth/auth.interceptor";
+import { SpinnerInterceptor } from "./utils/spinner/spinner.interceptor";
 
 @NgModule({
   declarations: [AppComponent],
@@ -46,6 +47,11 @@ import { AuthInterceptor } from "./pages/auth/auth.interceptor";
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptor,
       multi: true,
     },
   ],
