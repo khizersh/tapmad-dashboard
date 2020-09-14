@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-4" *ngFor="let api of analyticsAPIs; index as i">
+    <nb-card>
+      <nb-card-header>{{ api.name }}</nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-12">
+            <ngx-date-range
+              (getRange)="rangeDates($event, i, api.url)"
+            ></ngx-date-range>
+          </div>
+        </div>
+        <div class="chart-config">
+          <chart
+            type="line"
+            [data]="data[i].data"
+            [options]="options[i].options"
+          ></chart>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

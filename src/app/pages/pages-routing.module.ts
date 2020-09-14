@@ -36,6 +36,11 @@ const routes: Routes = [
         component: ViewsByPlatformComponent,
       },
       {
+        path: "analytics",
+        loadChildren: () =>
+          import("./Analytics/analytics.module").then((m) => m.AnalyticsModule),
+      },
+      {
         path: "iot-dashboard",
         component: DashboardComponent,
       },

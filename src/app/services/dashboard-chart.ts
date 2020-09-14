@@ -24,4 +24,7 @@ export class DashbaordChartService {
   getByPlatform(data) {
     return this._http.post(`${this._api.byPlatform}`, data);
   }
+  getAnalyticalViews(data, url) {
+    return this._http.post(`${this._api.googleUserViews + url}`, data);
+  }
 }

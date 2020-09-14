@@ -42,6 +42,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
     ],
   },
+  {
+    title: "Analytics",
+    icon: "keypad-outline",
+    children: [
+      {
+        title: "Users",
+        link: "/pages/analytics/users",
+      },
+    ],
+  },
   // {
   //   title: "Layout",
   //   icon: "layout-outline",

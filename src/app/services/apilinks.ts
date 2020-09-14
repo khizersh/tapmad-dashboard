@@ -6,10 +6,12 @@ export class ApiLinks {
   login = "/user/login";
   register = "/user/register";
   content = "/contentOverview";
+  googleAnalytics = "/googleAnalytics";
   dateRange = this.content + "/VideoPlays";
   byTags = this.content + "/PlaysByTag";
   byPercentage = this.baseUrl + this.content + "/percent_completes";
   byCountry = this.baseUrl + this.content + "/CountryWiseViews";
   byCity = this.baseUrl + this.content + "/CityWiseViews";
   byPlatform = this.baseUrl + this.content + "/platformBase";
+  googleUserViews = this.baseUrl + this.googleAnalytics;
 }

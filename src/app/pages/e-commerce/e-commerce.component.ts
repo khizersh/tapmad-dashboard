@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { DashbaordChartService } from "../../services/dashboard-chart";
+import { DecimalPipe } from "@angular/common";
 
 @Component({
   selector: "ngx-ecommerce",
@@ -14,7 +15,10 @@ export class ECommerceComponent implements OnInit {
   showTable = false;
   data = {};
 
-  constructor(private _dashboard: DashbaordChartService) {}
+  constructor(
+    private _dashboard: DashbaordChartService,
+    private _decimalPipe: DecimalPipe
+  ) {}
 
   ngOnInit() {
     this.getCustomChartData();
@@ -65,6 +69,10 @@ export class ECommerceComponent implements OnInit {
         title: "Total Views",
         type: "string",
         filter: false,
+        valuePrepareFunction: (value) => {
+          console.log(value);
+          return this._decimalPipe.transform(value, "1.0");
+        },
       },
     },
   };

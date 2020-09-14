@@ -14,4 +14,7 @@ export class DateUtils {
 
     return [year, month, day].join("-");
   }
+  formatDateWithSlash(date) {
+    return date.slice(0, 4) + "/" + date.slice(4, 6) + "/" + date.slice(6);
+  }
 }

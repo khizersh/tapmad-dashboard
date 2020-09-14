@@ -8,8 +8,8 @@ import { DashbaordChartService } from "../../services/dashboard-chart";
   styleUrls: ["./views-by-platform.component.scss"],
 })
 export class ViewsByPlatformComponent implements OnDestroy {
-  data: any;
-  options: any;
+  userData: any;
+  userOptions: any;
   themeSubscription: any;
   date = {
     start: "2020-07-10",
@@ -46,7 +46,7 @@ export class ViewsByPlatformComponent implements OnDestroy {
             completes.push(play.completes);
             timeWatched.push(play.time_watched);
           }
-          this.data = {
+          this.userData = {
             labels: labels || [
               "2006",
               "2007",
@@ -92,7 +92,7 @@ export class ViewsByPlatformComponent implements OnDestroy {
             ],
           };
 
-          this.options = {
+          this.userOptions = {
             maintainAspectRatio: false,
             responsive: true,
             legend: {

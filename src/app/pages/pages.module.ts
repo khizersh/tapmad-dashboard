@@ -11,6 +11,7 @@ import { ViewsByPercentageModule } from "./views-by-percentage/views-by-percenta
 import { ViewsByPlatformModule } from "./views-by-platform/views-by-platform.module";
 import { ViewsByTagsModule } from "./views-by-tags/views-by-tags.module";
 import { SpinnerComponent } from "../utils/spinner/spinner.component";
+import { DecimalPipe } from "@angular/common";
 
 @NgModule({
   imports: [
@@ -26,5 +27,6 @@ import { SpinnerComponent } from "../utils/spinner/spinner.component";
     ViewsByPlatformModule,
   ],
   declarations: [PagesComponent, SpinnerComponent],
+  providers: [DecimalPipe],
 })
 export class PagesModule {}
