@@ -100,6 +100,12 @@ export class ViewsByTagsComponent implements OnDestroy {
                   },
                   ticks: {
                     fontColor: chartjs.textColor,
+                    userCallback: function (value, index, values) {
+                      value = value.toString();
+                      value = value.split(/(?=(?:...)*$)/);
+                      value = value.join(",");
+                      return value;
+                    },
                   },
                 },
               ],

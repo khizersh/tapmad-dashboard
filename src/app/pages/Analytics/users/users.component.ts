@@ -108,7 +108,9 @@ export class UsersComponent implements OnInit {
             data.push(play.value);
             labels.push(play.date);
           }
-
+          data = data.map((val) => {
+            return Number(val).toFixed(2);
+          });
           labels = labels.map((label) => {
             return this._utils.formatDateWithSlash(label);
           });
@@ -136,6 +138,15 @@ export class UsersComponent implements OnInit {
           this.options[index].options = {
             maintainAspectRatio: false,
             responsive: true,
+            tooltips: {
+              callbacks: {
+                label: function (tooltipItem, data) {
+                  return tooltipItem.yLabel
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                },
+              },
+            },
             legend: {
               labels: {
                 fontColor: chartjs.textColor,
@@ -161,6 +172,12 @@ export class UsersComponent implements OnInit {
                   },
                   ticks: {
                     fontColor: chartjs.textColor,
+                    userCallback: function (value, index, values) {
+                      value = value.toString();
+                      value = value.split(/(?=(?:...)*$)/);
+                      value = value.join(",");
+                      return value;
+                    },
                   },
                 },
               ],
