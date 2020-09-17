@@ -75,6 +75,15 @@ export class ViewsByCountryComponent implements OnDestroy {
           this.CRoptions = {
             maintainAspectRatio: false,
             responsive: true,
+            tooltips: {
+              callbacks: {
+                label: function (tooltipItem, data) {
+                  return tooltipItem.yLabel
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                },
+              },
+            },
             legend: {
               labels: {
                 fontColor: chartjs.textColor,
@@ -157,6 +166,15 @@ export class ViewsByCountryComponent implements OnDestroy {
           this.CYoptions = {
             maintainAspectRatio: false,
             responsive: true,
+            tooltips: {
+              callbacks: {
+                label: function (tooltipItem, data) {
+                  return tooltipItem.yLabel
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                },
+              },
+            },
             legend: {
               labels: {
                 fontColor: chartjs.textColor,

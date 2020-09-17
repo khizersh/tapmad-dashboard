@@ -95,6 +95,15 @@ export class ViewsByPlatformComponent implements OnDestroy {
           this.userOptions = {
             maintainAspectRatio: false,
             responsive: true,
+            tooltips: {
+              callbacks: {
+                label: function (tooltipItem, data) {
+                  return tooltipItem.yLabel
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                },
+              },
+            },
             legend: {
               labels: {
                 fontColor: chartjs.textColor,

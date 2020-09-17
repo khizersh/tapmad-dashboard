@@ -1,8 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
-import { NbThemeService } from '@nebular/theme';
+import { Component, OnDestroy } from "@angular/core";
+import { NbThemeService } from "@nebular/theme";
 
 @Component({
-  selector: 'ngx-chartjs-bar-horizontal',
+  selector: "ngx-chartjs-bar-horizontal",
   template: `
     <chart type="horizontalBar" [data]="data" [options]="options"></chart>
   `,
@@ -13,28 +13,52 @@ export class ChartjsBarHorizontalComponent implements OnDestroy {
   themeSubscription: any;
 
   constructor(private theme: NbThemeService) {
-    this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
-
+    this.themeSubscription = this.theme.getJsTheme().subscribe((config) => {
       const colors: any = config.variables;
       const chartjs: any = config.variables.chartjs;
 
       this.data = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-        datasets: [{
-            label: 'Dataset 1',
+        labels: ["January", "February", "March", "April", "May", "June"],
+        datasets: [
+          {
+            label: "Dataset 1",
             backgroundColor: colors.infoLight,
             borderWidth: 1,
-            data: [this.random(), this.random(), this.random(), this.random(), this.random(), this.random()],
-          }, {
-            label: 'Dataset 2',
+            data: [
+              this.random(),
+              this.random(),
+              this.random(),
+              this.random(),
+              this.random(),
+              this.random(),
+            ],
+          },
+          {
+            label: "Dataset 2",
             backgroundColor: colors.successLight,
-            data: [this.random(), this.random(), this.random(), this.random(), this.random(), this.random()],
+            data: [
+              this.random(),
+              this.random(),
+              this.random(),
+              this.random(),
+              this.random(),
+              this.random(),
+            ],
           },
         ],
       };
 
       this.options = {
         responsive: true,
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem, data) {
+              return tooltipItem.yLabel
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            },
+          },
+        },
         maintainAspectRatio: false,
         elements: {
           rectangle: {
@@ -66,7 +90,7 @@ export class ChartjsBarHorizontalComponent implements OnDestroy {
           ],
         },
         legend: {
-          position: 'right',
+          position: "right",
           labels: {
             fontColor: chartjs.textColor,
           },
