@@ -12,6 +12,7 @@ import { ViewsByPlatformModule } from "./views-by-platform/views-by-platform.mod
 import { ViewsByTagsModule } from "./views-by-tags/views-by-tags.module";
 import { SpinnerComponent } from "../utils/spinner/spinner.component";
 import { DecimalPipe } from "@angular/common";
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,7 @@ import { DecimalPipe } from "@angular/common";
     ViewsByCountryModule,
     ViewsByPlatformModule,
   ],
-  declarations: [PagesComponent, SpinnerComponent],
+  declarations: [PagesComponent, SpinnerComponent, TestComponent],
   providers: [DecimalPipe],
 })
 export class PagesModule {}

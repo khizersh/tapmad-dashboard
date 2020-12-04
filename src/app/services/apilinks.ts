@@ -13,5 +13,7 @@ export class ApiLinks {
   byCountry = this.baseUrl + this.content + "/CountryWiseViews";
   byCity = this.baseUrl + this.content + "/CityWiseViews";
   byPlatform = this.baseUrl + this.content + "/platformBase";
+  byTagName = this.baseUrl + "/contentOverview/PlaysByTag";
+  byProductHouse = this.baseUrl + "/contentOverview/ProductionHouseFilter";
   googleUserViews = this.baseUrl + this.googleAnalytics;
 }

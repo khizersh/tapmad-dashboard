@@ -6,6 +6,7 @@
 // framework component themes (styles tied to theme variables)
 @import '~@nebular/theme/styles/globals';
 @import '~@nebular/auth/styles/all';
+@import "~@ng-select/ng-select/themes/default.theme.css";
 
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';

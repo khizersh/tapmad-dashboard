@@ -29,7 +29,7 @@ export class UsersComponent implements OnInit {
     { options: [] },
     { options: [] },
     { options: [] },
-  ];
+    ];
   analyticsAPIs = [
     {
       name: "Users Views",
@@ -55,6 +55,7 @@ export class UsersComponent implements OnInit {
       name: "Average Session Duration",
       url: "/AvgSessionDuration",
     },
+
   ];
   themeSubscription: any;
 
