@@ -28,12 +28,10 @@ export class DashbaordChartService {
     return this._http.post(`${this._api.googleUserViews + url}`, data);
   }
   getDataByTagName(data) {
-    
     let local = JSON.parse( localStorage.getItem('auth_app_token'));
     const httpHeaders: HttpHeaders = new HttpHeaders({
-  'auth-token': local.value,
-  // 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjJkN2JmMDI1ZTQwYzUwNTg2NzY2NTEiLCJpYXQiOjE1OTc2NjEwMDR9.CEmA7F0ayrRUAPiIpaI4d5LisGXZZZduA39CVtLwDB8',
-  'Content-Type': 'application/json',
+    'auth-token': local.value,
+    'Content-Type': 'application/json',
 
     });
     return this._http.post(`${this._api.byTagName}`, JSON.stringify( data) , { headers: httpHeaders });
@@ -43,12 +41,18 @@ export class DashbaordChartService {
     let local = JSON.parse( localStorage.getItem('auth_app_token'));
     const httpHeaders: HttpHeaders = new HttpHeaders({
   'auth-token': local.value,
-  // 'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjJkN2JmMDI1ZTQwYzUwNTg2NzY2NTEiLCJpYXQiOjE1OTc2NjEwMDR9.CEmA7F0ayrRUAPiIpaI4d5LisGXZZZduA39CVtLwDB8',
   'Content-Type': 'application/json',
-
     });
     return this._http.get(this._api.byProductHouse);
   }
 
+  getPlaceGrowthSummary(data) {
+    let local = JSON.parse( localStorage.getItem('auth_app_token'));
+    const httpHeaders: HttpHeaders = new HttpHeaders({
+    'auth-token': local.value,
+    'Content-Type': 'application/json',
+    });
+    return this._http.post(this._api.byPlaceGrowth ,  JSON.stringify( data) , { headers: httpHeaders });
+  }
 
 } 

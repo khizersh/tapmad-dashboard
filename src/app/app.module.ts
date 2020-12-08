@@ -22,7 +22,6 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { AuthInterceptor } from "./pages/auth/auth.interceptor";
 import { SpinnerInterceptor } from "./utils/spinner/spinner.interceptor";
-
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 

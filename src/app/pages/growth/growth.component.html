@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header> Plays </nb-card-header>
+
+      <nb-card-body>
+        <div class="row">
+          <div class="col-3">
+            <ngx-date-range (getRange)="rangeDates($event)"></ngx-date-range>
+          </div>
+          <div class="col-md-6">
+            <h6>Select Production House</h6>
+            <ng-select
+              [items]="productionHouseData"
+              bindLabel="name"
+              placeholder="Select Production House"
+              appendTo="body"
+              multiple="true"
+              [(ngModel)]="selected"
+              (change)="getSelectedValue()"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <div>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Category</th>
+                <th *ngFor="let date of DateArray" scope="col">{{ date }}</th>
+                <th scope="col">Trend</th>
+                <th scope="col">Summary</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ph of playsData; let i = index">
+                <th scope="row">{{ ph.category }}</th>
+                <td>{{i}}</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

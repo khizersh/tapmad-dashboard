@@ -118,13 +118,13 @@ export class ViewsByTagsComponent implements OnDestroy {
         page_length: 100,
         data: this.productionFilter,
       };
-      console.log('data in api call..', tempData1);
+
       let array: any = await this._dashboard
         .getDataByTagName(tempData1)
         .toPromise();
 
         if(array.Data.length > 1){
-          for (let j = 0; j < array.Data.length -1; j++) {
+          for (let j = 0; j < array.Data.length ; j++) {
             let obj = {
               Category: array.Data[j].Category,
               plays: array.Data[j].plays,
@@ -152,8 +152,8 @@ export class ViewsByTagsComponent implements OnDestroy {
   }
 
   loadChartData(date: any, selected: any, dateArrayy: []) {
-    console.log("single date..", date);
-    console.log("multiple date..", dateArrayy);
+    // console.log("single date..", date);
+    // console.log("multiple date..", dateArrayy);
     let sDate: any;
     let eDate: any;
 
@@ -183,6 +183,7 @@ export class ViewsByTagsComponent implements OnDestroy {
         } else {
           this.productionFilter = res.Data;
         }
+        
         this.productionHouseData = res.Data;
 
         let tempData = {
@@ -197,13 +198,8 @@ export class ViewsByTagsComponent implements OnDestroy {
         if (dateArrayy && dateArrayy.length ) {
         
 
-
-
-          console.log('data before week..',dateArrayy );
           
           this.getAllWeeksData(dateArrayy).then((res) => {
-
-            console.log('data in week array..',res);
             
             let data = [];
             let labels = [];

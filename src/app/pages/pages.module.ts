@@ -12,7 +12,7 @@ import { ViewsByPlatformModule } from "./views-by-platform/views-by-platform.mod
 import { ViewsByTagsModule } from "./views-by-tags/views-by-tags.module";
 import { SpinnerComponent } from "../utils/spinner/spinner.component";
 import { DecimalPipe } from "@angular/common";
-import { TestComponent } from './test/test.component';
+import { GrowthModule } from './growth/growth.module';
 
 @NgModule({
   imports: [
@@ -26,8 +26,10 @@ import { TestComponent } from './test/test.component';
     ViewsByPercentageModule,
     ViewsByCountryModule,
     ViewsByPlatformModule,
+    GrowthModule
+  
   ],
-  declarations: [PagesComponent, SpinnerComponent, TestComponent],
+  declarations: [PagesComponent, SpinnerComponent],
   providers: [DecimalPipe],
 })
 export class PagesModule {}

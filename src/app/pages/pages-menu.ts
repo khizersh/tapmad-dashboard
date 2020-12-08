@@ -40,6 +40,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: "Videos By Platform",
         link: "/pages/platform",
       },
+      {
+        title: "Growth Summary",
+        link: "/pages/growth",
+      },
     ],
   },
   {

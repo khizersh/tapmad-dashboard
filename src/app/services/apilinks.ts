@@ -16,4 +16,5 @@ export class ApiLinks {
   byTagName = this.baseUrl + "/contentOverview/PlaysByTag";
   byProductHouse = this.baseUrl + "/contentOverview/ProductionHouseFilter";
   googleUserViews = this.baseUrl + this.googleAnalytics;
+  byPlaceGrowth = this.baseUrl + '/contentOverview/PlaysGrowthSummery';
 }
