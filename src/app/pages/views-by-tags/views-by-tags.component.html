@@ -15,7 +15,6 @@
               placeholder="Select Production House"
               appendTo="body"
               multiple="true"
-
               [(ngModel)]="selected"
               (change)="getSelectedValue()"
             >
@@ -29,6 +28,8 @@
             placeholder="Select Chart Type"
             appendTo="body"
             [(ngModel)]="chartStyleSelect"
+            [clearable]="false"
+            [searchable]="false"
             (change)="getSelectedValueOfChartType()"
           >
           </ng-select>

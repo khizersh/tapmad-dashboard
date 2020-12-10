@@ -72,6 +72,7 @@ export class ViewsByTagsComponent implements OnDestroy {
     if (diffCountWeek > 0) {
       for (let i = 0; i < diffCountWeek; i++) {
         let date = a.add(1, "week").calendar();
+
         let formatDate = date.split("/");
         let fDate = formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
         if (i < diffCountWeek - 1) {
@@ -129,14 +130,41 @@ export class ViewsByTagsComponent implements OnDestroy {
 
   async getAllWeeksData(dateArrayy: []) {
     let combineArray = [];
+
+    console.log("Data array: ",dateArrayy );
+
+
     for (var i = 0; i < dateArrayy.length - 1; i++) {
-      let tempData1 = {
+
+      var a = moment(dateArrayy[i]);
+    var b = moment(dateArrayy[i + 1]);
+
+    let date = a.add(1, "day").calendar();
+
+    let formatDate = date.split("/");
+    let fDate = formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
+
+    let tempData1  = {}
+
+    if(!i){
+      tempData1 = {
         start_date: dateArrayy[i],
         end_date: dateArrayy[i + 1],
         page: 0,
         page_length: 100,
         data: this.productionFilter,
       };
+    }else{
+      tempData1 = {
+        start_date: fDate,
+        end_date: dateArrayy[i + 1],
+        page: 0,
+        page_length: 100,
+        data: this.productionFilter,
+      };
+
+    }
+
 
       let array: any = await this._dashboard
         .getDataByTagName(tempData1)
@@ -154,13 +182,15 @@ export class ViewsByTagsComponent implements OnDestroy {
 
 
     }
+    // console.log("Combine Array: ", combineArray);
+
     return combineArray;
   }
 
   loadChartData(date: any, selected: any, dateArrayy: []) {
 
-    console.log("Date array: ", dateArrayy);
-    console.log("Date single: ", date);
+    // console.log("Date array: ", dateArrayy);
+    // console.log("Date single: ", date);
 
     let sDate: any;
     let eDate: any;
@@ -194,14 +224,6 @@ export class ViewsByTagsComponent implements OnDestroy {
 
         this.productionHouseData = res.Data;
 
-        let tempData = {
-          start_date: startDate,
-          end_date: endDate,
-          page: 0,
-          page_length: 100,
-          data: this.productionFilter,
-        };
-
         // if data is on weekly bases
         if (dateArrayy && dateArrayy.length ) {
 
@@ -209,12 +231,13 @@ export class ViewsByTagsComponent implements OnDestroy {
 
             let data = [];
             let labels = [];
-            let embeds = [];
+            let array = [];
             for (let play of res) {
               data.push(play.plays);
               labels.push(play.Category.split('_')[1].slice(0,5) );
-              embeds.push(play.week);
+              array.push(play);
             }
+            console.log('Total Array: ',array )
             this.data = {
               labels: labels || [
                 "2006",
@@ -251,19 +274,13 @@ export class ViewsByTagsComponent implements OnDestroy {
               tooltips: {
                 callbacks: {
                     label: function(tooltipItem, data) {
+
+
                         var label = data.datasets[tooltipItem.datasetIndex].label || '';
                         var arrayData = res[tooltipItem.datasetIndex] || 'no found';
-                        // console.log('tooltip item ',tooltipItem , 'tooltip data..',data )
-                        // console.log('labelT...',labelT);
-                        // console.log('tooltipItem...',tooltipItem);
 
-
-                        let productHouse = res.filter(f => f.plays == tooltipItem.yLabel)[0];
-
-                        console.log('Product House: ',productHouse);
-
-
-                        // console.log('tooltipItem...',tooltipItem);
+                        // let productHouse = res.filter(f => f.plays == tooltipItem.yLabel)[0];
+                        let productHouse = res[tooltipItem.index]
 
                         if (label) {
                             label += ': ';
