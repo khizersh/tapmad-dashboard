@@ -55,7 +55,11 @@ export class ViewsByTagsComponent implements OnDestroy {
     private _dashboard: DashbaordChartService,
     private _utils: DateUtils
   ) {
-    this.loadChartData(this.date, this.selected, this.filteredDate);
+
+    alert("Last month data show as default!")
+    let dateObj = this.getPast30Days();
+    this.filteredDate = this.changeDateToWeek(dateObj.start , dateObj.end)
+    this.loadChartData("", this.selected, this.filteredDate);
   }
 
   changeDateToWeek(start: any, end: any) {
@@ -74,8 +78,14 @@ export class ViewsByTagsComponent implements OnDestroy {
           dateArrayy.push(fDate);
         }
       }
-      dateArrayy.unshift(this.startDate);
-      dateArrayy.push(this.endDate);
+      if(this.startDate && this.endDate){
+        dateArrayy.unshift(this.startDate);
+        dateArrayy.push(this.endDate);
+      }else {
+        dateArrayy.unshift(start);
+        dateArrayy.push(end);
+      }
+
 
       return dateArrayy;
     }
@@ -148,6 +158,9 @@ export class ViewsByTagsComponent implements OnDestroy {
   }
 
   loadChartData(date: any, selected: any, dateArrayy: []) {
+
+    console.log("Date array: ", dateArrayy);
+    console.log("Date single: ", date);
 
     let sDate: any;
     let eDate: any;
