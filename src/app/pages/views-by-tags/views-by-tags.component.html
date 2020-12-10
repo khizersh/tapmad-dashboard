@@ -15,14 +15,27 @@
               placeholder="Select Production House"
               appendTo="body"
               multiple="true"
+
               [(ngModel)]="selected"
               (change)="getSelectedValue()"
             >
             </ng-select>
           </div>
+          <div class="col-3">
+            <h6>Select Chart Type</h6>
+            <ng-select
+            [items]="chartStyle"
+            bindLabel="nameBar"
+            placeholder="Select Chart Type"
+            appendTo="body"
+            [(ngModel)]="chartStyleSelect"
+            (change)="getSelectedValueOfChartType()"
+          >
+          </ng-select>
+          </div>
         </div>
         <div class="chart-config">
-          <chart type="bar" [data]="data" [options]="options"></chart>
+          <chart type={{chartStyleSelect}} [data]="data" [options]="options"></chart>
         </div>
       </nb-card-body>
     </nb-card>

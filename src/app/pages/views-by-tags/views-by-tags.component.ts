@@ -27,8 +27,17 @@ export class ViewsByTagsComponent implements OnDestroy {
 
   // Multi select Data start
   name = "Production House";
+  nameBar = "Chart Type";
   productionHouseData = [];
+  chartStyle = [ "line" , "bar"]
   selected = [];
+  chartStyleSelect : any = "line";
+  chartType = ""
+
+  getSelectedValueOfChartType(){
+    console.log("Chart Type: ", this.chartStyleSelect);
+
+  }
 
   getSelectedValue() {
     let date = {
@@ -87,7 +96,7 @@ export class ViewsByTagsComponent implements OnDestroy {
       formatDate = [];
     if (diffCountWeek > 0) {
       this.filteredDate = this.changeDateToWeek(this.startDate, this.endDate);
-   
+
     } else {
       this.filteredDate = []
       date = {
@@ -123,37 +132,23 @@ export class ViewsByTagsComponent implements OnDestroy {
         .getDataByTagName(tempData1)
         .toPromise();
 
-        if(array.Data.length > 1){
-          for (let j = 0; j < array.Data.length ; j++) {
-            let obj = {
-              Category: array.Data[j].Category,
-              plays: array.Data[j].plays,
-              week: i + 1,
-            };
-    
-    
-            combineArray.push(obj);
-          }
-        }else{
-          for (let j = 0; j < array.Data.length; j++) {
-            let obj = {
-              Category: array.Data[j].Category,
-              plays: array.Data[j].plays,
-              week: i + 1,
-            };
-    
-    
-            combineArray.push(obj);
-          }
+        for (let j = 0; j < array.Data.length; j++) {
+          let obj = {
+            Category: array.Data[j].Category,
+            plays: array.Data[j].plays,
+            week: i + 1,
+          };
+          combineArray.push(obj);
         }
-     
+
+
+
     }
     return combineArray;
   }
 
   loadChartData(date: any, selected: any, dateArrayy: []) {
-    // console.log("single date..", date);
-    // console.log("multiple date..", dateArrayy);
+
     let sDate: any;
     let eDate: any;
 
@@ -183,7 +178,7 @@ export class ViewsByTagsComponent implements OnDestroy {
         } else {
           this.productionFilter = res.Data;
         }
-        
+
         this.productionHouseData = res.Data;
 
         let tempData = {
@@ -196,17 +191,15 @@ export class ViewsByTagsComponent implements OnDestroy {
 
         // if data is on weekly bases
         if (dateArrayy && dateArrayy.length ) {
-        
 
-          
           this.getAllWeeksData(dateArrayy).then((res) => {
-            
+
             let data = [];
             let labels = [];
             let embeds = [];
             for (let play of res) {
               data.push(play.plays);
-              labels.push('Week ' + play.week );
+              labels.push(play.Category.split('_')[1].slice(0,5) );
               embeds.push(play.week);
             }
             this.data = {
@@ -251,18 +244,19 @@ export class ViewsByTagsComponent implements OnDestroy {
                         // console.log('labelT...',labelT);
                         // console.log('tooltipItem...',tooltipItem);
 
-                      
+
                         let productHouse = res.filter(f => f.plays == tooltipItem.yLabel)[0];
-                         
-                        var customLabel = 'Plays: ' + arrayData.plays + " " + arrayData.Category;
-                        
+
+                        console.log('Product House: ',productHouse);
+
+
                         // console.log('tooltipItem...',tooltipItem);
-                       
+
                         if (label) {
                             label += ': ';
                         }
                         label += Math.round(tooltipItem.yLabel);
-                        return label + " , " + productHouse.Category;
+                        return label + " , " + productHouse.Category + " , Week " + productHouse.week;
                     }
                 }
             },
@@ -306,7 +300,7 @@ export class ViewsByTagsComponent implements OnDestroy {
 
 
           });
-        } 
+        }
          // if data is on range basis
         else  {
           this.filteredDate = []
@@ -323,7 +317,7 @@ export class ViewsByTagsComponent implements OnDestroy {
             };
 
           }else {
-            
+
             tempDataForSingleRange = {
               start_date: this.lastMonth.start,
               end_date: this.lastMonth.end,
@@ -332,7 +326,7 @@ export class ViewsByTagsComponent implements OnDestroy {
               data: this.productionFilter,
             };
           }
-          
+
 
           this._dashboard.getDataByTagName(tempDataForSingleRange).subscribe((res: any) => {
             let data = [];
@@ -340,7 +334,7 @@ export class ViewsByTagsComponent implements OnDestroy {
             let embeds = [];
             for (let play of res.Data) {
               data.push(play.plays);
-              labels.push(play.Category);
+              labels.push(play.Category.split('_')[1].slice(0,5));
               embeds.push(play.embeds);
             }
             this.data = {
@@ -423,7 +417,7 @@ export class ViewsByTagsComponent implements OnDestroy {
             };
           });
         }
-       
+
       });
     });
   }

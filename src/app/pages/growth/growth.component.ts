@@ -9,7 +9,6 @@ import * as moment from "moment";
   styleUrls: ["./growth.component.scss"],
 })
 export class GrowthComponent implements OnInit {
-
   productionHouseData = [];
   startDate: any;
   endDate: any;
@@ -24,158 +23,97 @@ export class GrowthComponent implements OnInit {
     private _dashboard: DashbaordChartService,
     private _utils: DateUtils
   ) {
-
     // this._dashboard.getProductHouseFilter().subscribe((res: any) => {
     //   this.productionHouseData = res.Data;
     // });
   }
 
-playsData: any = [];
-watchTimeData : any = [];
-percentComplete75 : any = [];
- 
+  playsData: any = [];
+  watchTimeData: any = [];
+  percentComplete75: any = [];
 
-  DateArray: any = {};
+  DateArrayPlay: any = [];
+  DateArrayShowPlay: any = [];
+
+  DateArrayTime: any = [];
+  DateArrayShowTime: any = [];
+
+  DateArray75: any = [];
+  DateArrayShow75: any = [];
 
   ngOnInit(): void {
-    this.getProductionHouseData();
-
+    this.getProductionHouseData("all");
     let last30Days = this.getPast30Days();
 
-    this.DateArray = this.changeDateToWeek(last30Days.start, last30Days.end);
-    console.log("last 30 days ", this.DateArray);
+    this.DateArray75 =   this.DateArrayPlay = this.DateArrayTime = this.changeDateToWeek(
+      last30Days.start,
+      last30Days.end
+    );
 
-    let obj = {};
-    console.log('date array: ',this.DateArray );
-    
-    for (let i = 0; i < this.DateArray.length - 1; i++) {
-      let index = i;
+    this.createTable(this.DateArrayPlay, "all");
+    this.DateArrayPlay.map((m, i) => {
+      if (i < this.DateArrayPlay.length - 1) {
+        this.DateArrayShowPlay.push(m);
+      }
+    });
+    this.DateArrayTime.map((m, i) => {
+      if (i < this.DateArrayTime.length - 1) {
+        this.DateArrayShowTime.push(m);
+      }
+    });
+    this.DateArray75.map((m, i) => {
+      if (i < this.DateArray75.length - 1) {
+        this.DateArrayShow75.push(m);
+      }
+    });
 
-      this.apiPlaceGrowthSummary(this.DateArray[i] , this.DateArray[i+1], "time_watched" , this.selected).then((res : any)=> {
-        // console.log('response time watched', res);
-
-        for (let ind = 0; ind < res.Data.length; ind++) {
-
-          let obj = {
-            category:res.Data[ind].Category,
-            report:res.Data[ind].report,
-            week:index
-          }
-          this.watchTimeData.push(obj)
-          
-        }
-      })
-
-      this.apiPlaceGrowthSummary(this.DateArray[i] , this.DateArray[i+1], "plays" , this.selected).then((res : any) => {
-        // console.log('response plays', res);
-        let array = []
-        for (let j = 0; j < res.Data.length; j++) {
-   
-
-          // if(!array.length){
-
-          //   array.push({
-          //     category:res.Data[j].Category,
-          //     data : [{
-          //       week:index,
-          //       report: res.Data[j].report 
-          //     }]
-          //   })
-          // }else{
-
-          //   array.map(a => {
-          //     if(a.category == res.Data[j].Category){
-          //       a.data.push({
-          //       week:index,
-          //       report: res.Data[j].report 
-          //       })
-          //     }else{
-          //       array.push({
-          //         category:res.Data[j].Category,
-          //         data : [{
-          //           week:index,
-          //           report: res.Data[j].report 
-          //         }]
-          //       })
-          //     }
-          //   })
-
-          // }
-
-
-          // this.productionHouseData.map(ph => {            
-            // if(ph == res.Data[j].Category){
-             
-
-            //   if(!this.playsData.length){
-            //     console.log('length 0');
-                
-            //     this.playsData.push({
-            //       category : ph,
-            //       data: [{
-            //         week : index,
-            //         report: res.Data[j].report
-            //       }]
-            //     }) 
-            //   }
-            //   else{
-               
-            //   this.playsData.map(pd => {
-            //     if(pd.category  == ph ){
-            //       console.log('match: ', ph);
-                  
-            //       pd.data.push({
-            //         week : index,
-            //         report: res.Data[j].report
-            //       })
-            //     }else{
-                  
-            //       this.playsData.push({
-            //         category : ph,
-            //         data: [{
-            //           week : index,
-            //         report: res.Data[j].report
-            //         }]
-            //       })
-            //     }
-            //   })
-            // }
-
-            // }
-          // })
-          
-        }
-        console.log('array playts: ', array);
-        
-
-
-      })
-
-      this.apiPlaceGrowthSummary(this.DateArray[i] , this.DateArray[i+1], "75_percent_completes" , this.selected).then((res : any) => {
-        // console.log('response plays', res);
-        for (let k = 0; k < res.Data.length; k++) {
-          
-          let obj = {
-            category:res.Data[k].Category,
-            report:res.Data[k].report,
-            week:index
-          }
-          this.percentComplete75.push(obj)
-          
-        }
-      })
-    }
-    console.log('plays data: ', this.playsData);
-    console.log('watch data: ', this.watchTimeData);
-    console.log('75% data: ', this.percentComplete75);
-    
+    console.log("play data: ", this.playsData);
+    // console.log("watch data: ", this.watchTimeData);
+    // console.log("75% data: ", this.percentComplete75);
   }
 
-
- 
-  apiPlaceGrowthSummary( start:any , end : any , type : string , phData : any)  {
-
-    let data =     [
+  createTable(dateArray: any, type: any) {
+    for (let i = 0; i < dateArray.length - 1; i++) {
+      let index = i;
+      this.apiPlaceGrowthSummary(
+        this.DateArrayPlay[i],
+        this.DateArrayPlay[i + 1],
+        "plays",
+        this.selected
+      ).then((res: any) => {
+        res.Data.map((d) => {
+          if (type == "all") {
+            this.playsData[d.Category].push({ week: index, report: d.plays });
+            this.watchTimeData[d.Category].push({
+              week: index,
+              report: d.time_watched,
+            });
+            this.percentComplete75[d.Category].push({
+              week: index,
+              report: d.percent_completes_75,
+            });
+          }
+          if (type == "play") {
+            this.playsData[d.Category].push({ week: index, report: d.plays });
+          }
+          if (type == "time") {
+            this.watchTimeData[d.Category].push({
+              week: index,
+              report: d.time_watched,
+            });
+          }
+          if (type == "75") {
+            this.percentComplete75[d.Category].push({
+              week: index,
+              report: d.percent_completes_75,
+            });
+          }
+        });
+      });
+    }
+  }
+  apiPlaceGrowthSummary(start: any, end: any, type: string, phData: any) {
+    let data = [
       "ProductionHouse_Pakistani",
       "ProductionHouse_Religious ",
       "ProductionHouse_Sports ",
@@ -190,19 +128,18 @@ percentComplete75 : any = [];
       "ProductionHouse_Redbull",
     ];
     let array = [];
-    if(phData && phData.length){
+    if (phData && phData.length) {
       array = phData;
-    }else{
+    } else {
       array = data;
     }
-   let obj = {
+    let obj = {
       start_date: start,
       end_date: end,
       page: 0,
       reportType: type,
       page_length: 100,
-      data: array
-  
+      data: array,
     };
 
     return this._dashboard.getPlaceGrowthSummary(obj).toPromise();
@@ -215,17 +152,72 @@ percentComplete75 : any = [];
     return { start: startDate, end: endDate };
   }
 
-  getProductionHouseData() {
+  getProductionHouseData(type: string) {
     this._dashboard.getProductHouseFilter().subscribe((res: any) => {
       this.productionHouseData = res.Data;
+      res.Data.map((ph) => {
+        if (type == "all") {
+          this.playsData[ph] = new Array();
+          this.watchTimeData[ph] = new Array();
+          this.percentComplete75[ph] = new Array();
+        }
+        if (type == "play") {
+          this.playsData[ph] = new Array();
+        }
+        if (type == "time") {
+          this.watchTimeData[ph] = new Array();
+        }
+        if (type == "75") {
+          this.percentComplete75[ph] = new Array();
+        }
+      });
     });
   }
 
-  rangeDates($event) {
+  rangeDatesPlay($event, type: string) {
     this.startDate = $event.start;
     this.endDate = $event.end;
-    let generalData = {};
-    this.DateArray = this.changeDateToWeek($event.start, $event.end);
+
+    if (type == "play") {
+      this.DateArrayShowPlay = [];
+      this.DateArrayPlay = [];
+      this.DateArrayPlay = this.changeDateToWeek($event.start, $event.end);
+      this.DateArrayPlay.map((m, i) => {
+        if (i < this.DateArrayPlay.length - 1) {
+          this.DateArrayShowPlay.push(m);
+        }
+      });
+
+      this.getProductionHouseData("play");
+      this.createTable(this.DateArrayPlay, "play");
+    }
+    if(type == "time"){
+      this.DateArrayShowTime = [];
+      this.DateArrayTime = [];
+      this.DateArrayTime = this.changeDateToWeek($event.start, $event.end);
+      this.DateArrayTime.map((m, i) => {
+        if (i < this.DateArrayTime.length - 1) {
+          this.DateArrayShowTime.push(m);
+        }
+      });
+
+      this.getProductionHouseData("time");
+      this.createTable(this.DateArrayTime, "time");
+    }
+    if(type == "75"){
+      this.DateArrayShow75 = [];
+      this.DateArray75 = [];
+      this.DateArray75 = this.changeDateToWeek($event.start, $event.end);
+      this.DateArray75.map((m, i) => {
+        if (i < this.DateArray75.length - 1) {
+          this.DateArrayShow75.push(m);
+        }
+      });
+
+      this.getProductionHouseData("75");
+      this.createTable(this.DateArray75, "75");
+    }
+    console.log("Date array: ", this.DateArrayPlay);
   }
 
   getSelectedValue() {
