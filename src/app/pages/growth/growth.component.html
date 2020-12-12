@@ -24,7 +24,7 @@
           </div> -->
           </div>
           <div class="responsive-horizontal">
-            <table class="table table-hover">
+            <table class="table table-hover table-striped">
               <thead>
                 <tr>
                   <th scope="col">Category</th>
@@ -42,7 +42,8 @@
                 <tr *ngFor="let ph of productionHouseData; let i = index">
                   <th scope="row">{{ ph }}</th>
                   <td *ngFor="let play of playsData[ph]">
-                    {{ play.report ? play.report : "Not Found" }}
+                    <!-- {{ play.report ? play.report : "Not Found" }} -->
+                    {{ play.report }}
                   </td>
                   <td>Trend</td>
                   <td>Summary</td>
@@ -80,7 +81,7 @@
           </div> -->
           </div>
           <div class="responsive-horizontal">
-            <table class="table table-hover">
+            <table class="table table-hover table-striped">
               <thead>
                 <tr>
                   <th scope="col">Category</th>
@@ -98,7 +99,8 @@
                 <tr *ngFor="let ph of productionHouseData; let i = index">
                   <th scope="row">{{ ph }}</th>
                   <td *ngFor="let time of watchTimeData[ph]">
-                    {{ time.report ? time.report : "Not Found" }}
+                    <!-- {{ time.report ? time.report : "Not Found" }} -->
+                    {{ time.report }}
                   </td>
                   <td>Trend</td>
                   <td>Summary</td>
@@ -118,7 +120,7 @@
         <nb-card-body>
           <div class="row">
             <div class="col-6">
-              <ngx-date-range (getRange)="rangeDatesPlay($event , '75')"></ngx-date-range>
+              <ngx-date-range [[ngModel]] ="defaultDate" (getRange)="rangeDatesPlay($event , '75')"></ngx-date-range>
             </div>
             <!-- <div class="col-md-6">
             <h6>Select Production House</h6>
@@ -135,7 +137,7 @@
           </div> -->
           </div>
           <div class="responsive-horizontal">
-            <table class="table table-hover">
+            <table class="table table-hover table-striped">
               <thead>
                 <tr>
                   <th scope="col">Category</th>
@@ -153,7 +155,8 @@
                 <tr *ngFor="let ph of productionHouseData; let i = index">
                   <th scope="row">{{ ph }}</th>
                   <td *ngFor="let data of percentComplete75[ph]">
-                    {{ data.report ? data.report : "Not Found" }}
+                    <!-- {{ data.report ? data.report : "Not Found" }} -->
+                    {{ data.report  }}
                   </td>
                   <td>Trend</td>
                   <td>Summary</td>

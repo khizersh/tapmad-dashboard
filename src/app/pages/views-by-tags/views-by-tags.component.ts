@@ -24,6 +24,7 @@ export class ViewsByTagsComponent implements OnDestroy {
   startDate: any;
   endDate: any;
   combineWeekArray: Promise<any[]>;
+  msg = false;
 
   // Multi select Data start
   name = "Production House";
@@ -92,7 +93,9 @@ export class ViewsByTagsComponent implements OnDestroy {
     }
   }
 
-  rangeDates($event) {
+    rangeDates($event) {
+
+    this.msg = false;
     this.startDate = $event.start;
     this.endDate = $event.end;
 

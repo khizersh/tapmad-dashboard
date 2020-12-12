@@ -28,7 +28,7 @@ export class GrowthComponent implements OnInit {
     // });
   }
 
-  playsData: any = [];
+  playsData: any = {};
   watchTimeData: any = [];
   percentComplete75: any = [];
 
@@ -45,7 +45,7 @@ export class GrowthComponent implements OnInit {
     this.getProductionHouseData("all");
     let last30Days = this.getPast30Days();
 
-    this.DateArray75 =   this.DateArrayPlay = this.DateArrayTime = this.changeDateToWeek(
+    this.DateArray75 = this.DateArrayPlay = this.DateArrayTime = this.changeDateToWeek(
       last30Days.start,
       last30Days.end
     );
@@ -72,7 +72,8 @@ export class GrowthComponent implements OnInit {
     // console.log("75% data: ", this.percentComplete75);
   }
 
-  createTable(dateArray: any, type: any) {
+  async mappingTable(dateArray: any, type: any) {
+    let dataArray = [] , flagArray = [];
     for (let i = 0; i < dateArray.length - 1; i++) {
       let index = i;
       this.apiPlaceGrowthSummary(
@@ -81,7 +82,9 @@ export class GrowthComponent implements OnInit {
         "plays",
         this.selected
       ).then((res: any) => {
+
         res.Data.map((d) => {
+          dataArray.push({Category : d.Category , week : index , play:d.plays ,time: d.time_watched,  seven :d.percent_completes_75   })
           if (type == "all") {
             this.playsData[d.Category].push({ week: index, report: d.plays });
             this.watchTimeData[d.Category].push({
@@ -111,7 +114,36 @@ export class GrowthComponent implements OnInit {
         });
       });
     }
+
+    console.log("Full Data ", dataArray);
   }
+
+  compare(a, b) {
+    if (a.week < b.week) {
+      return -1;
+    }
+    if (a.week > b.week) {
+      return 1;
+    }
+    return 0;
+  }
+
+  createTable(dateArray: any, type: any) {
+    this.mappingTable(dateArray, type);
+
+    // .then((res) => {
+    //   this._dashboard.getProductHouseFilter().subscribe((res: any) => {
+    //     for (let ph of res.Data) {
+    //       let array = this.playsData[ph];
+    //       this.playsData[ph].sort(this.compare)
+
+    //       console.log("array ",array);
+
+    //     }
+    //   });
+    // });
+  }
+
   apiPlaceGrowthSummary(start: any, end: any, type: string, phData: any) {
     let data = [
       "ProductionHouse_Pakistani",
@@ -141,7 +173,6 @@ export class GrowthComponent implements OnInit {
       page_length: 100,
       data: array,
     };
-
     return this._dashboard.getPlaceGrowthSummary(obj).toPromise();
   }
 
@@ -155,6 +186,8 @@ export class GrowthComponent implements OnInit {
   getProductionHouseData(type: string) {
     this._dashboard.getProductHouseFilter().subscribe((res: any) => {
       this.productionHouseData = res.Data;
+
+      this.selected = res.Data;
       res.Data.map((ph) => {
         if (type == "all") {
           this.playsData[ph] = new Array();
@@ -191,7 +224,7 @@ export class GrowthComponent implements OnInit {
       this.getProductionHouseData("play");
       this.createTable(this.DateArrayPlay, "play");
     }
-    if(type == "time"){
+    if (type == "time") {
       this.DateArrayShowTime = [];
       this.DateArrayTime = [];
       this.DateArrayTime = this.changeDateToWeek($event.start, $event.end);
@@ -204,7 +237,7 @@ export class GrowthComponent implements OnInit {
       this.getProductionHouseData("time");
       this.createTable(this.DateArrayTime, "time");
     }
-    if(type == "75"){
+    if (type == "75") {
       this.DateArrayShow75 = [];
       this.DateArray75 = [];
       this.DateArray75 = this.changeDateToWeek($event.start, $event.end);
@@ -217,7 +250,6 @@ export class GrowthComponent implements OnInit {
       this.getProductionHouseData("75");
       this.createTable(this.DateArray75, "75");
     }
-    console.log("Date array: ", this.DateArrayPlay);
   }
 
   getSelectedValue() {
@@ -228,7 +260,7 @@ export class GrowthComponent implements OnInit {
     var a = moment(start);
     var b = moment(end);
     let diffCountWeek = b.diff(a, "week");
-    console.log("difference in date.", diffCountWeek);
+    // console.log("difference in date.", diffCountWeek);
 
     let dateArrayy = [];
 

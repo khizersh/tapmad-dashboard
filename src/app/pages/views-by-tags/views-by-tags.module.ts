@@ -27,8 +27,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     FormsModule,
     DateRangeModule,
     NgSelectModule,
-  
-    
+
+
   ],
   declarations: [ViewsByTagsComponent],
 })
