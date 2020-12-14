@@ -9,8 +9,8 @@ import { ViewsByTagsComponent } from "./views-by-tags.component";
 import { ChartModule } from "angular2-chartjs";
 import { FormsModule } from "@angular/forms";
 import { DateRangeModule } from "../../components/date-range/date-range.module";
-import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -19,6 +19,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
+    CommonModule,
     NbMenuModule,
     NbCardModule,
     ChartModule,
@@ -30,6 +31,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 
   ],
-  declarations: [ViewsByTagsComponent],
+  declarations: [ViewsByTagsComponent ],
 })
 export class ViewsByTagsModule {}

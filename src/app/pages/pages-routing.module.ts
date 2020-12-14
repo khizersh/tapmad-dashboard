@@ -39,7 +39,7 @@ const routes: Routes = [
       },
       {
         path: "growth",
-        component: GrowthComponent,
+        component:GrowthComponent
       },
       {
         path: "analytics",

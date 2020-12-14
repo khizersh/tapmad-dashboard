@@ -24,6 +24,8 @@ import { AuthInterceptor } from "./pages/auth/auth.interceptor";
 import { SpinnerInterceptor } from "./utils/spinner/spinner.interceptor";
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
+import { PagesModule } from './pages/pages.module';
+
 
 
 @NgModule({
