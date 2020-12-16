@@ -44,11 +44,23 @@
                 <tr *ngFor="let ph of productionHouseData; let i = index">
                   <th scope="row">{{ ph }}</th>
                   <td *ngFor="let play of playsData[ph]">
-                    <!-- {{ play.report ? play.report : "Not Found" }} -->
                     {{ play.report }}
                   </td>
 
-                  <td>Summary</td>
+                  <!-- <td>{{playsData[ph][0].report + " " + playsData[ph][playsData[ph].length-1].report}}</td> -->
+                  <td>
+                    {{
+                      (((playsData[ph][playsData[ph].length - 1].report -
+                        playsData[ph][0].report) /
+                        playsData[ph][0].report) *
+                        100 | number: "1.0-0")
+                        ? (((playsData[ph][playsData[ph].length - 1].report -
+                            playsData[ph][0].report) /
+                            playsData[ph][0].report) *
+                            100 | number: "1.0-0") + "%"
+                        : "Not Found"
+                    }}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -107,7 +119,19 @@
                     {{ time.report }}
                   </td>
 
-                  <td>Summary</td>
+                  <td>
+                    {{
+                      (((watchTimeData[ph][watchTimeData[ph].length - 1].report -
+                      watchTimeData[ph][0].report) /
+                      watchTimeData[ph][0].report) *
+                        100 | number: "1.0-0")
+                        ? (((watchTimeData[ph][watchTimeData[ph].length - 1].report -
+                        watchTimeData[ph][0].report) /
+                        watchTimeData[ph][0].report) *
+                            100 | number: "1.0-0") + "%"
+                        : "Not Found"
+                    }}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -165,7 +189,19 @@
                     {{ data.report }}
                   </td>
 
-                  <td>Summary</td>
+                  <td>
+                    {{
+                      (((percentComplete75[ph][percentComplete75[ph].length - 1].report -
+                      percentComplete75[ph][0].report) /
+                      percentComplete75[ph][0].report) *
+                        100 | number: "1.0-0")
+                        ? (((percentComplete75[ph][percentComplete75[ph].length - 1].report -
+                        percentComplete75[ph][0].report) /
+                        percentComplete75[ph][0].report) *
+                            100 | number: "1.0-0") + "%"
+                        : "Not Found"
+                    }}
+                  </td>
                 </tr>
               </tbody>
             </table>

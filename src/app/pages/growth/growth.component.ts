@@ -50,7 +50,6 @@ export class GrowthComponent implements OnInit {
       last30Days.end
     );
 
-
     this.createTable(this.DateArrayPlay, "all");
     this.DateArrayPlay.map((m, i) => {
       if (i < this.DateArrayPlay.length - 1) {
@@ -68,14 +67,24 @@ export class GrowthComponent implements OnInit {
       }
     });
 
-
     console.log("platy data: ", this.playsData);
     console.log("watch data: ", this.watchTimeData);
     console.log("75% data: ", this.percentComplete75);
   }
 
+
+  summaryRound(current: any, previous: any) {
+    console.log("current: ", current);
+    console.log("previous: ", previous);
+
+   return Math.round(((current - previous) / previous) * 100);
+  }
+
+
+
   async mappingTable(dateArray: any, type: any) {
-    let dataArray = [] , flagArray = [];
+    let dataArray = [],
+      flagArray = [];
     for (let i = 0; i < dateArray.length - 1; i++) {
       let index = i;
       this.apiPlaceGrowthSummary(
@@ -84,25 +93,20 @@ export class GrowthComponent implements OnInit {
         "plays",
         this.selected
       ).then((res: any) => {
-
-        // console.log("Plays: ", this.playsData);
-        // console.log("watch: ", this.watchTimeData);
-        // console.log("75: ", this.percentComplete75);
-        
-        // console.log("All: ", res.Data);
         res.Data.map((d) => {
-          // dataArray.push({Category : d.Category , week : index , play:d.plays ,time: d.time_watched,  seven :d.percent_completes_75   })
-         
           d.Category = d.Category.trim();
-          if(d.Category && !d.plays && !d.percent_completes_75 &&  !d.time_watched){
+          if (
+            d.Category &&
+            !d.plays &&
+            !d.percent_completes_75 &&
+            !d.time_watched
+          ) {
             d.plays = "Not Found";
             d.percent_completes_75 = "Not Found";
             d.time_watched = "Not Found";
-            
           }
-         
+
           if (type == "all") {
-       
             this.playsData[d.Category].push({ week: index, report: d.plays });
             this.watchTimeData[d.Category].push({
               week: index,
@@ -147,18 +151,6 @@ export class GrowthComponent implements OnInit {
 
   createTable(dateArray: any, type: any) {
     this.mappingTable(dateArray, type);
-
-    // .then((res) => {
-    //   this._dashboard.getProductHouseFilter().subscribe((res: any) => {
-    //     for (let ph of res.Data) {
-    //       let array = this.playsData[ph];
-    //       this.playsData[ph].sort(this.compare)
-
-    //       console.log("array ",array);
-
-    //     }
-    //   });
-    // });
   }
 
   apiPlaceGrowthSummary(start: any, end: any, type: string, phData: any) {
@@ -232,15 +224,12 @@ export class GrowthComponent implements OnInit {
       this.DateArrayShowPlay = [];
       this.DateArrayPlay = [];
       this.DateArrayPlay = this.changeDateToWeek($event.start, $event.end);
-      
-      
+
       this.DateArrayPlay.map((m, i) => {
         if (i < this.DateArrayPlay.length - 1) {
           this.DateArrayShowPlay.push(m);
         }
       });
-
-    
 
       this.getProductionHouseData("play");
       this.createTable(this.DateArrayPlay, "play");
