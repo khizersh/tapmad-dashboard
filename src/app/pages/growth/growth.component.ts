@@ -101,9 +101,9 @@ export class GrowthComponent implements OnInit {
             !d.percent_completes_75 &&
             !d.time_watched
           ) {
-            d.plays = "Not Found";
-            d.percent_completes_75 = "Not Found";
-            d.time_watched = "Not Found";
+            d.plays = "--";
+            d.percent_completes_75 = "--";
+            d.time_watched = "--";
           }
 
           if (type == "all") {

@@ -58,7 +58,7 @@
                             playsData[ph][0].report) /
                             playsData[ph][0].report) *
                             100 | number: "1.0-0") + "%"
-                        : "Not Found"
+                        : "--"
                     }}
                   </td>
                 </tr>
@@ -115,7 +115,7 @@
                 <tr *ngFor="let ph of productionHouseData; let i = index">
                   <th scope="row">{{ ph }}</th>
                   <td *ngFor="let time of watchTimeData[ph]">
-                    <!-- {{ time.report ? time.report : "Not Found" }} -->
+                    <!-- {{ time.report ? time.report : "--" }} -->
                     {{ time.report }}
                   </td>
 
@@ -129,7 +129,7 @@
                         watchTimeData[ph][0].report) /
                         watchTimeData[ph][0].report) *
                             100 | number: "1.0-0") + "%"
-                        : "Not Found"
+                        : "--"
                     }}
                   </td>
                 </tr>
@@ -185,7 +185,7 @@
                 <tr *ngFor="let ph of productionHouseData; let i = index">
                   <th scope="row">{{ ph }}</th>
                   <td *ngFor="let data of percentComplete75[ph]">
-                    <!-- {{ data.report ? data.report : "Not Found" }} -->
+                    <!-- {{ data.report ? data.report : "--" }} -->
                     {{ data.report }}
                   </td>
 
@@ -199,7 +199,7 @@
                         percentComplete75[ph][0].report) /
                         percentComplete75[ph][0].report) *
                             100 | number: "1.0-0") + "%"
-                        : "Not Found"
+                        : "--"
                     }}
                   </td>
                 </tr>

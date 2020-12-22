@@ -5,6 +5,7 @@ import { DateUtils } from "../../utils/date.utls";
 import * as moment from "moment";
 import { async } from "rxjs/internal/scheduler/async";
 import { FORMERR } from "dns";
+import { rgb } from "d3-color";
 
 @Component({
   selector: "ngx-views-by-tags",
@@ -14,7 +15,7 @@ import { FORMERR } from "dns";
 export class ViewsByTagsComponent implements OnDestroy {
   data: any;
   options: any;
-  productionFilter: [];
+  productionFilter:any = [];
   filteredDate: any;
   themeSubscription: any;
   date = {
@@ -25,19 +26,19 @@ export class ViewsByTagsComponent implements OnDestroy {
   endDate: any;
   combineWeekArray: Promise<any[]>;
   msg = false;
+  customArray = {};
 
   // Multi select Data start
   name = "Production House";
   nameBar = "Chart Type";
   productionHouseData = [];
-  chartStyle = [ "line" , "bar"]
+  chartStyle = ["line", "bar"];
   selected = [];
-  chartStyleSelect : any = "line";
-  chartType = ""
+  chartStyleSelect: any = "line";
+  chartType = "";
 
-  getSelectedValueOfChartType(){
+  getSelectedValueOfChartType() {
     console.log("Chart Type: ", this.chartStyleSelect);
-
   }
 
   getSelectedValue() {
@@ -46,7 +47,7 @@ export class ViewsByTagsComponent implements OnDestroy {
       end: this.endDate,
     };
 
-    this.filteredDate  = this.changeDateToWeek(this.startDate, this.endDate);
+    this.filteredDate = this.changeDateToWeek(this.startDate, this.endDate);
     this.loadChartData(date, this.selected, this.filteredDate);
   }
   // Multi select Data end
@@ -56,10 +57,9 @@ export class ViewsByTagsComponent implements OnDestroy {
     private _dashboard: DashbaordChartService,
     private _utils: DateUtils
   ) {
-
-    alert("Last month data show as default!")
+    alert("Last month data show as default!");
     let dateObj = this.getPast30Days();
-    this.filteredDate = this.changeDateToWeek(dateObj.start , dateObj.end)
+    this.filteredDate = this.changeDateToWeek(dateObj.start, dateObj.end);
     this.loadChartData("", this.selected, this.filteredDate);
   }
 
@@ -80,21 +80,19 @@ export class ViewsByTagsComponent implements OnDestroy {
           dateArrayy.push(fDate);
         }
       }
-      if(this.startDate && this.endDate){
+      if (this.startDate && this.endDate) {
         dateArrayy.unshift(this.startDate);
         dateArrayy.push(this.endDate);
-      }else {
+      } else {
         dateArrayy.unshift(start);
         dateArrayy.push(end);
       }
-
 
       return dateArrayy;
     }
   }
 
-    rangeDates($event) {
-
+  rangeDates($event) {
     this.msg = false;
     this.startDate = $event.start;
     this.endDate = $event.end;
@@ -110,9 +108,8 @@ export class ViewsByTagsComponent implements OnDestroy {
       formatDate = [];
     if (diffCountWeek > 0) {
       this.filteredDate = this.changeDateToWeek(this.startDate, this.endDate);
-
     } else {
-      this.filteredDate = []
+      this.filteredDate = [];
       date = {
         start: this.startDate,
         end: this.endDate,
@@ -134,67 +131,53 @@ export class ViewsByTagsComponent implements OnDestroy {
   async getAllWeeksData(dateArrayy: []) {
     let combineArray = [];
 
-    console.log("Data array: ",dateArrayy );
-
-
     for (var i = 0; i < dateArrayy.length - 1; i++) {
-
       var a = moment(dateArrayy[i]);
-    var b = moment(dateArrayy[i + 1]);
+      var b = moment(dateArrayy[i + 1]);
 
-    let date = a.add(1, "day").calendar();
+      let date = a.add(1, "day").calendar();
 
-    let formatDate = date.split("/");
-    let fDate = formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
+      let formatDate = date.split("/");
+      let fDate = formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
 
-    let tempData1  = {}
+      let tempData1 = {};
 
-    if(!i){
-      tempData1 = {
-        start_date: dateArrayy[i],
-        end_date: dateArrayy[i + 1],
-        page: 0,
-        page_length: 100,
-        data: this.productionFilter,
-      };
-    }else{
-      tempData1 = {
-        start_date: fDate,
-        end_date: dateArrayy[i + 1],
-        page: 0,
-        page_length: 100,
-        data: this.productionFilter,
-      };
-
-    }
-
+      if (!i) {
+        tempData1 = {
+          start_date: dateArrayy[i],
+          end_date: dateArrayy[i + 1],
+          page: 0,
+          page_length: 100,
+          data: this.productionFilter,
+        };
+      } else {
+        tempData1 = {
+          start_date: fDate,
+          end_date: dateArrayy[i + 1],
+          page: 0,
+          page_length: 100,
+          data: this.productionFilter,
+        };
+      }
 
       let array: any = await this._dashboard
         .getDataByTagName(tempData1)
         .toPromise();
 
-        for (let j = 0; j < array.Data.length; j++) {
-          let obj = {
-            Category: array.Data[j].Category,
-            plays: array.Data[j].plays,
-            week: i + 1,
-          };
-          combineArray.push(obj);
-        }
-
-
-
+      for (let j = 0; j < array.Data.length; j++) {
+        let obj = {
+          Category: array.Data[j].Category,
+          plays: array.Data[j].plays,
+          week: i + 1,
+        };
+        combineArray.push(obj);
+      }
     }
-    // console.log("Combine Array: ", combineArray);
 
     return combineArray;
   }
 
   loadChartData(date: any, selected: any, dateArrayy: []) {
-
-    // console.log("Date array: ", dateArrayy);
-    // console.log("Date single: ", date);
-
     let sDate: any;
     let eDate: any;
 
@@ -226,49 +209,40 @@ export class ViewsByTagsComponent implements OnDestroy {
         }
 
         this.productionHouseData = res.Data;
+        console.log("Selected: ",selected );
+        console.log("this.productionFilter: " ,this.productionFilter );
+
+        this.productionFilter.map((r) => {
+          this.customArray[r] = new Array();
+        });
 
         // if data is on weekly bases
-        if (dateArrayy && dateArrayy.length ) {
-
+        if (dateArrayy && dateArrayy.length) {
           this.getAllWeeksData(dateArrayy).then((res) => {
-
             let data = [];
             let labels = [];
             let array = [];
             for (let play of res) {
-              data.push(play.plays);
-              labels.push(play.Category.split('_')[1].slice(0,5) );
-              array.push(play);
+              this.customArray[play.Category].push(play.plays);
             }
-            console.log('Total Array: ',array )
+
+
+            let showArray = [];
+            this.productionFilter.map((r) => {
+              showArray.push({
+                data: this.customArray[r],
+                label: r,
+                // borderColor: rgb(Math.floor(Math.random() * 255) , 255 , 1)
+                borderColor: "#" + Math.floor(Math.random()*16777215).toString(16)
+              });
+            });
+
+            console.log("show Array: ", showArray);
+
             this.data = {
-              labels: labels || [
-                "2006",
-                "2007",
-                "2008",
-                "2009",
-                "2010",
-                "2011",
-                "2012",
-              ],
-              datasets: [
-                {
-                  data: data || [65, 59, 80, 81, 56, 55, 40],
-                  label: "Plays",
-                  backgroundColor: NbColorHelper.hexToRgbA(
-                    colors.primaryLight,
-                    0.8
-                  ),
-                },
-                // {
-                //   data: embeds || [65, 59, 80, 81, 56, 55, 40],
-                //   label: "Weeks",
-                //   backgroundColor: NbColorHelper.hexToRgbA(
-                //     colors.primaryLight,
-                //     0.4
-                //   ),
-                // },
-              ],
+              labels: dateArrayy.slice(1, dateArrayy.length),
+              datasets: showArray,
+
             };
 
             this.options = {
@@ -276,23 +250,21 @@ export class ViewsByTagsComponent implements OnDestroy {
               responsive: true,
               tooltips: {
                 callbacks: {
-                    label: function(tooltipItem, data) {
+                  label: function (tooltipItem, data) {
+                    var label =
+                      data.datasets[tooltipItem.datasetIndex].label || "";
+                    var arrayData = res[tooltipItem.datasetIndex] || "no found";
 
+                    let productHouse = res[tooltipItem.index];
 
-                        var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                        var arrayData = res[tooltipItem.datasetIndex] || 'no found';
-
-                        // let productHouse = res.filter(f => f.plays == tooltipItem.yLabel)[0];
-                        let productHouse = res[tooltipItem.index]
-
-                        if (label) {
-                            label += ': ';
-                        }
-                        label += Math.round(tooltipItem.yLabel);
-                        return label + " , " + productHouse.Category + " , Week " + productHouse.week;
+                    if (label) {
+                      label += ": ";
                     }
-                }
-            },
+                    label += Math.round(tooltipItem.yLabel);
+                    return label;
+                  },
+                },
+              },
               legend: {
                 labels: {
                   fontColor: chartjs.textColor,
@@ -329,18 +301,15 @@ export class ViewsByTagsComponent implements OnDestroy {
                 ],
               },
             };
-
-
-
           });
         }
-         // if data is on range basis
-        else  {
-          this.filteredDate = []
+        // if data is on range basis
+        else {
+          this.filteredDate = [];
 
           let tempDataForSingleRange: any;
 
-          if(this.startDate && this.endDate){
+          if (this.startDate && this.endDate) {
             tempDataForSingleRange = {
               start_date: this.startDate,
               end_date: this.endDate,
@@ -348,9 +317,7 @@ export class ViewsByTagsComponent implements OnDestroy {
               page_length: 100,
               data: this.productionFilter,
             };
-
-          }else {
-
+          } else {
             tempDataForSingleRange = {
               start_date: this.lastMonth.start,
               end_date: this.lastMonth.end,
@@ -360,97 +327,97 @@ export class ViewsByTagsComponent implements OnDestroy {
             };
           }
 
-
-          this._dashboard.getDataByTagName(tempDataForSingleRange).subscribe((res: any) => {
-            let data = [];
-            let labels = [];
-            let embeds = [];
-            for (let play of res.Data) {
-              data.push(play.plays);
-              labels.push(play.Category.split('_')[1].slice(0,5));
-              embeds.push(play.embeds);
-            }
-            this.data = {
-              labels: labels || [
-                "2006",
-                "2007",
-                "2008",
-                "2009",
-                "2010",
-                "2011",
-                "2012",
-              ],
-              datasets: [
-                {
-                  data: data || [65, 59, 80, 81, 56, 55, 40],
-                  label: "Plays",
-                  backgroundColor: NbColorHelper.hexToRgbA(
-                    colors.primaryLight,
-                    0.8
-                  ),
-                },
-                {
-                  data: embeds || [65, 59, 80, 81, 56, 55, 40],
-                  label: "Embeds",
-                  backgroundColor: NbColorHelper.hexToRgbA(
-                    colors.primaryLight,
-                    0.4
-                  ),
-                },
-              ],
-            };
-
-            this.options = {
-              maintainAspectRatio: false,
-              responsive: true,
-              tooltips: {
-                callbacks: {
-                  label: function (tooltipItem, data) {
-                    return tooltipItem.yLabel
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                  },
-                },
-              },
-              legend: {
-                labels: {
-                  fontColor: chartjs.textColor,
-                },
-              },
-              scales: {
-                xAxes: [
+          this._dashboard
+            .getDataByTagName(tempDataForSingleRange)
+            .subscribe((res: any) => {
+              let data = [];
+              let labels = [];
+              let embeds = [];
+              for (let play of res.Data) {
+                data.push(play.plays);
+                labels.push(play.Category.split("_")[1].slice(0, 5));
+                embeds.push(play.embeds);
+              }
+              this.data = {
+                labels: labels || [
+                  "2006",
+                  "2007",
+                  "2008",
+                  "2009",
+                  "2010",
+                  "2011",
+                  "2012",
+                ],
+                datasets: [
                   {
-                    gridLines: {
-                      display: false,
-                      color: chartjs.axisLineColor,
-                    },
-                    ticks: {
-                      fontColor: chartjs.textColor,
-                    },
+                    data: data || [65, 59, 80, 81, 56, 55, 40],
+                    label: "Plays",
+                    backgroundColor: NbColorHelper.hexToRgbA(
+                      colors.primaryLight,
+                      0.8
+                    ),
+                  },
+                  {
+                    data: embeds || [65, 59, 80, 81, 56, 55, 40],
+                    label: "Embeds",
+                    backgroundColor: NbColorHelper.hexToRgbA(
+                      colors.primaryLight,
+                      0.4
+                    ),
                   },
                 ],
-                yAxes: [
-                  {
-                    gridLines: {
-                      display: true,
-                      color: chartjs.axisLineColor,
+              };
+
+              this.options = {
+                maintainAspectRatio: false,
+                responsive: true,
+                tooltips: {
+                  callbacks: {
+                    label: function (tooltipItem, data) {
+                      return tooltipItem.yLabel
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     },
-                    ticks: {
-                      fontColor: chartjs.textColor,
-                      userCallback: function (value, index, values) {
-                        value = value.toString();
-                        value = value.split(/(?=(?:...)*$)/);
-                        value = value.join(",");
-                        return value;
+                  },
+                },
+                legend: {
+                  labels: {
+                    fontColor: chartjs.textColor,
+                  },
+                },
+                scales: {
+                  xAxes: [
+                    {
+                      gridLines: {
+                        display: false,
+                        color: chartjs.axisLineColor,
+                      },
+                      ticks: {
+                        fontColor: chartjs.textColor,
                       },
                     },
-                  },
-                ],
-              },
-            };
-          });
+                  ],
+                  yAxes: [
+                    {
+                      gridLines: {
+                        display: true,
+                        color: chartjs.axisLineColor,
+                      },
+                      ticks: {
+                        fontColor: chartjs.textColor,
+                        userCallback: function (value, index, values) {
+                          value = value.toString();
+                          value = value.split(/(?=(?:...)*$)/);
+                          value = value.join(",");
+                          return value;
+                        },
+                      },
+                    },
+                  ],
+                },
+              };
+            });
         }
-
       });
     });
   }

@@ -25,7 +25,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: "/pages/dashboard",
       },
       {
-        title: "Top Plays By Tags",
+        title: "Views By Production House",
         link: "/pages/tags",
       },
       {
