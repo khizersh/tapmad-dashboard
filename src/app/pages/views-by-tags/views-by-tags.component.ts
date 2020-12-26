@@ -209,7 +209,7 @@ export class ViewsByTagsComponent implements OnDestroy {
         }
 
         this.productionHouseData = res.Data;
-        console.log("Selected: ",selected );
+        console.log("Selected: ",res.Data );
         console.log("this.productionFilter: " ,this.productionFilter );
 
         this.productionFilter.map((r) => {

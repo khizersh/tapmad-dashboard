@@ -10,6 +10,8 @@ import { ViewsByPercentageComponent } from "./views-by-percentage/views-by-perce
 import { ViewsByCountryComponent } from "./views-by-country/views-by-country.component";
 import { ViewsByPlatformComponent } from "./views-by-platform/views-by-platform.component";
 import { GrowthComponent } from './growth/growth.component';
+import { ViewsByChannelComponent } from "./views-by-channel/views-by-channel.component";
+import { AddChannelComponent } from "./views-by-channel/add-channel/add-channel.component";
 
 
 const routes: Routes = [
@@ -20,6 +22,10 @@ const routes: Routes = [
       {
         path: "dashboard",
         component: ECommerceComponent,
+      },
+      {
+        path: "add-channel",
+        component: AddChannelComponent,
       },
       {
         path: "tags",
@@ -42,6 +48,10 @@ const routes: Routes = [
         component:GrowthComponent
       },
       {
+        path: "channel",
+        component:ViewsByChannelComponent
+      },
+      {
         path: "analytics",
         loadChildren: () =>
           import("./Analytics/analytics.module").then((m) => m.AnalyticsModule),
@@ -50,8 +60,8 @@ const routes: Routes = [
         path: "iot-dashboard",
         component: DashboardComponent,
       },
-    
-    
+
+
       {
         path: "layout",
         loadChildren: () =>

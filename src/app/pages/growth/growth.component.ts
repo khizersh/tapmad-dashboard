@@ -270,7 +270,7 @@ export class GrowthComponent implements OnInit {
     var a = moment(start);
     var b = moment(end);
     let diffCountWeek = b.diff(a, "week");
-    // console.log("difference in date.", diffCountWeek);
+
 
     let dateArrayy = [];
 

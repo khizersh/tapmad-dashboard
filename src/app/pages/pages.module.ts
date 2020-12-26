@@ -13,6 +13,7 @@ import { ViewsByTagsModule } from "./views-by-tags/views-by-tags.module";
 import { SpinnerComponent } from "../utils/spinner/spinner.component";
 import { DecimalPipe } from "@angular/common";
 import { GrowthModule } from './growth/growth.module';
+import { ChannelModule } from "./views-by-channel/channel.module";
 
 @NgModule({
   imports: [
@@ -26,8 +27,9 @@ import { GrowthModule } from './growth/growth.module';
     ViewsByPercentageModule,
     ViewsByCountryModule,
     ViewsByPlatformModule,
-    GrowthModule
-  
+    GrowthModule,
+    ChannelModule
+
   ],
   declarations: [PagesComponent, SpinnerComponent],
   providers: [DecimalPipe],

@@ -48,13 +48,15 @@ export class DashbaordChartService {
   }
 
   getPlaceGrowthSummary(data) {
-    // let local = JSON.parse( localStorage.getItem('auth_app_token'));
-    // const httpHeaders: HttpHeaders = new HttpHeaders({
-    // 'auth-token': local.value,
-    // 'Content-Type': 'application/json',
-    // });
     return this._http.post(`${this._api.byPlaceGrowth}`, data);
-    // return this._http.post(this._api.byPlaceGrowth ,  JSON.stringify( data) , { headers: httpHeaders });
   }
 
+
+  getChannelList() {
+    return this._http.get(`${this._api.channelList}`);
+  }
+
+  addChannel(body) {
+    return this._http.post(`${this._api.addChannel}` , body);
+  }
 }

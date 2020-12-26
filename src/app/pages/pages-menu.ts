@@ -29,6 +29,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: "/pages/tags",
       },
       {
+        title: "Views By Channel",
+        link: "/pages/channel",
+      },
+      {
         title: "Videos By Percentage",
         link: "/pages/percentage",
       },

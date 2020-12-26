@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <nb-card>
+        <nb-card-header>Add Channel</nb-card-header>
+        <nb-card-body>
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="name">Channel Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="obj.ChannelFilterName"
+                  id="name"
+                  placeholder="Enter channel name"
+                />
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group mt-4">
+
+                <button class="btn btn-primary" (click)="onSubmit()">
+                  Add
+                </button>
+              </div>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <nb-card>
+        <nb-card-header>All Channels</nb-card-header>
+        <nb-card-body>
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>S#</th>
+                <th>channel Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let channel of channelList; let i = index;">
+                <td>{{i+1}}</td>
+                <td>{{channel}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+</div>
