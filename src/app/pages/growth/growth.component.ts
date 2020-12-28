@@ -31,6 +31,7 @@ export class GrowthComponent implements OnInit {
   playsData: any = [];
   watchTimeData: any = [];
   percentComplete75: any = [];
+  uniqueUserData: any = [];
 
   DateArrayPlay: any = [];
   DateArrayShowPlay: any = [];
@@ -41,11 +42,15 @@ export class GrowthComponent implements OnInit {
   DateArray75: any = [];
   DateArrayShow75: any = [];
 
+  
+  DateArrayUniqueUser: any = [];
+  DateArrayShowUniqueUser: any = [];
+
   ngOnInit(): void {
     this.getProductionHouseData("all");
     let last30Days = this.getPast30Days();
 
-    this.DateArray75 = this.DateArrayPlay = this.DateArrayTime = this.changeDateToWeek(
+    this.DateArrayUniqueUser = this.DateArray75 = this.DateArrayPlay = this.DateArrayTime = this.changeDateToWeek(
       last30Days.start,
       last30Days.end
     );
@@ -64,6 +69,12 @@ export class GrowthComponent implements OnInit {
     this.DateArray75.map((m, i) => {
       if (i < this.DateArray75.length - 1) {
         this.DateArrayShow75.push(m);
+      }
+    });
+
+    this.DateArrayUniqueUser.map((m, i) => {
+      if (i < this.DateArrayUniqueUser.length - 1) {
+        this.DateArrayShowUniqueUser.push(m);
       }
     });
 
@@ -99,11 +110,12 @@ export class GrowthComponent implements OnInit {
             d.Category &&
             !d.plays &&
             !d.percent_completes_75 &&
-            !d.time_watched
+            !d.time_watched && !d.unique_viewers
           ) {
             d.plays = "--";
             d.percent_completes_75 = "--";
             d.time_watched = "--";
+            d.unique_viewers = "--";
           }
 
           if (type == "all") {
@@ -115,6 +127,10 @@ export class GrowthComponent implements OnInit {
             this.percentComplete75[d.Category].push({
               week: index,
               report: d.percent_completes_75,
+            });
+            this.uniqueUserData[d.Category].push({
+              week: index,
+              report: d.unique_viewers,
             });
           }
           if (type == "play") {
@@ -130,6 +146,12 @@ export class GrowthComponent implements OnInit {
             this.percentComplete75[d.Category].push({
               week: index,
               report: d.percent_completes_75,
+            });
+          }
+          if (type == "unique") {
+            this.uniqueUserData[d.Category].push({
+              week: index,
+              report: d.unique_viewers,
             });
           }
         });
@@ -202,6 +224,7 @@ export class GrowthComponent implements OnInit {
           this.playsData[ph] = new Array();
           this.watchTimeData[ph] = new Array();
           this.percentComplete75[ph] = new Array();
+          this.uniqueUserData[ph] = new Array();
         }
         if (type == "play") {
           this.playsData[ph] = new Array();
@@ -211,6 +234,9 @@ export class GrowthComponent implements OnInit {
         }
         if (type == "75") {
           this.percentComplete75[ph] = new Array();
+        }
+        if (type == "unique") {
+          this.uniqueUserData[ph] = new Array();
         }
       });
     });
@@ -259,6 +285,19 @@ export class GrowthComponent implements OnInit {
 
       this.getProductionHouseData("75");
       this.createTable(this.DateArray75, "75");
+    }
+    if (type == "unique") {
+      this.DateArrayShowUniqueUser = [];
+      this.DateArrayUniqueUser = [];
+      this.DateArrayUniqueUser = this.changeDateToWeek($event.start, $event.end);
+      this.DateArrayUniqueUser.map((m, i) => {
+        if (i < this.DateArrayUniqueUser.length - 1) {
+          this.DateArrayShowUniqueUser.push(m);
+        }
+      });
+
+      this.getProductionHouseData("unique");
+      this.createTable(this.DateArrayUniqueUser, "unique");
     }
   }
 

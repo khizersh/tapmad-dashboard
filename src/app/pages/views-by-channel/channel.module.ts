@@ -8,11 +8,12 @@ import { DateRangeModule } from '../../components/date-range/date-range.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AddChannelComponent } from './add-channel/add-channel.component';
+import { ViewsByCategoryComponent } from '../views-by-category/views-by-category.component';
 
 
 
 @NgModule({
-  declarations: [ViewsByChannelComponent, AddChannelComponent],
+  declarations: [ViewsByChannelComponent, AddChannelComponent , ViewsByCategoryComponent],
   imports: [
     CommonModule,
     NbMenuModule,

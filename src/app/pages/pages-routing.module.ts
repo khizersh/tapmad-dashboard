@@ -12,6 +12,7 @@ import { ViewsByPlatformComponent } from "./views-by-platform/views-by-platform.
 import { GrowthComponent } from './growth/growth.component';
 import { ViewsByChannelComponent } from "./views-by-channel/views-by-channel.component";
 import { AddChannelComponent } from "./views-by-channel/add-channel/add-channel.component";
+import { ViewsByCategoryComponent } from "./views-by-category/views-by-category.component";
 
 
 const routes: Routes = [
@@ -50,6 +51,10 @@ const routes: Routes = [
       {
         path: "channel",
         component:ViewsByChannelComponent
+      },
+      {
+        path: "category",
+        component:ViewsByCategoryComponent
       },
       {
         path: "analytics",

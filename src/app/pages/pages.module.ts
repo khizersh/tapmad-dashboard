@@ -14,7 +14,6 @@ import { SpinnerComponent } from "../utils/spinner/spinner.component";
 import { DecimalPipe } from "@angular/common";
 import { GrowthModule } from './growth/growth.module';
 import { ChannelModule } from "./views-by-channel/channel.module";
-
 @NgModule({
   imports: [
     PagesRoutingModule,

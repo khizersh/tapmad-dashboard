@@ -17,7 +17,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     group: true,
   },
   {
-    title: "Top Views",
+    title: "Viewership",
     icon: "layout-outline",
     children: [
       {
@@ -31,6 +31,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: "Views By Channel",
         link: "/pages/channel",
+      },
+      {
+        title: "Views By Category",
+        link: "/pages/category",
       },
       {
         title: "Videos By Percentage",

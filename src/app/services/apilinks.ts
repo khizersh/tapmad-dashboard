@@ -19,4 +19,5 @@ export class ApiLinks {
   byPlaceGrowth = this.baseUrl + '/contentOverview/PlaysGrowthSummery';
   channelList = this.baseUrl + '/contentOverview/getChannelFilter';
   addChannel = this.baseUrl + '/contentOverview/setChannelFilter';
+  getCategories = this.baseUrl + '/contentOverview/getCategoryFilters';
 }

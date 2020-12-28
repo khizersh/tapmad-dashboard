@@ -59,4 +59,7 @@ export class DashbaordChartService {
   addChannel(body) {
     return this._http.post(`${this._api.addChannel}` , body);
   }
+  getCategorList() {
+    return this._http.get(`${this._api.getCategories}`);
+  }
 }

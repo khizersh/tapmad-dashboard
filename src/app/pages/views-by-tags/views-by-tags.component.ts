@@ -57,7 +57,6 @@ export class ViewsByTagsComponent implements OnDestroy {
     private _dashboard: DashbaordChartService,
     private _utils: DateUtils
   ) {
-    alert("Last month data show as default!");
     let dateObj = this.getPast30Days();
     this.filteredDate = this.changeDateToWeek(dateObj.start, dateObj.end);
     this.loadChartData("", this.selected, this.filteredDate);
