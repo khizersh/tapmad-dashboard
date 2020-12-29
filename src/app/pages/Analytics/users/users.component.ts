@@ -32,11 +32,11 @@ export class UsersComponent implements OnInit {
     ];
   analyticsAPIs = [
     {
-      name: "Users Views",
+      name: "Users",
       url: "/Users",
     },
     {
-      name: "New User Views",
+      name: "New User",
       url: "/NewUsers",
     },
     {

@@ -22,11 +22,12 @@ export class GrowthComponent implements OnInit {
   constructor(
     private _dashboard: DashbaordChartService,
     private _utils: DateUtils
-  ) {
-    // this._dashboard.getProductHouseFilter().subscribe((res: any) => {
-    //   this.productionHouseData = res.Data;
-    // });
-  }
+  ) {}
+
+  playSumArray = [];
+  timeSumArray = [];
+  SumArray75 = [];
+  uniqueUserSumArray = [];
 
   playsData: any = [];
   watchTimeData: any = [];
@@ -42,7 +43,6 @@ export class GrowthComponent implements OnInit {
   DateArray75: any = [];
   DateArrayShow75: any = [];
 
-  
   DateArrayUniqueUser: any = [];
   DateArrayShowUniqueUser: any = [];
 
@@ -78,27 +78,33 @@ export class GrowthComponent implements OnInit {
       }
     });
 
-    console.log("platy data: ", this.playsData);
-    console.log("watch data: ", this.watchTimeData);
-    console.log("75% data: ", this.percentComplete75);
+    console.log("this.playSumArray: ", this.playSumArray);
+    // console.log("platy data: ", this.playsData);
+    // console.log("watch data: ", this.watchTimeData);
+    // console.log("75% data: ", this.percentComplete75);
   }
-
 
   summaryRound(current: any, previous: any) {
-    console.log("current: ", current);
-    console.log("previous: ", previous);
+    // console.log("current: ", current);
+    // console.log("previous: ", previous);
 
-   return Math.round(((current - previous) / previous) * 100);
+    return Math.round(((current - previous) / previous) * 100);
   }
 
-
-
   async mappingTable(dateArray: any, type: any) {
-    let dataArray = [],
-      flagArray = [];
+    var ind;
+    let sumPlay = 0,
+      sumTime = 0,
+      sum75 = 0,
+      sumUnique = 0;
+
     for (let i = 0; i < dateArray.length - 1; i++) {
       let index = i;
-      this.apiPlaceGrowthSummary(
+      if (i == 0) {
+        ind = i;
+      }
+
+     await this.apiPlaceGrowthSummary(
         this.DateArrayPlay[i],
         this.DateArrayPlay[i + 1],
         "plays",
@@ -110,7 +116,8 @@ export class GrowthComponent implements OnInit {
             d.Category &&
             !d.plays &&
             !d.percent_completes_75 &&
-            !d.time_watched && !d.unique_viewers
+            !d.time_watched &&
+            !d.unique_viewers
           ) {
             d.plays = "--";
             d.percent_completes_75 = "--";
@@ -118,37 +125,37 @@ export class GrowthComponent implements OnInit {
             d.unique_viewers = "--";
           }
 
-          if (type == "all") {
+          if (type == "play" || type == "all") {
             this.playsData[d.Category].push({ week: index, report: d.plays });
+
+            if (ind != index) {
+              console.log("Week Change: ", sumPlay);
+              
+              this.playSumArray.push({ report: sumPlay, week: ind });
+              ind = index;
+              sumPlay = 0;
+            }
+            else {
+              if (typeof sumPlay == "number" && d.plays != "--") {
+                sumPlay += d.plays;
+                // console.log("Sum: " + sumPlay + " Week: " + index);
+                
+              }
+            }
+          }
+          if (type == "time" || type == "all") {
             this.watchTimeData[d.Category].push({
               week: index,
               report: d.time_watched,
             });
-            this.percentComplete75[d.Category].push({
-              week: index,
-              report: d.percent_completes_75,
-            });
-            this.uniqueUserData[d.Category].push({
-              week: index,
-              report: d.unique_viewers,
-            });
           }
-          if (type == "play") {
-            this.playsData[d.Category].push({ week: index, report: d.plays });
-          }
-          if (type == "time") {
-            this.watchTimeData[d.Category].push({
-              week: index,
-              report: d.time_watched,
-            });
-          }
-          if (type == "75") {
+          if (type == "75" || type == "all") {
             this.percentComplete75[d.Category].push({
               week: index,
               report: d.percent_completes_75,
             });
           }
-          if (type == "unique") {
+          if (type == "unique" || type == "all") {
             this.uniqueUserData[d.Category].push({
               week: index,
               report: d.unique_viewers,
@@ -158,7 +165,9 @@ export class GrowthComponent implements OnInit {
       });
     }
 
-    console.log("Full Data ", dataArray);
+    this.playsData["Total"] = this.playSumArray;
+    console.log("LOG: ",this.playsData );
+    
   }
 
   compare(a, b) {
@@ -218,8 +227,10 @@ export class GrowthComponent implements OnInit {
     this._dashboard.getProductHouseFilter().subscribe((res: any) => {
       this.productionHouseData = res.Data;
 
+    
+
       this.selected = res.Data;
-      res.Data.map((ph) => {
+      this.productionHouseData.map((ph , i) => {
         if (type == "all") {
           this.playsData[ph] = new Array();
           this.watchTimeData[ph] = new Array();
@@ -228,6 +239,9 @@ export class GrowthComponent implements OnInit {
         }
         if (type == "play") {
           this.playsData[ph] = new Array();
+          if(i == this.productionHouseData.length-1){
+            this.playsData["Total"] = new Array();
+          }
         }
         if (type == "time") {
           this.watchTimeData[ph] = new Array();
@@ -289,7 +303,10 @@ export class GrowthComponent implements OnInit {
     if (type == "unique") {
       this.DateArrayShowUniqueUser = [];
       this.DateArrayUniqueUser = [];
-      this.DateArrayUniqueUser = this.changeDateToWeek($event.start, $event.end);
+      this.DateArrayUniqueUser = this.changeDateToWeek(
+        $event.start,
+        $event.end
+      );
       this.DateArrayUniqueUser.map((m, i) => {
         if (i < this.DateArrayUniqueUser.length - 1) {
           this.DateArrayShowUniqueUser.push(m);
@@ -309,7 +326,6 @@ export class GrowthComponent implements OnInit {
     var a = moment(start);
     var b = moment(end);
     let diffCountWeek = b.diff(a, "week");
-
 
     let dateArrayy = [];
 

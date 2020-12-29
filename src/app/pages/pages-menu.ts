@@ -21,8 +21,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: "layout-outline",
     children: [
       {
+        title:'Dashboard',
+        link:"/pages/dashboard"
+      },
+      {
         title: "Top 100 Movies",
-        link: "/pages/dashboard",
+        link: "/pages/top-movies",
       },
       {
         title: "Views By Production House",

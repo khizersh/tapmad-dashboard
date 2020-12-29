@@ -13,6 +13,7 @@ import { GrowthComponent } from './growth/growth.component';
 import { ViewsByChannelComponent } from "./views-by-channel/views-by-channel.component";
 import { AddChannelComponent } from "./views-by-channel/add-channel/add-channel.component";
 import { ViewsByCategoryComponent } from "./views-by-category/views-by-category.component";
+import { TopMoviesComponent } from "./top-movies/top-movies.component";
 
 
 const routes: Routes = [
@@ -23,6 +24,11 @@ const routes: Routes = [
       {
         path: "dashboard",
         component: ECommerceComponent,
+      },
+      {
+        path: "top-movies",
+        // component: ECommerceComponent,
+        component: TopMoviesComponent,
       },
       {
         path: "add-channel",
@@ -61,10 +67,7 @@ const routes: Routes = [
         loadChildren: () =>
           import("./Analytics/analytics.module").then((m) => m.AnalyticsModule),
       },
-      {
-        path: "iot-dashboard",
-        component: DashboardComponent,
-      },
+      
 
 
       {

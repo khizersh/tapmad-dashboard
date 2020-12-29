@@ -47,7 +47,6 @@
                     {{ play.report }}
                   </td>
 
-                  <!-- <td>{{playsData[ph][0].report + " " + playsData[ph][playsData[ph].length-1].report}}</td> -->
                   <td>
                     {{
                       (((playsData[ph][playsData[ph].length - 1].report -
@@ -61,6 +60,13 @@
                         : "--"
                     }}
                   </td>
+                </tr>
+                <tr>
+                  <th>Total</th>
+                  <td *ngFor="let play of playsData['Total']">
+                    {{ play.report }}
+                  </td>
+                  <td></td>
                 </tr>
               </tbody>
             </table>
@@ -121,13 +127,15 @@
 
                   <td>
                     {{
-                      (((watchTimeData[ph][watchTimeData[ph].length - 1].report -
-                      watchTimeData[ph][0].report) /
-                      watchTimeData[ph][0].report) *
-                        100 | number: "1.0-0")
-                        ? (((watchTimeData[ph][watchTimeData[ph].length - 1].report -
+                      (((watchTimeData[ph][watchTimeData[ph].length - 1]
+                        .report -
                         watchTimeData[ph][0].report) /
                         watchTimeData[ph][0].report) *
+                        100 | number: "1.0-0")
+                        ? (((watchTimeData[ph][watchTimeData[ph].length - 1]
+                            .report -
+                            watchTimeData[ph][0].report) /
+                            watchTimeData[ph][0].report) *
                             100 | number: "1.0-0") + "%"
                         : "--"
                     }}
@@ -191,13 +199,16 @@
 
                   <td>
                     {{
-                      (((percentComplete75[ph][percentComplete75[ph].length - 1].report -
-                      percentComplete75[ph][0].report) /
-                      percentComplete75[ph][0].report) *
-                        100 | number: "1.0-0")
-                        ? (((percentComplete75[ph][percentComplete75[ph].length - 1].report -
+                      (((percentComplete75[ph][percentComplete75[ph].length - 1]
+                        .report -
                         percentComplete75[ph][0].report) /
                         percentComplete75[ph][0].report) *
+                        100 | number: "1.0-0")
+                        ? (((percentComplete75[ph][
+                            percentComplete75[ph].length - 1
+                          ].report -
+                            percentComplete75[ph][0].report) /
+                            percentComplete75[ph][0].report) *
                             100 | number: "1.0-0") + "%"
                         : "--"
                     }}
@@ -245,7 +256,11 @@
                     *ngFor="let date of DateArrayShowUniqueUser; let i = index"
                     scope="col"
                   >
-                    {{ DateArrayUniqueUser[i] + " To " + DateArrayUniqueUser[i + 1] }}
+                    {{
+                      DateArrayUniqueUser[i] +
+                        " To " +
+                        DateArrayUniqueUser[i + 1]
+                    }}
                   </th>
 
                   <th scope="col">Summary</th>
@@ -261,13 +276,15 @@
 
                   <td>
                     {{
-                      (((uniqueUserData[ph][uniqueUserData[ph].length - 1].report -
-                      uniqueUserData[ph][0].report) /
-                      uniqueUserData[ph][0].report) *
-                        100 | number: "1.0-0")
-                        ? (((uniqueUserData[ph][uniqueUserData[ph].length - 1].report -
+                      (((uniqueUserData[ph][uniqueUserData[ph].length - 1]
+                        .report -
                         uniqueUserData[ph][0].report) /
                         uniqueUserData[ph][0].report) *
+                        100 | number: "1.0-0")
+                        ? (((uniqueUserData[ph][uniqueUserData[ph].length - 1]
+                            .report -
+                            uniqueUserData[ph][0].report) /
+                            uniqueUserData[ph][0].report) *
                             100 | number: "1.0-0") + "%"
                         : "--"
                     }}
