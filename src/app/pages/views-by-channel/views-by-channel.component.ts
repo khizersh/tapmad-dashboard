@@ -61,6 +61,7 @@ export class ViewsByChannelComponent implements OnInit {
   // Weekly Chart
 
   weeklyChannelList: any = [];
+  weeklyChannelListToShow: any = [];
   weeklySelectedList: any = [];
   startDateWeekChart = null;
   endDateWeekChart = null;
@@ -74,7 +75,8 @@ export class ViewsByChannelComponent implements OnInit {
   MonthDateToShow: any = [];
 
   // Month Chart
-  monthlySelectedChannel: [];
+  monthlySelectedChannel: any = [];
+  monthlySelectedChannelToShow: any = [];
   MonthName = "month";
   startDateMonth = null;
   endDateMonth = null;
@@ -89,10 +91,7 @@ export class ViewsByChannelComponent implements OnInit {
     return yyyy + "-" + mm + "-" + dd;
   }
 
-  goToAddChannel(){
-    console.log("Change rout");
-
-  }
+  goToAddChannel() {}
   getDateOfGivenDays(day: number) {
     var d = new Date();
     let endDate = this._utils.formatDate(d.setDate(d.getDate()));
@@ -152,33 +151,32 @@ export class ViewsByChannelComponent implements OnInit {
       this.endDateWeekChart
     );
     this.loadChartData(this.weeklySelectedList, dateArray, "weekChart");
+    this.createTable("weekTable");
   }
 
   getSelectedChannelMonthly() {
     let date = this.getDateOfGivenDays(90);
     let dateArray: any = this.changeDateToMonth(date.start, date.end);
     this.loadChartData(this.monthlySelectedChannel, dateArray, "monthChart");
+    this.createTable("monthTable");
   }
-
 
   rangeDates($event, type: string) {
     if (type === "today") {
       this.createTable("today");
     }
-    if (type === "weekTable") {
-      this.startDateWeek = $event.start;
-      this.endDateWeek = $event.end;
-      this.createTable("weekTable");
-    }
 
     if (type === "weekChart") {
       this.startDateWeekChart = $event.start;
       this.endDateWeekChart = $event.end;
+      this.startDateWeek = $event.start;
+      this.endDateWeek = $event.end;
       let dateArray: any = this.changeDateToWeek(
         this.startDateWeekChart,
         this.endDateWeekChart
       );
       this.loadChartData(this.weeklySelectedList, dateArray, "weekChart");
+      this.createTable("weekTable");
     }
   }
   createTable(type: any) {
@@ -194,6 +192,7 @@ export class ViewsByChannelComponent implements OnInit {
         reportType: "plays",
         data: [],
       };
+
       this._dashboard.getChannelList().subscribe((res1: any) => {
         let channelArray = [];
         res1.Data.map((chan) => {
@@ -203,12 +202,12 @@ export class ViewsByChannelComponent implements OnInit {
         data.data = channelArray;
 
         this._dashboard.getPlaceGrowthSummary(data).subscribe((res: any) => {
-          this.source = res.Data.map(m => {
-            if(m.plays === undefined || m.plays === null){
-              m.plays = "--"
+          this.source = res.Data.map((m) => {
+            if (m.plays === undefined || m.plays === null) {
+              m.plays = "--";
             }
             return m;
-          })
+          });
           this.showTable = true;
         });
       });
@@ -244,6 +243,7 @@ export class ViewsByChannelComponent implements OnInit {
         for (let i = 0; i < this.weeklyDate.length - 1; i++) {
           let dataCustom = {};
           if (this.weeklySelectedList.length > 0) {
+            this.weeklyChannelListToShow = this.weeklySelectedList;
             dataCustom = {
               start_date: this.weeklyDate[i],
               end_date: this.weeklyDate[i + 1],
@@ -253,13 +253,14 @@ export class ViewsByChannelComponent implements OnInit {
               data: this.weeklySelectedList,
             };
           } else {
+            this.weeklyChannelListToShow = this.weeklyChannelList;
             dataCustom = {
               start_date: this.weeklyDate[i],
               end_date: this.weeklyDate[i + 1],
               page: 0,
               page_length: 99,
               reportType: "plays",
-              data: channelArray,
+              data: this.weeklyChannelList,
             };
           }
 
@@ -282,28 +283,40 @@ export class ViewsByChannelComponent implements OnInit {
 
     // ================================  Month  =====================
     if (type === "all" || type === "monthTable") {
+      console.log("month:");
+
       let last3Month = this.getDateOfGivenDays(90);
       this.MonthDate = this.changeDateToMonth(last3Month.start, last3Month.end);
-
-
+      this.MonthDateToShow = [];
 
       this.MonthDate.map((m, i) => {
         if (i < this.MonthDate.length - 1) {
           this.MonthDateToShow.push(m);
         }
       });
+
       this._dashboard.getChannelList().subscribe((res1: any) => {
-        let channels = res1.Data.map((m) => m.ChannelFilterName);
-        channels.map((m) => (this.MonthDataArray[m] = new Array()));
 
 
-        this.getAllWeeksData(this.MonthDate, channels).then((res) => {
+        if (this.monthlySelectedChannel.length) {
+          this.monthlySelectedChannelToShow = this.monthlySelectedChannel;
+        } else {
+          this.monthlySelectedChannelToShow = res1.Data.map(
+            (m) => m.ChannelFilterName
+          );
+        }
 
+        this.monthlySelectedChannelToShow.map(
+          (m) => (this.MonthDataArray[m] = new Array())
+        );
 
+        this.getAllWeeksData(
+          this.MonthDate,
+          this.monthlySelectedChannelToShow
+        ).then((res) => {
           for (let play of res) {
             this.MonthDataArray[play.Category].push(play.plays);
           }
-
         });
       });
     }
@@ -403,7 +416,7 @@ export class ViewsByChannelComponent implements OnInit {
           };
 
           this.weeklyChartOption = {
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             responsive: true,
             tooltips: {
               callbacks: {
@@ -460,10 +473,12 @@ export class ViewsByChannelComponent implements OnInit {
           };
         });
       }
-      if(type === "monthChart" || type === "all"){
-
+      if (type === "monthChart" || type === "all") {
         let last3Month = this.getDateOfGivenDays(90);
-        let monthDate : any = this.changeDateToMonth(last3Month.start, last3Month.end);
+        let monthDate: any = this.changeDateToMonth(
+          last3Month.start,
+          last3Month.end
+        );
         let customArray = [];
 
         if (selected.length > 0) {
@@ -475,7 +490,6 @@ export class ViewsByChannelComponent implements OnInit {
         this.customArrayMonth.map((r) => {
           customArray[r] = new Array();
         });
-
 
         this.getAllWeeksData(monthDate, selectedChannel).then((res: any) => {
           for (let play of res) {
@@ -498,7 +512,7 @@ export class ViewsByChannelComponent implements OnInit {
           };
 
           this.monthlyChartOption = {
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             responsive: true,
             tooltips: {
               callbacks: {
@@ -554,7 +568,6 @@ export class ViewsByChannelComponent implements OnInit {
             },
           };
         });
-
       }
     });
   }

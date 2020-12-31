@@ -64,7 +64,7 @@
                 <tr>
                   <th>Total</th>
                   <td *ngFor="let play of playsData['Total']">
-                    {{ play.report }}
+                   <strong> {{ play }}</strong>
                   </td>
                   <td></td>
                 </tr>
@@ -141,6 +141,13 @@
                     }}
                   </td>
                 </tr>
+                <tr>
+                  <th>Total</th>
+                  <td *ngFor="let play of watchTimeData['Total']">
+                   <strong> {{ play }}</strong>
+                  </td>
+                  <td></td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -213,6 +220,13 @@
                         : "--"
                     }}
                   </td>
+                </tr>
+                <tr>
+                  <th>Total</th>
+                  <td *ngFor="let play of percentComplete75['Total']">
+                   <strong> {{ play }}</strong>
+                  </td>
+                  <td></td>
                 </tr>
               </tbody>
             </table>
@@ -289,6 +303,13 @@
                         : "--"
                     }}
                   </td>
+                </tr>
+                <tr>
+                  <th>Total</th>
+                  <td *ngFor="let play of uniqueUserData['Total']">
+                   <strong> {{ play }}</strong>
+                  </td>
+                  <td></td>
                 </tr>
               </tbody>
             </table>

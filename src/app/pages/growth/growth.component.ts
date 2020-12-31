@@ -85,31 +85,92 @@ export class GrowthComponent implements OnInit {
   }
 
   summaryRound(current: any, previous: any) {
-    // console.log("current: ", current);
-    // console.log("previous: ", previous);
-
     return Math.round(((current - previous) / previous) * 100);
   }
 
+  async getAllWeeksData(dateArrayy: [], categoryArray: []) {
+    let combineArray = [];
+    let categoryList: any = [];
+
+    categoryList = categoryArray;
+
+    for (var i = 0; i < dateArrayy.length - 1; i++) {
+      var a = moment(dateArrayy[i]);
+      var b = moment(dateArrayy[i + 1]);
+
+      let date = a.add(1, "day").calendar();
+
+      let formatDate = date.split("/");
+      let fDate = formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
+
+      let tempData1 = {};
+      tempData1 = {
+        start_date: dateArrayy[i],
+        end_date: dateArrayy[i + 1],
+        page: 0,
+        page_length: 100,
+        reportType: "plays",
+        data: categoryList,
+      };
+
+      let array: any = await this._dashboard
+        .getPlaceGrowthSummary(tempData1)
+        .toPromise();
+
+      for (let j = 0; j < array.Data.length; j++) {
+        let obj = {
+          Category: array.Data[j].Category,
+          plays: array.Data[j].plays ? array.Data[j].plays : 0,
+          week: i + 1,
+        };
+        combineArray.push(obj);
+      }
+    }
+
+    return combineArray;
+  }
+
+  sumOfArray(array: []) {
+    let sum = 0;
+    for (let arr of array) {
+      sum += arr;
+    }
+    return sum;
+  }
+
   async mappingTable(dateArray: any, type: any) {
-    var ind;
-    let sumPlay = 0,
-      sumTime = 0,
+    var ind,
+      sumArray = [];
+
+    let sumTime = 0,
       sum75 = 0,
       sumUnique = 0;
 
+    if (type == "play" || type == "all") {
+      this.playSumArray = [];
+    }
+    if (type == "time" || type == "all") {
+      this.timeSumArray = [];
+    }
+    if (type == "75" || type == "all") {
+      this.SumArray75 = [];
+    }
+    if (type == "unique" || type == "all") {
+      this.uniqueUserSumArray = [];
+    }
     for (let i = 0; i < dateArray.length - 1; i++) {
       let index = i;
-      if (i == 0) {
-        ind = i;
-      }
 
-     await this.apiPlaceGrowthSummary(
+      await this.apiPlaceGrowthSummary(
         this.DateArrayPlay[i],
         this.DateArrayPlay[i + 1],
         "plays",
         this.selected
       ).then((res: any) => {
+        let sumPlay = 0,
+          sumTime = 0,
+          sum75 = 0,
+          sumUnique = 0;
         res.Data.map((d) => {
           d.Category = d.Category.trim();
           if (
@@ -128,19 +189,8 @@ export class GrowthComponent implements OnInit {
           if (type == "play" || type == "all") {
             this.playsData[d.Category].push({ week: index, report: d.plays });
 
-            if (ind != index) {
-              console.log("Week Change: ", sumPlay);
-              
-              this.playSumArray.push({ report: sumPlay, week: ind });
-              ind = index;
-              sumPlay = 0;
-            }
-            else {
-              if (typeof sumPlay == "number" && d.plays != "--") {
-                sumPlay += d.plays;
-                // console.log("Sum: " + sumPlay + " Week: " + index);
-                
-              }
+            if (typeof d.plays == "number" && d.plays != "--") {
+              sumPlay += d.plays;
             }
           }
           if (type == "time" || type == "all") {
@@ -148,26 +198,69 @@ export class GrowthComponent implements OnInit {
               week: index,
               report: d.time_watched,
             });
+
+            if (typeof d.time_watched == "number" && d.time_watched != "--") {
+              sumTime += d.time_watched;
+            }
           }
           if (type == "75" || type == "all") {
             this.percentComplete75[d.Category].push({
               week: index,
               report: d.percent_completes_75,
             });
+            if (
+              typeof d.percent_completes_75 == "number" &&
+              d.percent_completes_75 != "--"
+            ) {
+              sum75 += d.percent_completes_75;
+            }
           }
           if (type == "unique" || type == "all") {
             this.uniqueUserData[d.Category].push({
               week: index,
               report: d.unique_viewers,
             });
+            if (
+              typeof d.unique_viewers == "number" &&
+              d.unique_viewers != "--"
+            ) {
+              sumUnique += d.unique_viewers;
+            }
           }
         });
+
+        if (type == "play" || type == "all") {
+          this.playSumArray.push(sumPlay);
+        }
+        if (type == "time" || type == "all") {
+          this.timeSumArray.push(sumTime);
+        }
+        if (type == "75" || type == "all") {
+          this.SumArray75.push(sum75);
+        }
+        if (type == "unique" || type == "all") {
+          this.uniqueUserSumArray.push(sumUnique);
+        }
       });
     }
 
-    this.playsData["Total"] = this.playSumArray;
-    console.log("LOG: ",this.playsData );
-    
+    if (type == "play" || type == "all") {
+      this.playsData["Total"] = [];
+      this.playsData["Total"] = this.playSumArray;
+    }
+    if (type == "time" || type == "all") {
+      this.watchTimeData["Total"] = [];
+      this.watchTimeData["Total"] = this.timeSumArray;
+    }
+    if (type == "75" || type == "all") {
+      this.percentComplete75["Total"] = [];
+      this.percentComplete75["Total"] = this.SumArray75;
+    }
+    if (type == "unique" || type == "all") {
+      this.uniqueUserData["Total"] = [];
+      this.uniqueUserData["Total"] = this.uniqueUserSumArray;
+    }
+    // console.log("LOG: ", this.playsData);
   }
 
   compare(a, b) {
@@ -227,10 +320,8 @@ export class GrowthComponent implements OnInit {
     this._dashboard.getProductHouseFilter().subscribe((res: any) => {
       this.productionHouseData = res.Data;
 
-    
-
       this.selected = res.Data;
-      this.productionHouseData.map((ph , i) => {
+      this.productionHouseData.map((ph, i) => {
         if (type == "all") {
           this.playsData[ph] = new Array();
           this.watchTimeData[ph] = new Array();
@@ -239,18 +330,27 @@ export class GrowthComponent implements OnInit {
         }
         if (type == "play") {
           this.playsData[ph] = new Array();
-          if(i == this.productionHouseData.length-1){
+          if (i == this.productionHouseData.length - 1) {
             this.playsData["Total"] = new Array();
           }
         }
         if (type == "time") {
           this.watchTimeData[ph] = new Array();
+          if (i == this.productionHouseData.length - 1) {
+            this.watchTimeData["Total"] = new Array();
+          }
         }
         if (type == "75") {
           this.percentComplete75[ph] = new Array();
+          if (i == this.productionHouseData.length - 1) {
+            this.percentComplete75["Total"] = new Array();
+          }
         }
         if (type == "unique") {
           this.uniqueUserData[ph] = new Array();
+          if (i == this.productionHouseData.length - 1) {
+            this.uniqueUserData["Total"] = new Array();
+          }
         }
       });
     });

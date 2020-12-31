@@ -27,67 +27,14 @@
       </nb-card>
     </div>
   </div>
-  <!--  weekly report Table-->
-  <div class="row">
-    <div class="col-12">
-      <nb-card>
-        <nb-card-header> Weekly Report</nb-card-header>
-        <nb-card-body>
-          <div class="row">
-            <div class="col-6">
-              <ngx-date-range
-                (getRange)="rangeDates($event, 'weekTable')"
-              ></ngx-date-range>
-            </div>
-            <!-- <div class="col-6">
-              <h6>Select Channel</h6>
-              <ng-select
-                [items]="weeklyChannelList"
-                bindLabel="weeklyName"
-                placeholder="Select Channel"
-                appendTo="body"
-                multiple="true"
-                [(ngModel)]="weeklySelectedList"
-                (change)="getSelectedValueWeeklyTable()"
-              >
-              </ng-select>
-            </div> -->
-          </div>
-          <br />
-          <div class="responsive-horizontal">
-            <table class="table table-hover table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Category</th>
-                  <th
-                    *ngFor="let date of weeklyDateToShow; let i = index"
-                    scope="col"
-                  >
-                    {{ weeklyDate[i] + " To " + weeklyDate[i + 1] }}
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let channel of weeklyChannelList; let i = index">
-                  <th scope="row">{{ channel }}</th>
-                  <td *ngFor="let data of weeklyDataArray[channel]">
-                    {{ data.plays }}
-                  </td>
 
-                  <!-- <td></td> -->
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </nb-card-body>
-      </nb-card>
-    </div>
-    <!-- Weekly Report Chart -->
-    <div class="col-12">
+  <div class="row">
+     <!-- Weekly Report Chart -->
+     <div class="col-12">
       <nb-card>
         <nb-card-header> Weekly Report </nb-card-header>
         <nb-card-body>
-          <div class="row">
+          <div class="row mb-5">
             <div class="col-3">
               <ngx-date-range
                 (getRange)="rangeDates($event, 'weekChart')"
@@ -131,8 +78,105 @@
         </nb-card-body>
       </nb-card>
     </div>
+     <!--  weekly report Table-->
+    <div class="col-12">
+      <nb-card>
+        <nb-card-header> Weekly Report</nb-card-header>
+        <nb-card-body>
+          <div class="row">
+            <!-- <div class="col-6">
+              <ngx-date-range
+                (getRange)="rangeDates($event, 'weekTable')"
+              ></ngx-date-range>
+            </div> -->
+            <!-- <div class="col-6">
+              <h6>Select Channel</h6>
+              <ng-select
+                [items]="weeklyChannelList"
+                bindLabel="weeklyName"
+                placeholder="Select Channel"
+                appendTo="body"
+                multiple="true"
+                [(ngModel)]="weeklySelectedList"
+                (change)="getSelectedValueWeeklyTable()"
+              >
+              </ng-select>
+            </div> -->
+          </div>
+          <div class="responsive-horizontal">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Category</th>
+                  <th
+                    *ngFor="let date of weeklyDateToShow; let i = index"
+                    scope="col"
+                  >
+                    {{ weeklyDate[i] + " To " + weeklyDate[i + 1] }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let channel of weeklyChannelListToShow; let i = index">
+                  <th scope="row">{{ channel }}</th>
+                  <td *ngFor="let data of weeklyDataArray[channel]">
+                    {{ data.plays }}
+                  </td>
+
+                  <!-- <td></td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
   </div>
   <div class="row">
+    <div class="col-12">
+      <nb-card>
+        <nb-card-header> Monthly Report </nb-card-header>
+        <nb-card-body>
+          <div class="row mb-5">
+            <div class="col-6">
+              <h6>Select Channel</h6>
+              <ng-select
+                [items]="weeklyChannelList"
+                bindLabel="MonthName"
+                placeholder="Select Channel"
+                appendTo="body"
+                multiple="true"
+                [(ngModel)]="monthlySelectedChannel"
+                (change)="getSelectedChannelMonthly()"
+              >
+              </ng-select>
+            </div>
+            <!-- <div class="col-3">
+              <h6>Select Chart Type</h6>
+              <ng-select
+              [items]="chartStyle"
+              bindLabel="nameBar"
+              placeholder="Select Chart Type"
+              appendTo="body"
+              [(ngModel)]="chartStyleSelect"
+              [clearable]="false"
+              [searchable]="false"
+              (change)="getSelectedValueOfChartType()"
+            >
+            </ng-select>
+            </div> -->
+          </div>
+          <div class="chart-config">
+            <chart
+              type="line"
+              [data]="monthlyChartData"
+              [options]="monthlyChartOption"
+            ></chart>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
     <div class="col-12">
       <nb-card>
         <nb-card-header> Monthly Report</nb-card-header>
@@ -151,7 +195,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let channel of weeklyChannelList; let i = index">
+                <tr *ngFor="let channel of monthlySelectedChannelToShow; let i = index">
                   <th scope="row">{{ channel }}</th>
                   <td *ngFor="let data of MonthDataArray[channel]">
                     {{ data }}
@@ -164,48 +208,6 @@
       </nb-card>
     </div>
   </div>
-  <div class="col-12">
-    <nb-card>
-      <nb-card-header> Monthly Report </nb-card-header>
-      <nb-card-body>
-        <div class="row">
-          <div class="col-6">
-            <h6>Select Channel</h6>
-            <ng-select
-              [items]="weeklyChannelList"
-              bindLabel="MonthName"
-              placeholder="Select Channel"
-              appendTo="body"
-              multiple="true"
-              [(ngModel)]="monthlySelectedChannel"
-              (change)="getSelectedChannelMonthly()"
-            >
-            </ng-select>
-          </div>
-          <!-- <div class="col-3">
-            <h6>Select Chart Type</h6>
-            <ng-select
-            [items]="chartStyle"
-            bindLabel="nameBar"
-            placeholder="Select Chart Type"
-            appendTo="body"
-            [(ngModel)]="chartStyleSelect"
-            [clearable]="false"
-            [searchable]="false"
-            (change)="getSelectedValueOfChartType()"
-          >
-          </ng-select>
-          </div> -->
-        </div>
-        <div class="chart-config">
-          <chart
-            type="line"
-            [data]="monthlyChartData"
-            [options]="monthlyChartOption"
-          ></chart>
-        </div>
-      </nb-card-body>
-    </nb-card>
-  </div>
+
 
 </div>
