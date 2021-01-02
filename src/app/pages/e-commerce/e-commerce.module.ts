@@ -57,9 +57,14 @@ import { EarningLiveUpdateChartComponent } from "./earning-card/front-side/earni
 import { Ng2SmartTableModule } from "ng2-smart-table";
 import { FormsModule } from "@angular/forms";
 import { DateRangeModule } from "../../components/date-range/date-range.module";
+import { CustomCardComponent } from './custom-card/custom-card.component';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   imports: [
+    RouterModule,
+    CommonModule,
     ThemeModule,
     NbCardModule,
     NbUserModule,
@@ -112,6 +117,7 @@ import { DateRangeModule } from "../../components/date-range/date-range.module";
     EarningCardBackComponent,
     EarningPieChartComponent,
     EarningLiveUpdateChartComponent,
+    CustomCardComponent,
   ],
   providers: [CountryOrdersMapService],
 })

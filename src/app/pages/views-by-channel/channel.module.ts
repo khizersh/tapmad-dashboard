@@ -10,12 +10,14 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AddChannelComponent } from './add-channel/add-channel.component';
 import { ViewsByCategoryComponent } from '../views-by-category/views-by-category.component';
 import { TopMoviesComponent } from '../top-movies/top-movies.component';
+import { RouterModule } from '@angular/router';
 
 
 
 @NgModule({
   declarations: [ViewsByChannelComponent, AddChannelComponent , ViewsByCategoryComponent , TopMoviesComponent],
   imports: [
+    RouterModule,
     CommonModule,
     NbMenuModule,
     NbCardModule,

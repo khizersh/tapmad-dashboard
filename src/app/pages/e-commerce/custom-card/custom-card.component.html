@@ -1,0 +1,22 @@
+<div class="col-xxl-12">
+  <div  class="row mb-4">
+    <div *ngFor="let d of data" class="col-md-3">
+      <div class="card">
+        <div class="card-header">Last Week  <a class="float-right" [routerLink]="['/pages/platform']" routerLinkActive="active" >View detail</a></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3 col-sm-12 pt-3">
+              <img src={{d.icon}} width="60" />
+            </div>
+            <div class="col-md-9 col-sm-12 pt-3">
+              <p style="line-height: 0.25rem">Plays: {{d.plays}}</p>
+              <p style="line-height: 0.25rem">Embeds: {{d.embeds}}</p>
+              <p style="line-height: 0.25rem">Completed: {{d.completes}}</p>
+              <p style="line-height: 0.25rem">Time watch: {{d.timeWatched}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

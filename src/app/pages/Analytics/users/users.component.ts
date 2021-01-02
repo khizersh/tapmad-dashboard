@@ -29,7 +29,7 @@ export class UsersComponent implements OnInit {
     { options: [] },
     { options: [] },
     { options: [] },
-    ];
+  ];
   analyticsAPIs = [
     {
       name: "Users",
@@ -55,10 +55,27 @@ export class UsersComponent implements OnInit {
       name: "Average Session Duration",
       url: "/AvgSessionDuration",
     },
-
   ];
+  selectedChart: string = "Users";
   themeSubscription: any;
 
+  dateObj = {
+    start_date : "",
+    end_date : ""
+  };
+  singleData: any = [];
+  singleOption: any = [];
+  chartList = [
+    "Users",
+    "New User",
+    "Sessions",
+    "Page Views",
+    "Bounce Rate",
+    "Average Session Duration",
+  ];
+
+  chartTypes = ["line" , "bar"]
+  chartType = "line"
   constructor(
     private _dashboard: DashbaordChartService,
     private theme: NbThemeService,
@@ -66,7 +83,13 @@ export class UsersComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchInitialChartData();
+    // this.fetchInitialChartData();
+    this.dateObj = this.getPast30Days();
+    // this.dateObj.start_date = start_date;
+    // this.dateObj.end_date = end_date;
+    console.log("start: ", this.dateObj);
+
+    this.loadSingleChartData(this.dateObj, "Users", this.getUrlByName("Users"));
   }
   fetchInitialChartData() {
     var i = 0;
@@ -82,11 +105,124 @@ export class UsersComponent implements OnInit {
     var d = new Date();
     let endDate = this._utils.formatDate(d.setDate(d.getDate()));
     let startDate = this._utils.formatDate(d.setDate(d.getDate() - 30));
-    return { start: startDate, end: endDate };
+    return { start_date: startDate, end_date: endDate };
   }
-  rangeDates($event, index, url) {
+
+  getUrlByName(name) {
+    let tempName = this.analyticsAPIs.filter((m) => m.name === name);
+    return tempName[0].url;
+  }
+
+  getSelectedValue() {
+    this.loadSingleChartData(
+      this.dateObj,
+      this.selectedChart,
+      this.getUrlByName(this.selectedChart)
+    );
+  }
+
+  selectChartType(){
+
+
+  }
+  rangeDates($event) {
     console.log($event);
-    this.loadChartData($event, index, url);
+    this.dateObj.start_date = $event.start;
+    this.dateObj.end_date = $event.end;
+
+
+    this.loadSingleChartData(this.dateObj, this.selectedChart, this.getUrlByName(this.selectedChart));
+  }
+
+  loadSingleChartData(date, type, url) {
+    this.themeSubscription = this.theme.getJsTheme().subscribe((config) => {
+      const colors: any = config.variables;
+      const chartjs: any = config.variables.chartjs;
+      this._dashboard.getAnalyticalViews(date, url).subscribe((res: any) => {
+        let data = [];
+        let labels = [];
+
+        for (let play of res.Data) {
+          data.push(play.value);
+          labels.push(play.date);
+        }
+        data = data.map((val) => {
+          return Number(val).toFixed(2);
+        });
+        labels = labels.map((label) => {
+          return this._utils.formatDateWithSlash(label);
+        });
+        this.singleData = {
+          labels: labels || [
+            "2006",
+            "2007",
+            "2008",
+            "2009",
+            "2010",
+            "2011",
+            "2012",
+          ],
+          datasets: [
+            {
+              data: data || [65, 59, 80, 81, 56, 55, 40],
+              label: "Plays",
+              backgroundColor: NbColorHelper.hexToRgbA(
+                colors.primaryLight,
+                0.8
+              ),
+            },
+          ],
+        };
+        this.singleOption = {
+          maintainAspectRatio: true,
+          responsive: true,
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+                return tooltipItem.yLabel
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              },
+            },
+          },
+          legend: {
+            labels: {
+              fontColor: chartjs.textColor,
+            },
+          },
+          scales: {
+            xAxes: [
+              {
+                gridLines: {
+                  display: false,
+                  color: chartjs.axisLineColor,
+                },
+                ticks: {
+                  fontColor: chartjs.textColor,
+                },
+              },
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  display: true,
+                  color: chartjs.axisLineColor,
+                },
+                ticks: {
+                  fontColor: chartjs.textColor,
+                  userCallback: function (value, index, values) {
+                    value = value.toString();
+                    value = value.split(/(?=(?:...)*$)/);
+                    value = value.join(",");
+                    return value;
+                  },
+                },
+              },
+            ],
+          },
+        };
+      });
+    });
   }
 
   loadChartData(date, index, url) {

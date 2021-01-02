@@ -11,6 +11,7 @@ import { DateRangeModule } from "../../components/date-range/date-range.module";
 import { RouterModule } from "@angular/router";
 import { UsersComponent } from "./users/users.component";
 import { CommonModule } from "@angular/common";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { CommonModule } from "@angular/common";
     FormsModule,
     DateRangeModule,
     NbCardModule,
+    NgSelectModule,
     RouterModule.forChild([
       {
         path: "users",

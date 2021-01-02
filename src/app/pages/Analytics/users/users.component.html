@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-4" *ngFor="let api of analyticsAPIs; index as i">
+  <!-- <div class="col-4" *ngFor="let api of analyticsAPIs; index as i">
     <nb-card>
       <nb-card-header>{{ api.name }}</nb-card-header>
       <nb-card-body>
@@ -15,6 +15,53 @@
             type="line"
             [data]="data[i].data"
             [options]="options[i].options"
+          ></chart>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div> -->
+  <div class="col-12">
+    <nb-card>
+      <nb-card-header>{{ selectedChart }}</nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-3">
+            <ngx-date-range (getRange)="rangeDates($event)"></ngx-date-range>
+          </div>
+          <div class="col-5">
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Select Chart</label>
+              <ng-select
+                [items]="chartList"
+                bindLabel="MonthName"
+                placeholder="Select Analyitics"
+                appendTo="body"
+                [clearable]="false"
+                [(ngModel)]="selectedChart"
+                (change)="getSelectedValue()"
+              >
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-4">
+            <label for="exampleFormControlSelect1">Select Chart</label>
+            <ng-select
+              [items]="chartTypes"
+              bindLabel="MonthName"
+              placeholder="Select Chart Type"
+              appendTo="body"
+              [clearable]="false"
+              [(ngModel)]="chartType"
+              (change)="selectChartType()"
+            >
+            </ng-select>
+          </div>
+        </div>
+        <div class="chart-config">
+          <chart
+            type={{chartType}}
+            [data]="singleData"
+            [options]="singleOption"
           ></chart>
         </div>
       </nb-card-body>
