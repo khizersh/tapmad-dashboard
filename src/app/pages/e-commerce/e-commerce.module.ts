@@ -60,6 +60,7 @@ import { DateRangeModule } from "../../components/date-range/date-range.module";
 import { CustomCardComponent } from './custom-card/custom-card.component';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from "@angular/common";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 @NgModule({
   imports: [
@@ -83,6 +84,7 @@ import { CommonModule } from "@angular/common";
     NbInputModule,
     FormsModule,
     DateRangeModule,
+    NgSelectModule
   ],
   declarations: [
     ECommerceComponent,

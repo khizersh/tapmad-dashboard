@@ -53,10 +53,14 @@ export class CountryOrdersComponent implements OnInit, OnDestroy {
 
   selectCountryById(countryName: string) {
     this.countryName = countryName;
+    console.log("this.countryName: ",this.countryName);
+
 
     this.countryOrderService.getCountriesCategoriesData(countryName)
       .pipe(takeWhile(() => this.alive))
       .subscribe((countryData) => {
+        console.log("countryData: ",countryData);
+
         this.countryData = countryData;
       });
   }
