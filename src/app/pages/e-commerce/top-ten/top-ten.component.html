@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-12">
+    <nb-card>
+      <nb-card-header> Top 10 Watched Movies </nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-md-6 col-sm-12 offset-md-6 ">
+            <ng-select
+            [items]="timePeriodList"
+            bindLabel="weeklyName"
+            placeholder="Select Channel"
+            appendTo="body"
+            [(ngModel)]="selectedTimePeriodList"
+            (change)="getSelectedPeriod()"
+            [clearable]="false"
+          >
+          </ng-select>
+          </div>
+        </div>
+
+        <div *ngIf="showTable" class="hor-scroll">
+          <ng2-smart-table [settings]="settings" [source]="source">
+          </ng2-smart-table>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

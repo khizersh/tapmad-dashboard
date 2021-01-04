@@ -62,4 +62,7 @@ export class DashbaordChartService {
   getCategorList() {
     return this._http.get(`${this._api.getCategories}`);
   }
+  getPlaysByCountry(data) {
+    return this._http.post(`${this._api.getPlaysByCountry}` , data);
+  }
 }

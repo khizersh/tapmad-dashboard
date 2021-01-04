@@ -20,4 +20,5 @@ export class ApiLinks {
   channelList = this.baseUrl + '/contentOverview/getChannelFilter';
   addChannel = this.baseUrl + '/contentOverview/setChannelFilter';
   getCategories = this.baseUrl + '/contentOverview/getCategoryFilters';
+  getPlaysByCountry = this.baseUrl + '/contentOverview/individualCountryWise';
 }

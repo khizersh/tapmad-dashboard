@@ -61,6 +61,9 @@ import { CustomCardComponent } from './custom-card/custom-card.component';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from "@angular/common";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { TopMoviesComponent } from "../top-movies/top-movies.component";
+import { TopTenComponent } from './top-ten/top-ten.component';
+import { ProdHouseComponent } from './prod-house/prod-house.component';
 
 @NgModule({
   imports: [
@@ -84,9 +87,11 @@ import { NgSelectModule } from "@ng-select/ng-select";
     NbInputModule,
     FormsModule,
     DateRangeModule,
-    NgSelectModule
+    NgSelectModule,
+    
   ],
   declarations: [
+     TopMoviesComponent,
     ECommerceComponent,
     StatsCardFrontComponent,
     StatsAreaChartComponent,
@@ -120,6 +125,8 @@ import { NgSelectModule } from "@ng-select/ng-select";
     EarningPieChartComponent,
     EarningLiveUpdateChartComponent,
     CustomCardComponent,
+    TopTenComponent,
+    ProdHouseComponent,
   ],
   providers: [CountryOrdersMapService],
 })

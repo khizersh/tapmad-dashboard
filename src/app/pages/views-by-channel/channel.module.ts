@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
 
 
 @NgModule({
-  declarations: [ViewsByChannelComponent, AddChannelComponent , ViewsByCategoryComponent , TopMoviesComponent],
+  declarations: [ViewsByChannelComponent, AddChannelComponent , ViewsByCategoryComponent ],
   imports: [
     RouterModule,
     CommonModule,

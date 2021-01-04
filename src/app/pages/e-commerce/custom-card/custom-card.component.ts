@@ -13,12 +13,35 @@ export class CustomCardComponent implements OnInit {
     private _utils: DateUtils
   ) {}
 
-  data = [];
-  imageArray = [
-    "../../../../assets//images//web.png",
-    "../../../../assets//images//android.png",
-    "../../../../assets//images//apple.png",
-    "../../../../assets//images//question.png",
+  data = [
+    {
+      icon: "../../../../assets//images//web.png",
+      plays: "",
+      embeds: "",
+      completes: "",
+      timeWatched: "",
+    },
+    {
+      icon: "../../../../assets//images//android.png",
+      plays: "",
+      embeds: "",
+      completes: "",
+      timeWatched: "",
+    },
+    {
+      icon: "../../../../assets//images//apple.png",
+      plays: "",
+      embeds: "",
+      completes: "",
+      timeWatched: "",
+    },
+    {
+      icon: "../../../../assets//images//question.png",
+      plays: "",
+      embeds: "",
+      completes: "",
+      timeWatched: "",
+    },
   ];
 
   timePeriodList = ["Last Week", "Last 30 Days", "Todays"];
@@ -36,18 +59,14 @@ export class CustomCardComponent implements OnInit {
     return { start_date: startDate, end_date: endDate };
   }
   loadData(date) {
-    this.data = []
     this._dashboard.getByPlatform(date).subscribe((res: any) => {
       for (let i = 0; i < res.Data.length; i++) {
-        this.data.push({
-          icon: this.imageArray[i],
-          plays: res.Data[i].plays,
-          embeds: res.Data[i].embeds,
-          completes: res.Data[i].completes,
-          timeWatched: res.Data[i].time_watched,
-        });
+        this.data[i].plays = res.Data[i].plays;
+        this.data[i].embeds = res.Data[i].embeds;
+        this.data[i].completes = res.Data[i].completes;
+        this.data[i].timeWatched = res.Data[i].time_watched;
       }
-      console.log("data: ", this.data);
+      // console.log("data: ", this.data);
     });
   }
 
