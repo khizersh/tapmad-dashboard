@@ -75,7 +75,7 @@ export class TopMoviesComponent implements OnInit {
         type: "string",
         filter: false,
         valuePrepareFunction: (value) => {
-          console.log(value);
+          //console.log(value);
           return this._decimalPipe.transform(value, "1.0");
         },
       },

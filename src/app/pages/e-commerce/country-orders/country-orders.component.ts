@@ -637,7 +637,7 @@ export class CountryOrdersComponent implements OnInit, OnDestroy {
 
   selectCountryById(countryName: string) {
     this.countryName = countryName;
-    console.log("this.countryName: ", this.countryName);
+    //console.log("this.countryName: ", this.countryName);
     this.countryCode = this.getCountryCodeByCountryName(
       this.countryListWithCode,
       this.countryName
@@ -648,17 +648,17 @@ export class CountryOrdersComponent implements OnInit, OnDestroy {
       CountryCode: this.countryCode,
     };
 
-    console.log("object: ", obj);
+    //console.log("object: ", obj);
 
     this._dashboard.getPlaysByCountry(obj).subscribe((res: any) => {
-      console.log("response: ", res);
+      //console.log("response: ", res);
       this.countryData = [];
       res.Data.map((m) => {
         this.countryData.push(m.plays);
         this.maxValue = m.plays;
       });
-      console.log("countryData : ", this.countryData);
-      console.log("countriesCategories : ", this.countriesCategories);
+      //console.log("countryData : ", this.countryData);
+      //console.log("countriesCategories : ", this.countriesCategories);
     });
   }
 

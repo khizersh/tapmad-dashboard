@@ -1,12 +1,24 @@
 <nb-card size="medium">
+  <nb-card-header>
+    <ng-select
+      [items]="timePeriodList"
+      bindLabel="weeklyName"
+      placeholder="Select Channel"
+      appendTo="body"
+      [(ngModel)]="selectedTimePeriodList"
+      (change)="getSelectedPeriod()"
+      [clearable]="false"
+    >
+    </ng-select>
+  </nb-card-header>
   <nb-card-body>
-    <div class="progress-info" *ngFor="let item of progressInfoData">
-      <div class="subtitle">{{ item.title }}</div>
+    <div class="progress-info" *ngFor="let item of totalValues">
+      <div class="subtitle">{{ item.name }}</div>
       <div class="h3">{{ item.value | ngxNumberWithCommas }}</div>
-      <nb-progress-bar [value]="item.activeProgress"></nb-progress-bar>
-      <div class="caption description">
-        <bdi>{{ item.description }}</bdi>
-      </div>
+      <!-- <nb-progress-bar [value]="item.activeProgress"></nb-progress-bar> -->
+      <!-- <div class="caption description"> -->
+        <!-- <bdi>{{ item.description }}</bdi> -->
+      <!-- </div> -->
     </div>
   </nb-card-body>
 </nb-card>

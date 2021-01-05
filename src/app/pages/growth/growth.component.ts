@@ -78,10 +78,10 @@ export class GrowthComponent implements OnInit {
       }
     });
 
-    console.log("this.playSumArray: ", this.playSumArray);
-    // console.log("platy data: ", this.playsData);
-    // console.log("watch data: ", this.watchTimeData);
-    // console.log("75% data: ", this.percentComplete75);
+    //console.log("this.playSumArray: ", this.playSumArray);
+    // //console.log("platy data: ", this.playsData);
+    // //console.log("watch data: ", this.watchTimeData);
+    // //console.log("75% data: ", this.percentComplete75);
   }
 
   summaryRound(current: any, previous: any) {
@@ -260,7 +260,7 @@ export class GrowthComponent implements OnInit {
       this.uniqueUserData["Total"] = [];
       this.uniqueUserData["Total"] = this.uniqueUserSumArray;
     }
-    // console.log("LOG: ", this.playsData);
+    // //console.log("LOG: ", this.playsData);
   }
 
   compare(a, b) {
@@ -419,7 +419,7 @@ export class GrowthComponent implements OnInit {
   }
 
   getSelectedValue() {
-    console.log("selected value..", this.selected);
+    //console.log("selected value..", this.selected);
   }
 
   changeDateToWeek(start: any, end: any) {

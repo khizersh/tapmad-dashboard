@@ -283,7 +283,7 @@ export class ViewsByChannelComponent implements OnInit {
 
     // ================================  Month  =====================
     if (type === "all" || type === "monthTable") {
-      console.log("month:");
+      //console.log("month:");
 
       let last3Month = this.getDateOfGivenDays(90);
       this.MonthDate = this.changeDateToMonth(last3Month.start, last3Month.end);

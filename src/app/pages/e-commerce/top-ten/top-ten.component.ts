@@ -121,7 +121,7 @@ export class TopTenComponent implements OnInit {
       page_length: this.rows,
     };
     this._dashboard.getCustomRangeData(data).subscribe((res: any) => {
-      console.log("data: ", res.Data);
+      //console.log("data: ", res.Data);
 
       this.source = res.Data;
       this.showTable = true;

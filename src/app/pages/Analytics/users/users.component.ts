@@ -87,14 +87,14 @@ export class UsersComponent implements OnInit {
     this.dateObj = this.getPast30Days();
     // this.dateObj.start_date = start_date;
     // this.dateObj.end_date = end_date;
-    console.log("start: ", this.dateObj);
+    // //console.log("start: ", this.dateObj);
 
     this.loadSingleChartData(this.dateObj, "Users", this.getUrlByName("Users"));
   }
   fetchInitialChartData() {
     var i = 0;
     let date = this.getPast30Days();
-    console.log(date);
+    //console.log(date);
     for (let api of this.analyticsAPIs) {
       this.loadChartData(date, i, api.url);
       i++;
@@ -126,7 +126,7 @@ export class UsersComponent implements OnInit {
 
   }
   rangeDates($event) {
-    console.log($event);
+    //console.log($event);
     this.dateObj.start_date = $event.start;
     this.dateObj.end_date = $event.end;
 

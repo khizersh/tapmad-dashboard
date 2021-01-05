@@ -24,7 +24,7 @@ export class AddChannelComponent implements OnInit {
     }
 
     this._dashboard.addChannel(this.obj).subscribe((res: any) => {
-      console.log("Response in add..", res);
+      //console.log("Response in add..", res);
       if (res.response.status) {
         alert(this.obj.ChannelFilterName + " add successfully!");
         window.location.href = "/pages/channel";

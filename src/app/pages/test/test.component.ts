@@ -20,7 +20,7 @@ export class TestComponent implements OnInit {
     // var message;
     let date = this.getPast30Days();
     this.service.getDataByTagName(date).subscribe(res => {
-      console.log('response...', res);
+      //console.log('response...', res);
 
     });
     this.message = " message is here ";
@@ -39,11 +39,11 @@ export class TestComponent implements OnInit {
 
 
     this.service.getDataByTagName(date).subscribe(res => {
-      console.log('response...', res);
+      //console.log('response...', res);
 
     });
 
-    console.log('test wervice is worling');
+    //console.log('test wervice is worling');
   }
 
   // message = "helloworld";

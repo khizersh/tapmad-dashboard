@@ -38,7 +38,7 @@ export class ViewsByTagsComponent implements OnDestroy {
   chartType = "";
 
   getSelectedValueOfChartType() {
-    console.log("Chart Type: ", this.chartStyleSelect);
+    //console.log("Chart Type: ", this.chartStyleSelect);
   }
 
   getSelectedValue() {
@@ -208,8 +208,8 @@ export class ViewsByTagsComponent implements OnDestroy {
         }
 
         this.productionHouseData = res.Data;
-        console.log("Selected: ",res.Data );
-        console.log("this.productionFilter: " ,this.productionFilter );
+        //console.log("Selected: ",res.Data );
+        //console.log("this.productionFilter: " ,this.productionFilter );
 
         this.productionFilter.map((r) => {
           this.customArray[r] = new Array();
@@ -236,7 +236,7 @@ export class ViewsByTagsComponent implements OnDestroy {
               });
             });
 
-            console.log("show Array: ", showArray);
+            //console.log("show Array: ", showArray);
 
             this.data = {
               labels: dateArrayy.slice(1, dateArrayy.length),

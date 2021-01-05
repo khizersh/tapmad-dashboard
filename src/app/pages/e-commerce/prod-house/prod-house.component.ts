@@ -47,11 +47,11 @@ export class ProdHouseComponent implements OnInit {
     let dateObj = this.getDaysByNumber(14);
     this.startDate = dateObj.start;
     this.endDate = dateObj.end;
-    console.log("dateObj: ",dateObj);
+    //console.log("dateObj: ",dateObj);
     
     this.filteredDate = this.changeDateToWeek(dateObj.start, dateObj.end);
 
-    console.log("this.filteredDate: ",this.filteredDate);
+    //console.log("this.filteredDate: ",this.filteredDate);
     this.loadChartData("", this.selected, this.filteredDate);
   }
 

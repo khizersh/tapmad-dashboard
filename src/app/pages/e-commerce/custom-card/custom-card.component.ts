@@ -66,7 +66,7 @@ export class CustomCardComponent implements OnInit {
         this.data[i].completes = res.Data[i].completes;
         this.data[i].timeWatched = res.Data[i].time_watched;
       }
-      // console.log("data: ", this.data);
+      // //console.log("data: ", this.data);
     });
   }
 
