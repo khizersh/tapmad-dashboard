@@ -77,11 +77,11 @@ export class ECommerceVisitorsStatisticsComponent implements OnInit, OnDestroy {
 
          let sum = res[0] + res[1];
          let value = (res[0] / sum )* 100;
-         this.data["users"] = res[1];
-         this.data["newUser"] = res[0];
+         this.data["users"] = res[0];
+         this.data["newUser"] = res[1];
          this.data["userPercentage"] = Number((res[0] / sum )* 100).toFixed(2);
          this.data["newUserPercentage"] = Number((res[1] / sum )* 100).toFixed(2);
-         console.log("Number((res[0] / sum )* 100).toFixed(2): ",Number((res[0] / sum )* 100).toFixed(2));
+        //  console.log("Number((res[0] / sum )* 100).toFixed(2): ",Number((res[0] / sum )* 100).toFixed(2));
 
         await this.setOptions(variables, value);
         await this.setLegendItems(visitorsPieLegend);
@@ -118,8 +118,8 @@ export class ECommerceVisitorsStatisticsComponent implements OnInit, OnDestroy {
 
         let sum = res[0] + res[1];
         let value = (res[0] / sum )* 100;
-        this.data["users"] = res[1];
-        this.data["newUser"] = res[0];
+        this.data["users"] = res[0];
+        this.data["newUser"] = res[1];
         this.data["userPercentage"] = Number((res[0] / sum )* 100).toFixed(2);
         this.data["newUserPercentage"] = Number((res[1] / sum )* 100).toFixed(2);
         console.log("Data: ",this.data);
