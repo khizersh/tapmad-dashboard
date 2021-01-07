@@ -1,18 +1,38 @@
 <div class="visitors-statistics">
-  <h4 class="h1">1,100</h4>
-  <div class="visitors-title">New Visitors</div>
-  <div class="statistics-chart">
-    <div echarts
-         [options]="option"
-         class="echart"
-         (chartInit)="onChartInit($event)">
+  <ng-select
+    [items]="timePeriodList"
+    bindLabel="weeklyName"
+    placeholder="Select Channel"
+    appendTo="body"
+    [(ngModel)]="selectedTimePeriodList"
+    (change)="getSelectedPeriod()"
+    [clearable]="false"
+  >
+  </ng-select>
+  <div class="p-3">
+    <h4 class="h1">Users Count</h4>
+    <div class="visitors-title">
+      Total Users {{ this.totalValues[1].value + this.totalValues[0].value }}
     </div>
-  </div>
-  <div class="statistics-footer">
-    <div class="chart-values h5">
-      <span class="chart-value">25%</span>
-      <span class="chart-value">75%</span>
+    <div class="statistics-chart">
+      <div
+        echarts
+        [options]="option"
+        class="echart"
+        (chartInit)="onChartInit($event)"
+      ></div>
     </div>
-    <ngx-legend-chart class="visitors-statistics-legend" [legendItems]="chartLegend"></ngx-legend-chart>
+    <div class="statistics-footer">
+      <div class="chart-values h6">
+        <span class="chart-value">{{ data["newUser"] }} -- {{ data["newUserPercentage"] }} %</span>
+        <span class="chart-value"
+          >{{ data["users"] }} -- {{ data["userPercentage"] }} %</span
+        >
+      </div>
+      <ngx-legend-chart
+        class="visitors-statistics-legend"
+        [legendItems]="chartLegend"
+      ></ngx-legend-chart>
+    </div>
   </div>
 </div>

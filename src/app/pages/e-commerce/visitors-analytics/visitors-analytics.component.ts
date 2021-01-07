@@ -38,18 +38,24 @@ export class ECommerceVisitorsAnalyticsComponent implements OnDestroy {
         };
 
         this.pieChartValue = pieChartValue;
+
+        // console.log("this.visitorsAnalyticsData: ",this.visitorsAnalyticsData);
+        console.log("this.pieChartValue: ",this.pieChartValue);
+
       });
   }
 
   setLegendItems(visitorsLegend): void {
+    // console.log("visitorsLegend: ",visitorsLegend);
+
     this.chartLegend = [
       {
         iconColor: visitorsLegend.firstIcon,
-        title: 'Unique Visitors',
+        title: 'Users',
       },
       {
         iconColor: visitorsLegend.secondIcon,
-        title: 'Page Views',
+        title: 'New Users',
       },
     ];
   }

@@ -1,5 +1,5 @@
 <nb-card size="medium">
-  <nb-card-header>
+  <!-- <nb-card-header>
     <h3>Visitors Analytics</h3>
     <div class="subtitle">Consumption</div>
   </nb-card-header>
@@ -10,9 +10,15 @@
       </div>
       <ngx-visitors-analytics-chart [chartData]="visitorsAnalyticsData"></ngx-visitors-analytics-chart>
     </div>
-  </nb-card-body>
+  </nb-card-body> -->
 
-  <ngx-slide-out [showVisitorsStatistics]="true">
-    <ngx-visitors-statistics [value]="pieChartValue"></ngx-visitors-statistics>
-  </ngx-slide-out>
+  <ngx-visitors-statistics></ngx-visitors-statistics>
+  <!-- <highcharts-chart
+    [Highcharts]="highcharts"
+    [options]="chartOptions"
+    style="width: 100%; height: 400px; display: block"
+  >
+  </highcharts-chart> -->
+  <!-- <ngx-slide-out [showVisitorsStatistics]="true">
+  </ngx-slide-out> -->
 </nb-card>

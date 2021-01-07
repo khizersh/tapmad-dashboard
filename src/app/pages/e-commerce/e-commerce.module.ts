@@ -88,7 +88,7 @@ import { ProdHouseComponent } from './prod-house/prod-house.component';
     FormsModule,
     DateRangeModule,
     NgSelectModule,
-    
+
   ],
   declarations: [
      TopMoviesComponent,

@@ -117,7 +117,7 @@ export class ECommerceProgressSectionComponent implements OnDestroy, OnInit {
           // this.totalValues.push({ name: api.name, value: sum });
         });
     }
-    console.log(" this.totalValues: ", this.totalValues);
+    // console.log(" this.totalValues: ", this.totalValues);
   }
 
   ngOnDestroy() {
