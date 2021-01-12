@@ -6,6 +6,7 @@ import {
 import { takeWhile } from "rxjs/operators";
 import { DashbaordChartService } from "../../../services/dashboard-chart";
 import { DateUtils } from "../../../utils/date.utls";
+import { DecimalPipe } from "@angular/common";
 
 @Component({
   selector: "ngx-progress-section",
@@ -41,7 +42,8 @@ export class ECommerceProgressSectionComponent implements OnDestroy, OnInit {
 
   constructor(
     private _utils: DateUtils,
-    private _dashboard: DashbaordChartService
+    private _dashboard: DashbaordChartService,
+    private _decimalPipe: DecimalPipe
   ) {
     // this.statsProgressBarService
     //   .getProgressInfoData()
@@ -114,10 +116,8 @@ export class ECommerceProgressSectionComponent implements OnDestroy, OnInit {
               data.value = sum;
             }
           }
-          // this.totalValues.push({ name: api.name, value: sum });
         });
     }
-    // console.log(" this.totalValues: ", this.totalValues);
   }
 
   ngOnDestroy() {

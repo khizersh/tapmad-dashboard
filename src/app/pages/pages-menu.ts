@@ -19,6 +19,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: "Viewership",
     icon: "layout-outline",
+    link:"/pages/dashboard",
     children: [
       {
         title:'Dashboard',

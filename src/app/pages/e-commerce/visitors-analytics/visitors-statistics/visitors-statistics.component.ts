@@ -61,33 +61,32 @@ export class ECommerceVisitorsStatisticsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     let date = this.getDaysByNumber(7);
-     this.loadApi(date).then(res => {
+    this.loadApi(date).then((res) => {
+      this.theme
+        .getJsTheme()
+        .pipe(
+          takeWhile(() => this.alive),
+          delay(1)
+        )
+        .subscribe(async (config) => {
+          const variables: any = config.variables;
+          const visitorsPieLegend: any = config.variables.visitorsPieLegend;
 
-       this.theme
-       .getJsTheme()
-       .pipe(
-         takeWhile(() => this.alive),
-         delay(1)
-       )
-       .subscribe(async (config) => {
-         const variables: any = config.variables;
-         const visitorsPieLegend: any = config.variables.visitorsPieLegend;
+          let sum = res[0] + res[1];
+          let value = (res[0] / sum) * 100;
+          this.data["users"] = res[0];
+          this.data["newUser"] = res[1];
+          this.data["userPercentage"] = Number((res[0] / sum) * 100).toFixed(2);
+          this.data["newUserPercentage"] = Number((res[1] / sum) * 100).toFixed(
+            2
+          );
+          //  console.log("Number((res[0] / sum )* 100).toFixed(2): ",Number((res[0] / sum )* 100).toFixed(2));
 
-         let sum = res[0] + res[1];
-         let value = (res[0] / sum )* 100;
-         this.data["users"] = res[0];
-         this.data["newUser"] = res[1];
-         this.data["userPercentage"] = Number((res[0] / sum )* 100).toFixed(2);
-         this.data["newUserPercentage"] = Number((res[1] / sum )* 100).toFixed(2);
-        //  console.log("Number((res[0] / sum )* 100).toFixed(2): ",Number((res[0] / sum )* 100).toFixed(2));
-
-        await this.setOptions(variables, value);
-        await this.setLegendItems(visitorsPieLegend);
-       });
-     })
-
+          await this.setOptions(variables, value);
+          await this.setLegendItems(visitorsPieLegend);
+        });
+    });
   }
 
   getSelectedPeriod() {
@@ -104,29 +103,30 @@ export class ECommerceVisitorsStatisticsComponent implements OnInit, OnDestroy {
       period = 0;
     }
 
-     date = this.getDaysByNumber(period);
-    this.loadApi(date).then(res => {
-
+    date = this.getDaysByNumber(period);
+    this.loadApi(date).then((res) => {
       this.theme
-      .getJsTheme()
-      .pipe(
-        takeWhile(() => this.alive),
-        delay(1)
-      )
-      .subscribe(async (config) => {
-        const variables: any = config.variables;
+        .getJsTheme()
+        .pipe(
+          takeWhile(() => this.alive),
+          delay(1)
+        )
+        .subscribe(async (config) => {
+          const variables: any = config.variables;
 
-        let sum = res[0] + res[1];
-        let value = (res[0] / sum )* 100;
-        this.data["users"] = res[0];
-        this.data["newUser"] = res[1];
-        this.data["userPercentage"] = Number((res[0] / sum )* 100).toFixed(2);
-        this.data["newUserPercentage"] = Number((res[1] / sum )* 100).toFixed(2);
-        console.log("Data: ",this.data);
+          let sum = res[0] + res[1];
+          let value = (res[0] / sum) * 100;
+          this.data["users"] = res[0];
+          this.data["newUser"] = res[1];
+          this.data["userPercentage"] = Number((res[0] / sum) * 100).toFixed(2);
+          this.data["newUserPercentage"] = Number((res[1] / sum) * 100).toFixed(
+            2
+          );
+          console.log("Data: ", this.data);
 
-        await this.setOptions(variables, value);
-      });
-    })
+          await this.setOptions(variables, value);
+        });
+    });
   }
   getDaysByNumber(num: number) {
     var d = new Date();
@@ -139,36 +139,32 @@ export class ECommerceVisitorsStatisticsComponent implements OnInit, OnDestroy {
     let combineArray = [];
     for (let api of this.apiList) {
       let sum = 0;
-      let array: any =  await this._dashboard
-        .getAnalyticalViews(date, api.url).toPromise();
-        for(let data of array.Data){
-          sum += +data.value;
+      let array: any = await this._dashboard
+        .getAnalyticalViews(date, api.url)
+        .toPromise();
+      for (let data of array.Data) {
+        sum += +data.value;
+      }
+      for (let data of this.totalValues) {
+        if (api.name == data.name) {
+          data.value = sum;
+          combineArray.push(sum);
         }
-           for (let data of this.totalValues) {
-            if (api.name == data.name) {
-              data.value = sum;
-              combineArray.push(sum);
-            }
-          }
+      }
     }
 
-
-    console.log("this.totalValues: ",this.totalValues );
+    // console.log("this.totalValues: ",this.totalValues );
 
     return combineArray;
   }
   async loadAllData(period: number) {
     let date = this.getDaysByNumber(period);
-     this.loadApi(date).then(res => {
-    let total = res[0] + res[1];
-    let totalVal = (res[0] / total) * 100;
-    this.value = totalVal;
-    console.log("totalVal: ",this.value);
-
-
-     })
-
-
+    this.loadApi(date).then((res) => {
+      let total = res[0] + res[1];
+      let totalVal = (res[0] / total) * 100;
+      this.value = totalVal;
+      console.log("totalVal: ", this.value);
+    });
   }
 
   setLegendItems(visitorsPieLegend) {
@@ -187,7 +183,6 @@ export class ECommerceVisitorsStatisticsComponent implements OnInit, OnDestroy {
   setOptions(variables, value) {
     const visitorsPie: any = variables.visitorsPie;
     console.log("option: ", value);
-
 
     this.option = {
       tooltip: {

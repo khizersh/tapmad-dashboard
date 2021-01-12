@@ -1,17 +1,13 @@
-import { DecimalPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { DashbaordChartService } from '../../services/dashboard-chart';
+import { DecimalPipe } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
+import { DashbaordChartService } from "../../services/dashboard-chart";
 
 @Component({
-  selector: 'ngx-top-movies',
-  templateUrl: './top-movies.component.html',
-  styleUrls: ['./top-movies.component.scss']
+  selector: "ngx-top-movies",
+  templateUrl: "./top-movies.component.html",
+  styleUrls: ["./top-movies.component.scss"],
 })
 export class TopMoviesComponent implements OnInit {
-
-
-
-  
   max: Date;
   rows = "99";
   page = "1";
@@ -75,7 +71,6 @@ export class TopMoviesComponent implements OnInit {
         type: "string",
         filter: false,
         valuePrepareFunction: (value) => {
-          //console.log(value);
           return this._decimalPipe.transform(value, "1.0");
         },
       },
@@ -98,6 +93,3 @@ export class TopMoviesComponent implements OnInit {
     });
   }
 }
-
-
-

@@ -40,15 +40,13 @@ export class ProdHouseComponent implements OnInit {
     private theme: NbThemeService,
     private _dashboard: DashbaordChartService,
     private _utils: DateUtils
-  ) {
-  
-  }
+  ) {}
   ngOnInit() {
     let dateObj = this.getDaysByNumber(14);
     this.startDate = dateObj.start;
     this.endDate = dateObj.end;
     //console.log("dateObj: ",dateObj);
-    
+
     this.filteredDate = this.changeDateToWeek(dateObj.start, dateObj.end);
 
     //console.log("this.filteredDate: ",this.filteredDate);
@@ -66,9 +64,8 @@ export class ProdHouseComponent implements OnInit {
       period = 60;
     }
 
-
     date = this.getDaysByNumber(period);
-    this.rangeDates(date)
+    this.rangeDates(date);
   }
 
   getDaysByNumber(num: number) {
@@ -163,23 +160,6 @@ export class ProdHouseComponent implements OnInit {
 
       let tempData1 = {};
 
-      // if (!i) {
-      //   tempData1 = {
-      //     start_date: dateArrayy[i],
-      //     end_date: dateArrayy[i + 1],
-      //     page: 0,
-      //     page_length: 100,
-      //     data: this.productionFilter,
-      //   };
-      // } else {
-      //   tempData1 = {
-      //     start_date: fDate,
-      //     end_date: dateArrayy[i + 1],
-      //     page: 0,
-      //     page_length: 100,
-      //     data: this.productionFilter,
-      //   };
-      // }
       tempData1 = {
         start_date: dateArrayy[i],
         end_date: dateArrayy[i + 1],
@@ -245,9 +225,6 @@ export class ProdHouseComponent implements OnInit {
         // if data is on weekly bases
 
         this.getAllWeeksData(dateArrayy).then((res) => {
-          let data = [];
-          let labels = [];
-          let array = [];
           for (let play of res) {
             this.customArray[play.Category].push(play.plays);
           }

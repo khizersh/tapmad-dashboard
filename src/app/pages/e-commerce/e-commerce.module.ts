@@ -57,13 +57,14 @@ import { EarningLiveUpdateChartComponent } from "./earning-card/front-side/earni
 import { Ng2SmartTableModule } from "ng2-smart-table";
 import { FormsModule } from "@angular/forms";
 import { DateRangeModule } from "../../components/date-range/date-range.module";
-import { CustomCardComponent } from './custom-card/custom-card.component';
-import { RouterModule } from '@angular/router';
+import { CustomCardComponent } from "./custom-card/custom-card.component";
+import { RouterModule } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { TopMoviesComponent } from "../top-movies/top-movies.component";
-import { TopTenComponent } from './top-ten/top-ten.component';
-import { ProdHouseComponent } from './prod-house/prod-house.component';
+import { TopTenComponent } from "./top-ten/top-ten.component";
+import { ProdHouseComponent } from "./prod-house/prod-house.component";
+import { UserChartComponent } from "./user-chart/user-chart.component";
 
 @NgModule({
   imports: [
@@ -88,10 +89,9 @@ import { ProdHouseComponent } from './prod-house/prod-house.component';
     FormsModule,
     DateRangeModule,
     NgSelectModule,
-
   ],
   declarations: [
-     TopMoviesComponent,
+    TopMoviesComponent,
     ECommerceComponent,
     StatsCardFrontComponent,
     StatsAreaChartComponent,
@@ -127,6 +127,7 @@ import { ProdHouseComponent } from './prod-house/prod-house.component';
     CustomCardComponent,
     TopTenComponent,
     ProdHouseComponent,
+    UserChartComponent,
   ],
   providers: [CountryOrdersMapService],
 })

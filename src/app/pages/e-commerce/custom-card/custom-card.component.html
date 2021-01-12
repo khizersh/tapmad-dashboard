@@ -1,6 +1,35 @@
 <div class="card col-xxl-12 mb-3 pb-4">
+  <div class="row mt-3">
+    <div class="col-md-2"></div>
+    <div
+      *ngFor="let d of totalData; let i = index"
+      class="col-lg-4 col-md-4 col-sm-6"
+    >
+      <div class="card shadow">
+        <div class="card-header bg-green">
+          <h3 class="text-center font-cursive text-white">
+            {{ weekList[i] }}
+          </h3>
+        </div>
+        <div class="card-body">
+          <div class="row pl-3">
+            <div class="col-md-12 col-sm-12 pt-3">
+              <span class="half-rem">Clicks:</span> {{ d.clicks }}
+              <br />
+              <span class="half-rem">Views: </span>{{ d.views }}<br />
+              <span class="half-rem">Completed:</span>
+              {{ d.completes }}<br />
+              <span class="half-rem"> Time watch: </span>
+              {{ d.timeWatched }}<br />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
   <div class="row mt-2 mb-2">
-    <div class="col-md-3 offset-md-9">
+    <!-- <div class="col-lg-3 col-md-4 offset-lg-9 offset-md-8">
       <ng-select
         [items]="timePeriodList"
         bindLabel="weeklyName"
@@ -11,33 +40,79 @@
         [clearable]="false"
       >
       </ng-select>
-    </div>
+    </div> -->
   </div>
   <div class="row">
-    <div *ngFor="let d of data; let i = index" class="col-md-3">
-      <div class="card shadow">
-        <div class="card-header">
-          {{selectedTimePeriodList}}
-          <a
-            class="float-right"
-            [routerLink]="['/pages/platform']"
-            routerLinkActive="active"
-            >View detail</a
-          >
-        </div>
-
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-3 col-sm-12 pt-3">
-              <img src="{{ d.icon }}" width="45" />
+    <div
+      *ngFor="let d of CurrentWeek; let i = index"
+      class="col-md-6 card p-3 mb-2"
+    >
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card shadow">
+            <div class="card-header">
+              <!-- {{ selectedTimePeriodList }} -->
+              Current Week
+              <a
+                class="float-right"
+                [routerLink]="['/pages/platform']"
+                routerLinkActive="active"
+                >View detail</a
+              >
             </div>
-            <div class="col-md-9 col-sm-12 pt-3">
-              <p style="line-height: 0.25rem">Plays: {{ d.plays }}</p>
-              <p style="line-height: 0.25rem">Embeds: {{ d.embeds }}</p>
-              <p style="line-height: 0.25rem">Completed: {{ d.completes }}</p>
-              <p style="line-height: 0.25rem">
-                Time watch: {{ d.timeWatched }}
-              </p>
+
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3 col-sm-12 pt-3">
+                  <img src="{{ d.icon }}" width="45" />
+                </div>
+                <div class="col-md-9 col-sm-12 pt-3">
+                  <p style="line-height: 0.25rem">Clicks: {{ d.clicks }}</p>
+                  <p style="line-height: 0.25rem">Views: {{ d.views }}</p>
+                  <p style="line-height: 0.25rem">
+                    Completed: {{ d.completes }}
+                  </p>
+                  <p style="line-height: 0.25rem">
+                    Time watch: {{ d.timeWatched }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card shadow">
+            <div class="card-header">
+              <!-- {{ selectedTimePeriodList }} -->
+              Last Week
+              <a
+                class="float-right"
+                [routerLink]="['/pages/platform']"
+                routerLinkActive="active"
+                >View detail</a
+              >
+            </div>
+
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3 col-sm-12 pt-3">
+                  <img src="{{ d.icon }}" width="45" />
+                </div>
+                <div class="col-md-9 col-sm-12 pt-3">
+                  <p style="line-height: 0.25rem">
+                    Clicks: {{ LastWeek[i].clicks }}
+                  </p>
+                  <p style="line-height: 0.25rem">
+                    Views: {{ LastWeek[i].views }}
+                  </p>
+                  <p style="line-height: 0.25rem">
+                    Completed: {{ LastWeek[i].completes }}
+                  </p>
+                  <p style="line-height: 0.25rem">
+                    Time watch: {{ LastWeek[i].timeWatched }}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
