@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { DashbaordChartService } from "../../../services/dashboard-chart";
 import { DateUtils } from "../../../utils/date.utls";
 
+
 @Component({
   selector: "ngx-custom-card",
   templateUrl: "./custom-card.component.html",
