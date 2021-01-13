@@ -1,0 +1,21 @@
+<nb-card size="large">
+  <div class="row">
+    <div class="col-lg-6 col-md-6">
+      <canvas
+        baseChart
+        [data]="pieChartDataToday"
+        [options]=""
+        [labels]="pieChartLabels"
+        [chartType]="pieChartType"
+      ></canvas>
+    </div>
+    <div class="col-lg-6 col-md-6">
+      <canvas
+        baseChart
+        [data]="pieChartDataYesterday"
+        [labels]="pieChartLabels"
+        [chartType]="pieChartType"
+      ></canvas>
+    </div>
+  </div>
+</nb-card>

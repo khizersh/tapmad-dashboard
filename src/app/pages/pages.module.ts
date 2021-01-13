@@ -28,7 +28,8 @@ import { TopMoviesComponent } from './top-movies/top-movies.component';
     ViewsByCountryModule,
     ViewsByPlatformModule,
     GrowthModule,
-    ChannelModule
+    ChannelModule,
+
 
   ],
   declarations: [PagesComponent, SpinnerComponent],

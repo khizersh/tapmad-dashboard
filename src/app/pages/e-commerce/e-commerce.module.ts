@@ -65,6 +65,11 @@ import { TopMoviesComponent } from "../top-movies/top-movies.component";
 import { TopTenComponent } from "./top-ten/top-ten.component";
 import { ProdHouseComponent } from "./prod-house/prod-house.component";
 import { UserChartComponent } from "./user-chart/user-chart.component";
+import { ProductionChartsComponent } from './production-charts/production-charts.component';
+import { ChartsModule } from 'ng2-charts';
+
+
+
 
 @NgModule({
   imports: [
@@ -89,6 +94,8 @@ import { UserChartComponent } from "./user-chart/user-chart.component";
     FormsModule,
     DateRangeModule,
     NgSelectModule,
+    ChartsModule
+
   ],
   declarations: [
     TopMoviesComponent,
@@ -128,6 +135,8 @@ import { UserChartComponent } from "./user-chart/user-chart.component";
     TopTenComponent,
     ProdHouseComponent,
     UserChartComponent,
+    ProductionChartsComponent
+
   ],
   providers: [CountryOrdersMapService],
 })
