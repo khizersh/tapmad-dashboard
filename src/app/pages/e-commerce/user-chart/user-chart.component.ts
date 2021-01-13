@@ -3,6 +3,7 @@ import { NbThemeService } from "@nebular/theme";
 import { DashbaordChartService } from "../../../services/dashboard-chart";
 import { DateUtils } from "../../../utils/date.utls";
 import * as moment from "moment";
+import { DecimalPipe } from "@angular/common";
 
 @Component({
   selector: "ngx-user-chart",
@@ -13,8 +14,42 @@ export class UserChartComponent implements OnInit {
   constructor(
     private theme: NbThemeService,
     private _dashboard: DashbaordChartService,
-    private _utils: DateUtils
+    private _utils: DateUtils,
+    private _decimalPipe: DecimalPipe
   ) {}
+
+  start_date: any;
+  end_date: any;
+  platformData = [
+    {
+      icon: "../../../../assets//images//web.png",
+      clicks: "",
+      views: "",
+      completes: "",
+      timeWatched: "",
+    },
+    {
+      icon: "../../../../assets//images//android.png",
+      clicks: "",
+      views: "",
+      completes: "",
+      timeWatched: "",
+    },
+    {
+      icon: "../../../../assets//images//apple.png",
+      clicks: "",
+      views: "",
+      completes: "",
+      timeWatched: "",
+    },
+    {
+      icon: "../../../../assets//images//tv.png",
+      clicks: "",
+      views: "",
+      completes: "",
+      timeWatched: "",
+    },
+  ];
 
   data: any;
   options: any;
@@ -24,11 +59,41 @@ export class UserChartComponent implements OnInit {
 
   ngOnInit(): void {
     this.getViewsData(7).then((res) => {
-      let dateArray = res.map((m) => m.date);
+      let dateArray = res.map((m) => this._utils.formatDateWithSlash(m.date));
       let dataArray = res.map((m) => m.value);
-
       this.loadChartData(dataArray, dateArray);
-      console.log("30 days: ", res);
+    });
+
+    let date = this.getDateByNumber(7);
+    this.start_date = date.start;
+    this.end_date = date.end;
+
+      this.loadPlatformData({
+        start_date: this.start_date,
+        end_date: this.end_date,
+      })
+  }
+
+  async loadPlatformData(date) {
+    const data: any = await this._dashboard.getByPlatform(date).toPromise();
+
+    data.Data.map((plat, i) => {
+      this.platformData[i].clicks = this._decimalPipe.transform(
+        plat.plays,
+        "1.0"
+      );
+      this.platformData[i].views = this._decimalPipe.transform(
+        plat.plays + plat.embeds,
+        "1.0"
+      );
+      this.platformData[i].completes = this._decimalPipe.transform(
+        plat.completes,
+        "1.0"
+      );
+      this.platformData[i].timeWatched = this._decimalPipe.transform(
+        plat.time_watched,
+        "1.0"
+      );
     });
   }
 
@@ -39,6 +104,15 @@ export class UserChartComponent implements OnInit {
     return { start: startDate, end: endDate };
   }
 
+  rangeDatesPlay($event) {
+    console.log("Event: ", $event);
+    this.start_date = $event.start;
+    this.end_date = $event.end;
+    this.loadPlatformData({
+      start_date: this.start_date,
+      end_date: this.end_date,
+    });
+  }
   async getViewsData(numOfDays: number) {
     let date = this.getDateByNumber(numOfDays);
 
@@ -61,10 +135,31 @@ export class UserChartComponent implements OnInit {
 
       // if data is on weekly base
 
+      let customDataArray = {};
+      this.periodList.map((m) => {
+        customDataArray[m] = new Array();
+      });
+
+      data.map((m, i) => {
+        customDataArray[this.periodList[0]].push(m);
+
+        if (i == data.length - 2) {
+          customDataArray[this.periodList[1]].push(m);
+        } else {
+          customDataArray[this.periodList[1]].push(0);
+        }
+
+        if (i == data.length - 1) {
+          customDataArray[this.periodList[2]].push(m);
+        } else {
+          customDataArray[this.periodList[2]].push(0);
+        }
+      });
+
       let showArray = [];
       this.periodList.map((r, i) => {
         showArray.push({
-          data: data,
+          data: customDataArray[r],
           label: r,
           borderColor: "#" + Math.floor(Math.random() * 16777215).toString(16),
         });
