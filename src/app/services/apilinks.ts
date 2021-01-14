@@ -13,12 +13,14 @@ export class ApiLinks {
   byCountry = this.baseUrl + this.content + "/CountryWiseViews";
   byCity = this.baseUrl + this.content + "/CityWiseViews";
   byPlatform = this.baseUrl + this.content + "/platformBase";
-  byTagName = this.baseUrl + "/contentOverview/PlaysByTag";
-  byProductHouse = this.baseUrl + "/contentOverview/ProductionHouseFilter";
+  byTagName = this.baseUrl + this.content + "/PlaysByTag";
+  byProductHouse = this.baseUrl + this.content + "/ProductionHouseFilter";
   googleUserViews = this.baseUrl + this.googleAnalytics;
-  byPlaceGrowth = this.baseUrl + '/contentOverview/PlaysGrowthSummery';
-  channelList = this.baseUrl + '/contentOverview/getChannelFilter';
-  addChannel = this.baseUrl + '/contentOverview/setChannelFilter';
-  getCategories = this.baseUrl + '/contentOverview/getCategoryFilters';
-  getPlaysByCountry = this.baseUrl + '/contentOverview/individualCountryWise';
+  byPlaceGrowth = this.baseUrl + this.content + "/PlaysGrowthSummery";
+  channelList = this.baseUrl + this.content + "/getChannelFilter";
+  addChannel = this.baseUrl + this.content + "/setChannelFilter";
+  getCategories = this.baseUrl + this.content + "/getCategoryFilters";
+  getPlaysByCountry = this.baseUrl + this.content + "/individualCountryWise";
+  getPlaysByProductionHouse =
+    this.baseUrl + this.content + "/playsByProductionHouses";
 }

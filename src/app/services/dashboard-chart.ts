@@ -28,22 +28,21 @@ export class DashbaordChartService {
     return this._http.post(`${this._api.googleUserViews + url}`, data);
   }
   getDataByTagName(data) {
-    let local = JSON.parse( localStorage.getItem('auth_app_token'));
+    let local = JSON.parse(localStorage.getItem("auth_app_token"));
     const httpHeaders: HttpHeaders = new HttpHeaders({
-    'auth-token': local.value,
-    'Content-Type': 'application/json',
-
+      "auth-token": local.value,
+      "Content-Type": "application/json",
     });
     return this._http.post(`${this._api.byTagName}`, data);
     // return this._http.post(`${this._api.byTagName}`, JSON.stringify( data) , { headers: httpHeaders });
   }
 
   getProductHouseFilter() {
-  //   let local = JSON.parse( localStorage.getItem('auth_app_token'));
-  //   const httpHeaders: HttpHeaders = new HttpHeaders({
-  // 'auth-token': local.value,
-  // 'Content-Type': 'application/json',
-  //   });
+    //   let local = JSON.parse( localStorage.getItem('auth_app_token'));
+    //   const httpHeaders: HttpHeaders = new HttpHeaders({
+    // 'auth-token': local.value,
+    // 'Content-Type': 'application/json',
+    //   });
     return this._http.get(this._api.byProductHouse);
   }
 
@@ -51,18 +50,21 @@ export class DashbaordChartService {
     return this._http.post(`${this._api.byPlaceGrowth}`, data);
   }
 
-
   getChannelList() {
     return this._http.get(`${this._api.channelList}`);
   }
 
   addChannel(body) {
-    return this._http.post(`${this._api.addChannel}` , body);
+    return this._http.post(`${this._api.addChannel}`, body);
   }
   getCategorList() {
     return this._http.get(`${this._api.getCategories}`);
   }
   getPlaysByCountry(data) {
-    return this._http.post(`${this._api.getPlaysByCountry}` , data);
+    return this._http.post(`${this._api.getPlaysByCountry}`, data);
+  }
+
+  getPlaysByProductionHouse(data) {
+    return this._http.post(`${this._api.getPlaysByProductionHouse}`, data);
   }
 }
