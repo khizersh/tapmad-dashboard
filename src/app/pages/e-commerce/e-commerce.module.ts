@@ -67,6 +67,7 @@ import { ProdHouseComponent } from "./prod-house/prod-house.component";
 import { UserChartComponent } from "./user-chart/user-chart.component";
 import { ProductionChartsComponent } from './production-charts/production-charts.component';
 import { ChartsModule } from 'ng2-charts';
+import { UserPieChartComponent } from './user-pie-chart/user-pie-chart.component';
 
 
 
@@ -135,7 +136,8 @@ import { ChartsModule } from 'ng2-charts';
     TopTenComponent,
     ProdHouseComponent,
     UserChartComponent,
-    ProductionChartsComponent
+    ProductionChartsComponent,
+    UserPieChartComponent
 
   ],
   providers: [CountryOrdersMapService],

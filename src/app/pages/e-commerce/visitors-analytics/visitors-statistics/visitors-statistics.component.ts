@@ -182,7 +182,6 @@ export class ECommerceVisitorsStatisticsComponent implements OnInit, OnDestroy {
 
   setOptions(variables, value) {
     const visitorsPie: any = variables.visitorsPie;
-    console.log("option: ", value);
 
     this.option = {
       tooltip: {

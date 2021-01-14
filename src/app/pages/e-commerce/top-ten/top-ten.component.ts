@@ -19,17 +19,6 @@ export class TopTenComponent implements OnInit {
 
   timePeriodList = ["Last Week", "Last 30 Days", "Todays"];
   selectedTimePeriodList = "Last Week";
-
-  constructor(
-    private _dashboard: DashbaordChartService,
-    private _decimalPipe: DecimalPipe,
-    private _utils: DateUtils
-  ) {}
-
-  ngOnInit() {
-    let date = this.getDaysByNumber(7);
-    this.getCustomChartData(date);
-  }
   source = [];
   settings = {
     pager: {
@@ -52,8 +41,13 @@ export class TopTenComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
-      MediaTitle: {
-        title: "Movies Name",
+      serial: {
+        title: "S#",
+        type: "string",
+        filter: false,
+      },
+      mediaTitle: {
+        title: "Media Title",
         type: "string",
         filter: false,
       },
@@ -62,37 +56,76 @@ export class TopTenComponent implements OnInit {
       //   type: "string",
       //   filter: false,
       // },
-      plays: {
-        title: "Plays",
+      todayViews: {
+        title: "Today Views",
         type: "string",
         filter: false,
       },
-      embeds: {
-        title: "Embeds",
+      todayClicks: {
+        title: "Today Clicks",
         type: "string",
         filter: false,
       },
-      // completes: {
-      //   title: "Completes",
+      yesterdayViews: {
+        title: "Yesterday Views",
+        type: "string",
+        filter: false,
+      },
+      yesterdayClicks: {
+        title: "Yesterday Clicks",
+        type: "string",
+        filter: false,
+      },
+      weekViews: {
+        title: "Week ago Views",
+        type: "string",
+        filter: false,
+      },
+      weekClicks: {
+        title: "Week ago Clicks",
+        type: "string",
+        filter: false,
+      },
+      // time_watched: {
+      //   title: "Total Views",
       //   type: "string",
       //   filter: false,
+      //   valuePrepareFunction: (value) => {
+      //     return this._decimalPipe.transform(value, "1.0");
+      //   },
       // },
-      time_watched: {
-        title: "Total Views",
-        type: "string",
-        filter: false,
-        valuePrepareFunction: (value) => {
-          return this._decimalPipe.transform(value, "1.0");
-        },
-      },
     },
   };
 
-  getDaysByNumber(num: number) {
+  constructor(
+    private _dashboard: DashbaordChartService,
+    private _decimalPipe: DecimalPipe,
+    private _utils: DateUtils
+  ) {}
+
+  ngOnInit() {
+    let dateArray = [];
+    let week = this.getDaysByNumber(7, "");
+    let yesterday = this.getDaysByNumber(1, "yesterday");
+    let today = this.getDaysByNumber(0, "");
+    dateArray.push(week);
+    dateArray.push(yesterday);
+    dateArray.push(today);
+
+    this.loadTable(dateArray);
+  }
+
+  getDaysByNumber(num: number, type) {
     var d = new Date();
-    let endDate = this._utils.formatDate(d.setDate(d.getDate()));
-    let startDate = this._utils.formatDate(d.setDate(d.getDate() - num));
-    return { startDate: startDate, endDate: endDate };
+    if (type) {
+      let endDate = this._utils.formatDate(d.setDate(d.getDate() - 1));
+      let startDate = this._utils.formatDate(d.setDate(d.getDate() - 1));
+      return { startDate: startDate, endDate: endDate };
+    } else {
+      let endDate = this._utils.formatDate(d.setDate(d.getDate()));
+      let startDate = this._utils.formatDate(d.setDate(d.getDate() - num));
+      return { startDate: startDate, endDate: endDate };
+    }
   }
   rangeDates($event) {
     this.startDate = $event.start;
@@ -110,21 +143,61 @@ export class TopTenComponent implements OnInit {
     if (this.selectedTimePeriodList === "Todays") {
       period = 0;
     }
-    date = this.getDaysByNumber(period);
-    this.getCustomChartData(date);
+    // date = this.getDaysByNumber(period);
   }
-  getCustomChartData(date) {
-    let data = {
-      start_date: date.startDate,
-      end_date: date.endDate,
-      page: this.page,
-      page_length: this.rows,
-    };
-    this._dashboard.getCustomRangeData(data).subscribe((res: any) => {
-      //console.log("data: ", res.Data);
 
-      this.source = res.Data;
+  async getAllWeeksData(date) {
+    let customData = [];
+
+    for (var i = 0; i < date.length; i++) {
+      let index = i;
+      let data = {
+        start_date: date[i].startDate,
+        end_date: date[i].endDate,
+        page: this.page,
+        page_length: this.rows,
+      };
+
+      let array: any = await this._dashboard
+        .getCustomRangeData(data)
+        .toPromise();
+
+      console.log("API: ", array.Data);
+      for (let j = 0; j < array.Data.length; j++) {
+        let serial = j + 1;
+        if (index === 0) {
+          customData.push({
+            serial: serial++,
+            mediaTitle: array.Data[j].MediaTitle,
+            todayViews: 0,
+            todayClicks: 0,
+            yesterdayViews: 0,
+            yesterdayClicks: 0,
+            weekViews: array.Data[j].plays + array.Data[j].embeds,
+            weekClicks: array.Data[j].plays,
+          });
+        } else if (index == 1) {
+          customData[j]["yesterdayViews"] =
+            array.Data[j].plays + array.Data[j].embeds;
+          customData[j]["yesterdayClicks"] = array.Data[j].plays;
+        } else if (index == 2) {
+          customData[j]["todayViews"] =
+            array.Data[j].plays + array.Data[j].embeds;
+          customData[j]["todayClicks"] = array.Data[j].plays;
+        }
+      }
+      console.log("customData: ", customData);
+    }
+
+    // console.log("customData: ", customData);
+
+    return customData;
+  }
+  async loadTable(array) {
+    this.getAllWeeksData(array).then((res) => {
+      this.source = res;
       this.showTable = true;
+      console.log("Response in load data: ", res);
     });
   }
 }

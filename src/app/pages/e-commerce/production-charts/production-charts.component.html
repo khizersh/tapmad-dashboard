@@ -1,20 +1,45 @@
 <nb-card size="large">
   <div class="row">
-    <div class="col-lg-6 col-md-6">
+    <div
+      *ngIf="chartShowToday"
+      class="col-lg-6 col-md-6 col-sm-12 display-block"
+    >
+      <row class="bg-light-blue">
+        <div class="col-12">
+          <h5 class="text-center">Today's</h5>
+          <ngx-date-range
+            (getRange)="rangeDatesPlay($event, 'today')"
+          ></ngx-date-range>
+        </div>
+      </row>
       <canvas
+        class="display-block"
         baseChart
         [data]="pieChartDataToday"
-        [options]=""
         [labels]="pieChartLabels"
         [chartType]="pieChartType"
+        [options]="barChartOptions"
       ></canvas>
     </div>
-    <div class="col-lg-6 col-md-6">
+    <div
+      *ngIf="chartShowYesterday"
+      class="col-lg-6 col-md-6 col-sm-12 display-block"
+    >
+      <row class="bg-light-blue">
+        <div class="col-12">
+          <h5 class="text-center">Yesterday</h5>
+          <ngx-date-range
+            (getRange)="rangeDatesPlay($event, 'yesterday')"
+          ></ngx-date-range>
+        </div>
+      </row>
       <canvas
+        class="display-block"
         baseChart
         [data]="pieChartDataYesterday"
         [labels]="pieChartLabels"
         [chartType]="pieChartType"
+        [options]="barChartOptions"
       ></canvas>
     </div>
   </div>
