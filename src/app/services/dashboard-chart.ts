@@ -67,4 +67,7 @@ export class DashbaordChartService {
   getPlaysByProductionHouse(data) {
     return this._http.post(`${this._api.getPlaysByProductionHouse}`, data);
   }
+  getUsersAndNewUsers(data) {
+    return this._http.post(`${this._api.getUsersAndNewUsers}`, data);
+  }
 }

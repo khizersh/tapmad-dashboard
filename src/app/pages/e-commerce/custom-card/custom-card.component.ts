@@ -38,6 +38,7 @@ export class CustomCardComponent implements OnInit {
       views: "",
       completes: "",
       timeWatched: "",
+      name:"Web"
     },
     {
       icon: "../../../../assets//images//android.png",
@@ -45,6 +46,7 @@ export class CustomCardComponent implements OnInit {
       views: "",
       completes: "",
       timeWatched: "",
+      name:"Android"
     },
     {
       icon: "../../../../assets//images//apple.png",
@@ -52,6 +54,7 @@ export class CustomCardComponent implements OnInit {
       views: "",
       completes: "",
       timeWatched: "",
+      name:"IOS"
     },
     {
       icon: "../../../../assets//images//tv.png",
@@ -59,6 +62,7 @@ export class CustomCardComponent implements OnInit {
       views: "",
       completes: "",
       timeWatched: "",
+      name:"TV"
     },
   ];
   LastWeek = [

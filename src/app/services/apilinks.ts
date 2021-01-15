@@ -23,4 +23,5 @@ export class ApiLinks {
   getPlaysByCountry = this.baseUrl + this.content + "/individualCountryWise";
   getPlaysByProductionHouse =
     this.baseUrl + this.content + "/playsByProductionHouses";
+  getUsersAndNewUsers = this.baseUrl + this.googleAnalytics + "/NewUsersAndUsers";
 }

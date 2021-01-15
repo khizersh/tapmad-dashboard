@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { DashbaordChartService } from "../../services/dashboard-chart";
 import { DateUtils } from "../../utils/date.utls";
 import * as moment from "moment";
+import { DecimalPipe } from "@angular/common";
 
 @Component({
   selector: "ngx-growth",
@@ -21,7 +22,8 @@ export class GrowthComponent implements OnInit {
   page_length: 100;
   constructor(
     private _dashboard: DashbaordChartService,
-    private _utils: DateUtils
+    private _utils: DateUtils,
+    private decimal : DecimalPipe
   ) {}
 
   playSumArray = [];
@@ -230,16 +232,16 @@ export class GrowthComponent implements OnInit {
         });
 
         if (type == "play" || type == "all") {
-          this.playSumArray.push(sumPlay);
+          this.playSumArray.push(this.decimal.transform( sumPlay , "1.0"));
         }
         if (type == "time" || type == "all") {
-          this.timeSumArray.push(sumTime);
+          this.timeSumArray.push(this.decimal.transform( sumTime , "1.0"));
         }
         if (type == "75" || type == "all") {
-          this.SumArray75.push(sum75);
+          this.SumArray75.push(this.decimal.transform( sum75 , "1.0"));
         }
         if (type == "unique" || type == "all") {
-          this.uniqueUserSumArray.push(sumUnique);
+          this.uniqueUserSumArray.push(this.decimal.transform( sumUnique,"1.0"));
         }
       });
     }

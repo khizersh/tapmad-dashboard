@@ -1,1 +1,28 @@
-<p>user-pie-chart works!</p>
+<nb-card size="giant">
+  <div class="row bg-pink">
+    <div class="col-12 ">
+      <h5 class="text-center txt-white">Users & New Users</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div *ngFor="let dt of dataArray; let i = index" class="col-lg-6 col-md-6 col-sm-12 mt-2">
+      <div class="row">
+        <div class="col-12">
+          <h6 class="text-center">
+            {{periodList[i]}}
+          </h6>
+          <span class="block">{{dateList[i].start}} To {{dateList[i].end}}</span>
+        </div>
+        <div class="col-12">
+          <canvas
+            class="display-block"
+            baseChart
+            [data]="dt.data"
+            [labels]="dt.label"
+            [chartType]="pieChartType"
+          ></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</nb-card>

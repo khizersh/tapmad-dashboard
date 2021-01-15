@@ -3,6 +3,7 @@ import { DashbaordChartService } from "../../services/dashboard-chart";
 import { DateUtils } from "../../utils/date.utls";
 import * as moment from "moment";
 import { NbThemeService } from "@nebular/theme";
+import { DecimalPipe } from "@angular/common";
 
 @Component({
   selector: "ngx-views-by-channel",
@@ -19,7 +20,8 @@ export class ViewsByChannelComponent implements OnInit {
   constructor(
     private _dashboard: DashbaordChartService,
     private _utils: DateUtils,
-    private theme: NbThemeService
+    private theme: NbThemeService,
+    private _decimalPipe: DecimalPipe
   ) {}
 
   ngOnInit() {
@@ -204,9 +206,10 @@ export class ViewsByChannelComponent implements OnInit {
         this._dashboard.getPlaceGrowthSummary(data).subscribe((res: any) => {
           this.source = res.Data.map((m) => {
             if (m.plays === undefined || m.plays === null) {
-              m.plays = "--";
+             return {...m , plays : '--'};
             }
-            return m;
+
+            return {...m , plays:this._decimalPipe.transform(m.plays,"1.0")};
           });
           this.showTable = true;
         });
@@ -272,7 +275,7 @@ export class ViewsByChannelComponent implements OnInit {
                   d.plays = "--";
                 }
                 this.weeklyDataArray[d.Category].push({
-                  plays: d.plays,
+                  plays: d.plays != '--' ? this._decimalPipe.transform(d.plays,"1.0") : d.plays,
                   week: i,
                 });
               });
@@ -315,7 +318,7 @@ export class ViewsByChannelComponent implements OnInit {
           this.monthlySelectedChannelToShow
         ).then((res) => {
           for (let play of res) {
-            this.MonthDataArray[play.Category].push(play.plays);
+            this.MonthDataArray[play.Category].push(this._decimalPipe.transform(play.plays,"1.0"));
           }
         });
       });

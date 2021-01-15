@@ -6,14 +6,16 @@
       class="col-lg-4 col-md-4 col-sm-6"
     >
       <div class="card shadow">
-        <div class="card-header bg-green">
-          <h3 class="text-center font-cursive text-white">
+        <div class="card-header bg-pink">
+          <h3 class="text-center text-white">
             {{ weekList[i] }}
           </h3>
+          <sub>Combine data of all platforms</sub>
         </div>
         <div class="card-body">
           <div class="row pl-3">
-            <div class="col-md-12 col-sm-12 pt-3">
+
+            <div class="col-md-8 col-sm-8 pt-3">
               <span class="half-rem">Clicks:</span> {{ d.clicks }}
               <br />
               <span class="half-rem">Views: </span>{{ d.views }}<br />
@@ -21,6 +23,14 @@
               {{ d.completes }}<br />
               <span class="half-rem"> Time watch: </span>
               {{ d.timeWatched }}<br />
+            </div>
+            <div class="col-md-4 col-sm-4">
+              <div class="row">
+                  <div *ngFor="let d of CurrentWeek; let i = index"  class="col-6 pt-4 pr-2">
+                    <img  src={{d.icon}} width="30"/>
+                  </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -48,6 +58,7 @@
       class="col-md-6 card p-3 mb-2"
     >
       <div class="row">
+        <div class="col-12"><h6 class="text-center">{{d.name}}</h6></div>
         <div class="col-md-6">
           <div class="card shadow">
             <div class="card-header">
@@ -109,7 +120,7 @@
                     Completed: {{ LastWeek[i].completes }}
                   </p>
                   <p style="line-height: 0.25rem">
-                    Time watch: {{ LastWeek[i].timeWatched }}
+                    TW: {{ LastWeek[i].timeWatched }}
                   </p>
                 </div>
               </div>
