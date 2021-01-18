@@ -3,7 +3,6 @@ import { Component, OnInit } from "@angular/core";
 import { DashbaordChartService } from "../../../services/dashboard-chart";
 import { DateUtils } from "../../../utils/date.utls";
 
-
 @Component({
   selector: "ngx-custom-card",
   templateUrl: "./custom-card.component.html",
@@ -38,7 +37,7 @@ export class CustomCardComponent implements OnInit {
       views: "",
       completes: "",
       timeWatched: "",
-      name:"Web"
+      name: "Web",
     },
     {
       icon: "../../../../assets//images//android.png",
@@ -46,7 +45,7 @@ export class CustomCardComponent implements OnInit {
       views: "",
       completes: "",
       timeWatched: "",
-      name:"Android"
+      name: "Android",
     },
     {
       icon: "../../../../assets//images//apple.png",
@@ -54,7 +53,7 @@ export class CustomCardComponent implements OnInit {
       views: "",
       completes: "",
       timeWatched: "",
-      name:"IOS"
+      name: "IOS",
     },
     {
       icon: "../../../../assets//images//tv.png",
@@ -62,7 +61,7 @@ export class CustomCardComponent implements OnInit {
       views: "",
       completes: "",
       timeWatched: "",
-      name:"TV"
+      name: "TV",
     },
   ];
   LastWeek = [
@@ -102,7 +101,6 @@ export class CustomCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData(this.getDaysByNumber(7), 14).then((res) => {
-      console.log("Response: ", res);
       this.loadTotalData(this.getDaysByNumber(14));
     });
   }

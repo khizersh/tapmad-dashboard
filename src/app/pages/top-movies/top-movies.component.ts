@@ -42,8 +42,13 @@ export class TopMoviesComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
+      sno: {
+        title: "S#",
+        type: "string",
+        filter: false,
+      },
       MediaTitle: {
-        title: "Movies Name",
+        title: "Content Name",
         type: "string",
       },
       play_rate: {
@@ -88,7 +93,10 @@ export class TopMoviesComponent implements OnInit {
       page_length: this.rows,
     };
     this._dashboard.getCustomRangeData(data).subscribe((res: any) => {
-      this.source = res.Data;
+      this.source = res.Data.map((m, i) => {
+        m["sno"] = i + 1;
+        return m;
+      });
       this.showTable = true;
     });
   }

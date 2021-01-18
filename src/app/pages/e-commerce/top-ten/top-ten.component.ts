@@ -10,7 +10,7 @@ import { DateUtils } from "../../../utils/date.utls";
 })
 export class TopTenComponent implements OnInit {
   max: Date;
-  rows = "10";
+  rows = "25";
   page = "0";
   startDate = "2020-08-02";
   endDate = "2020-08-18";
@@ -111,6 +111,7 @@ export class TopTenComponent implements OnInit {
     dateArray.push(week);
     dateArray.push(yesterday);
     dateArray.push(today);
+    console.log("date array: ", dateArray);
 
     this.loadTable(dateArray);
   }
@@ -147,7 +148,9 @@ export class TopTenComponent implements OnInit {
   }
 
   async getAllWeeksData(date) {
-    let customData = [];
+    let customData = [],
+      customDataLength = [],
+      finalData = [];
 
     for (var i = 0; i < date.length; i++) {
       let index = i;
@@ -161,38 +164,57 @@ export class TopTenComponent implements OnInit {
       let array: any = await this._dashboard
         .getCustomRangeData(data)
         .toPromise();
-
-      console.log("API: ", array.Data);
-      for (let j = 0; j < array.Data.length; j++) {
-        let serial = j + 1;
-        if (index === 0) {
-          customData.push({
-            serial: serial++,
-            mediaTitle: array.Data[j].MediaTitle,
-            todayViews: 0,
-            todayClicks: 0,
-            yesterdayViews: 0,
-            yesterdayClicks: 0,
-            weekViews: array.Data[j].plays + array.Data[j].embeds,
-            weekClicks: array.Data[j].plays,
-          });
-        } else if (index == 1) {
-          customData[j]["yesterdayViews"] =
-            array.Data[j].plays + array.Data[j].embeds;
-          customData[j]["yesterdayClicks"] = array.Data[j].plays;
-        } else if (index == 2) {
-          customData[j]["todayViews"] =
-            array.Data[j].plays + array.Data[j].embeds;
-          customData[j]["todayClicks"] = array.Data[j].plays;
-        }
-      }
-      console.log("customData: ", customData);
+      customData.push(array.Data);
+      customDataLength.push(array?.Data?.length);
     }
 
-    // console.log("customData: ", customData);
+    let maxLength = Math.max(...customDataLength);
 
-    return customData;
+    for (let index = 0; index < maxLength; index++) {
+      finalData.push({
+        serial: index + 1,
+        mediaTitle: "",
+        todayViews: 0,
+        todayClicks: 0,
+        yesterdayViews: 0,
+        yesterdayClicks: 0,
+        weekViews: 0,
+        weekClicks: 0,
+      });
+    }
+
+    for (let i = 0; i < customData.length; i++) {
+      let index = i;
+      for (let j = 0; j < customData[i].length; j++) {
+        let obj = {
+          mediaTitle: customData[i][j]?.MediaTitle
+            ? customData[i][j]?.MediaTitle
+            : "",
+          plays: customData[i][j]?.plays ? customData[i][j]?.plays : 0,
+          embeds: customData[i][j]?.embeds ? customData[i][j]?.embeds : 0,
+        };
+
+        if (index == 0) {
+          finalData[j]["mediaTitle"] = obj.mediaTitle;
+          finalData[j]["weekViews"] = obj.plays + obj.embeds;
+          finalData[j]["weekClicks"] = obj.plays;
+        } else if (index == 1) {
+          finalData[j]["mediaTitle"] = obj.mediaTitle;
+          finalData[j]["yesterdayViews"] = obj.plays + obj.embeds;
+          finalData[j]["yesterdayClicks"] = obj.plays;
+        } else if (index == 2) {
+          finalData[j]["mediaTitle"] = obj.mediaTitle;
+          finalData[j]["todayViews"] = obj.plays + obj.embeds;
+          finalData[j]["todayClicks"] = obj.plays;
+        }
+      }
+    }
+
+    // console.log("final array: ", finalData);
+
+    return finalData;
   }
+
   async loadTable(array) {
     this.getAllWeeksData(array).then((res) => {
       this.source = res;
