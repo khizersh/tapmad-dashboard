@@ -1,46 +1,48 @@
-<div class="row">
-  <div class="col-md-4">
-    <ngx-date-range (getRange)="rangeDatesPlay($event)"></ngx-date-range>
+<div class="card p-2">
+  <div class="row">
+    <div class="col-md-4">
+      <ngx-date-range (getRange)="rangeDatesPlay($event)"></ngx-date-range>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-lg-6 col-md-6 col-sm-12">
-    <div class="row">
-      <div
-        *ngFor="let d of platformData; let i = index"
-        class="col-lg-6 col-md-6 col-sm-12"
-      >
-        <div class="card shadow">
-          <div class="card-header">
-            <img src="{{ d.icon }}" width="35" />
-            <span class="float-right"> {{start_date}} <b>-</b>  {{end_date}} </span>
-
-          </div>
-          <div class="card-body">
-            <div class="row pl-2">
-              <div class="col-md-12 col-sm-12 pt-3">
-                <span class="half-rem">Clicks:</span> {{ d.clicks }}
-                <br />
-                <span class="half-rem">Views: </span>{{ d.views }}<br />
-                <span class="half-rem">Completed:</span>
-                {{ d.completes }}<br />
-                <span class="half-rem"> TW: </span>
-                {{ d.timeWatched }}<br />
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="row">
+        <div
+          *ngFor="let d of platformData; let i = index"
+          class="col-lg-6 col-md-6 col-sm-12"
+        >
+          <div class="card shadow">
+            <div class="card-header">
+              <img src="{{ d.icon }}" width="35" />
+              <span class="float-right">
+                {{ start_date }} <b>-</b> {{ end_date }}
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="row pl-2">
+                <div class="col-md-12 col-sm-12 pt-3">
+                  <span class="half-rem">Clicks:</span> {{ d.clicks }}
+                  <br />
+                  <span class="half-rem">Views: </span>{{ d.views }}<br />
+                  <span class="half-rem">Completed:</span>
+                  {{ d.completes }}<br />
+                  <span class="half-rem"> TW: </span>
+                  {{ d.timeWatched }}<br />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-lg-6 col-md-6 col-sm-12">
-    <nb-card>
-      <nb-card-header class="bg-blue"> Page Views </nb-card-header>
-      <nb-card-body>
-        <!-- <div *ngIf="msg" id="msg" classs="mce-notification-success"> Notification</div> -->
-        <div class="row">
-          <div class="col-6">
-            <!-- <ng-select
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <nb-card>
+        <nb-card-header class="bg-blue"> Page Views </nb-card-header>
+        <nb-card-body>
+          <!-- <div *ngIf="msg" id="msg" classs="mce-notification-success"> Notification</div> -->
+          <div class="row">
+            <div class="col-6">
+              <!-- <ng-select
               [items]="timePeriodList"
               bindLabel="name"
               placeholder="Time Period"
@@ -50,9 +52,9 @@
               (change)="getSelectedValueOfTimePeriod()"
             >
             </ng-select> -->
-          </div>
-          <div class="col-6">
-            <!-- <ng-select
+            </div>
+            <div class="col-6">
+              <!-- <ng-select
               [items]="productionHouseData"
               bindLabel="name"
               placeholder="Select Production House"
@@ -62,12 +64,13 @@
               (change)="getSelectedValue()"
             >
             </ng-select> -->
+            </div>
           </div>
-        </div>
-        <div class="chart-config">
-          <chart type="line" [data]="data" [options]="options"></chart>
-        </div>
-      </nb-card-body>
-    </nb-card>
+          <div class="chart-config">
+            <chart type="line" [data]="data" [options]="options"></chart>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
   </div>
 </div>

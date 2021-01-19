@@ -1,12 +1,14 @@
-<nb-card size="large">
-  <div class="row ">
+<nb-card size="large" class="mt-3">
+  <div class="row">
     <div
       *ngIf="chartShowToday"
       class="col-lg-6 col-md-6 col-sm-12 display-block"
     >
       <div class="row pl-3 pr-1 pb-2">
         <div class="col-12 bg-light-blue">
-          <h5 class="text-center clr-white">Production house <sub>(Today)</sub></h5>
+          <h5 class="text-center clr-white">
+            Production house <sub>(Today)</sub>
+          </h5>
           <ngx-date-range
             (getRange)="rangeDatesPlay($event, 'today')"
           ></ngx-date-range>
@@ -27,7 +29,9 @@
     >
       <div class="row pl-1 pr-3 pb-2">
         <div class="col-12 bg-light-blue">
-          <h5 class="text-center clr-white">Production house <sub> (Yesterday)</sub></h5>
+          <h5 class="text-center clr-white">
+            Production house <sub> (Yesterday)</sub>
+          </h5>
           <ngx-date-range
             (getRange)="rangeDatesPlay($event, 'yesterday')"
           ></ngx-date-range>

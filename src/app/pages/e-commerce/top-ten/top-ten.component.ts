@@ -51,11 +51,6 @@ export class TopTenComponent implements OnInit {
         type: "string",
         filter: false,
       },
-      // play_rate: {
-      //   title: "Play Rate",
-      //   type: "string",
-      //   filter: false,
-      // },
       todayViews: {
         title: "Today Views",
         type: "string",
@@ -86,14 +81,11 @@ export class TopTenComponent implements OnInit {
         type: "string",
         filter: false,
       },
-      // time_watched: {
-      //   title: "Total Views",
-      //   type: "string",
-      //   filter: false,
-      //   valuePrepareFunction: (value) => {
-      //     return this._decimalPipe.transform(value, "1.0");
-      //   },
-      // },
+      viewPercent: {
+        title: "viewership Percentage",
+        type: "string",
+        filter: false,
+      },
     },
   };
 
@@ -147,7 +139,7 @@ export class TopTenComponent implements OnInit {
     // date = this.getDaysByNumber(period);
   }
 
-  async getAllWeeksData(date) {
+  async getAllData(date) {
     let customData = [],
       customDataLength = [],
       finalData = [];
@@ -164,6 +156,8 @@ export class TopTenComponent implements OnInit {
       let array: any = await this._dashboard
         .getCustomRangeData(data)
         .toPromise();
+      console.log("Array::: ", array);
+
       customData.push(array.Data);
       customDataLength.push(array?.Data?.length);
     }
@@ -180,6 +174,8 @@ export class TopTenComponent implements OnInit {
         yesterdayClicks: 0,
         weekViews: 0,
         weekClicks: 0,
+        totalPlays: 0,
+        viewPercent: 0,
       });
     }
 
@@ -192,31 +188,45 @@ export class TopTenComponent implements OnInit {
             : "",
           plays: customData[i][j]?.plays ? customData[i][j]?.plays : 0,
           embeds: customData[i][j]?.embeds ? customData[i][j]?.embeds : 0,
+          totalPlays: customData[i][j]?.total_Plays
+            ? customData[i][j]?.total_Plays
+            : 0,
         };
 
         if (index == 0) {
           finalData[j]["mediaTitle"] = obj.mediaTitle;
           finalData[j]["weekViews"] = obj.plays + obj.embeds;
           finalData[j]["weekClicks"] = obj.plays;
+          finalData[j]["totalPlays"] = obj.totalPlays;
         } else if (index == 1) {
           finalData[j]["mediaTitle"] = obj.mediaTitle;
           finalData[j]["yesterdayViews"] = obj.plays + obj.embeds;
           finalData[j]["yesterdayClicks"] = obj.plays;
+          finalData[j]["totalPlays"] = obj.totalPlays;
         } else if (index == 2) {
           finalData[j]["mediaTitle"] = obj.mediaTitle;
           finalData[j]["todayViews"] = obj.plays + obj.embeds;
           finalData[j]["todayClicks"] = obj.plays;
+          finalData[j]["totalPlays"] = obj.totalPlays;
         }
       }
     }
 
+    for (let index = 0; index < finalData.length; index++) {
+      let sum =
+        finalData[index].todayClicks +
+        finalData[index].yesterdayClicks +
+        finalData[index].weekClicks;
+      finalData[index].viewPercent =
+        Math.round((sum / finalData[index].totalPlays) * 100) + "%";
+    }
     // console.log("final array: ", finalData);
 
     return finalData;
   }
 
   async loadTable(array) {
-    this.getAllWeeksData(array).then((res) => {
+    this.getAllData(array).then((res) => {
       this.source = res;
       this.showTable = true;
       console.log("Response in load data: ", res);
