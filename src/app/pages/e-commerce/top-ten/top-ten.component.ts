@@ -120,10 +120,10 @@ export class TopTenComponent implements OnInit {
       return { startDate: startDate, endDate: endDate };
     }
   }
-  rangeDates($event) {
-    this.startDate = $event.start;
-    this.endDate = $event.end;
-  }
+  // rangeDates($event) {
+  //   this.startDate = $event.start;
+  //   this.endDate = $event.end;
+  // }
 
   getSelectedPeriod() {
     let period = 7,
@@ -156,7 +156,6 @@ export class TopTenComponent implements OnInit {
       let array: any = await this._dashboard
         .getCustomRangeData(data)
         .toPromise();
-      console.log("Array::: ", array);
 
       customData.push(array.Data);
       customDataLength.push(array?.Data?.length);
@@ -167,6 +166,7 @@ export class TopTenComponent implements OnInit {
     for (let index = 0; index < maxLength; index++) {
       finalData.push({
         serial: index + 1,
+        mediaId: "",
         mediaTitle: "",
         todayViews: 0,
         todayClicks: 0,
@@ -174,7 +174,6 @@ export class TopTenComponent implements OnInit {
         yesterdayClicks: 0,
         weekViews: 0,
         weekClicks: 0,
-        totalPlays: 0,
         viewPercent: 0,
       });
     }
@@ -183,44 +182,76 @@ export class TopTenComponent implements OnInit {
       let index = i;
       for (let j = 0; j < customData[i].length; j++) {
         let obj = {
+          mediaId: customData[i][j]?.MediaId,
           mediaTitle: customData[i][j]?.MediaTitle
             ? customData[i][j]?.MediaTitle
             : "",
           plays: customData[i][j]?.plays ? customData[i][j]?.plays : 0,
           embeds: customData[i][j]?.embeds ? customData[i][j]?.embeds : 0,
-          totalPlays: customData[i][j]?.total_Plays
-            ? customData[i][j]?.total_Plays
-            : 0,
+          // totalViews: customData[i][j]?.play_Embeds
+          //   ? customData[i][j]?.play_Embeds
+          //   : 0,
         };
 
         if (index == 0) {
+          finalData[j]["mediaId"] = obj.mediaId;
           finalData[j]["mediaTitle"] = obj.mediaTitle;
           finalData[j]["weekViews"] = obj.plays + obj.embeds;
           finalData[j]["weekClicks"] = obj.plays;
-          finalData[j]["totalPlays"] = obj.totalPlays;
+          // finalData[j]["totalViews"] = obj.totalViews;
         } else if (index == 1) {
-          finalData[j]["mediaTitle"] = obj.mediaTitle;
-          finalData[j]["yesterdayViews"] = obj.plays + obj.embeds;
-          finalData[j]["yesterdayClicks"] = obj.plays;
-          finalData[j]["totalPlays"] = obj.totalPlays;
+          let indexOfExisting = finalData.indexOf(
+            finalData.filter((f) => f.mediaId === obj.mediaId)[0]
+          );
+          if (indexOfExisting == -1) {
+            finalData[j]["mediaId"] = obj.mediaId;
+            finalData[j]["mediaTitle"] = obj.mediaTitle;
+            finalData[j]["yesterdayViews"] = obj.plays + obj.embeds;
+            finalData[j]["yesterdayClicks"] = obj.plays;
+          } else {
+            finalData[indexOfExisting]["mediaTitle"] = obj.mediaTitle;
+            finalData[indexOfExisting]["yesterdayViews"] =
+              obj.plays + obj.embeds;
+            finalData[indexOfExisting]["yesterdayClicks"] = obj.plays;
+          }
+          // finalData[j]["totalViews"] = obj.totalViews;
         } else if (index == 2) {
-          finalData[j]["mediaTitle"] = obj.mediaTitle;
-          finalData[j]["todayViews"] = obj.plays + obj.embeds;
-          finalData[j]["todayClicks"] = obj.plays;
-          finalData[j]["totalPlays"] = obj.totalPlays;
+          let indexOfExisting = finalData.indexOf(
+            finalData.filter((f) => f.mediaId === obj.mediaId)[0]
+          );
+          if (indexOfExisting == -1) {
+            finalData[j]["mediaId"] = obj.mediaId;
+            finalData[j]["mediaTitle"] = obj.mediaTitle;
+            finalData[j]["todayViews"] = obj.plays + obj.embeds;
+            finalData[j]["todayClicks"] = obj.plays;
+          } else {
+            finalData[indexOfExisting]["mediaTitle"] = obj.mediaTitle;
+            finalData[indexOfExisting]["todayViews"] = obj.plays + obj.embeds;
+            finalData[indexOfExisting]["todayClicks"] = obj.plays;
+          }
+          // finalData[j]["totalViews"] = obj.totalViews;
         }
       }
     }
 
+    const res = await this.getLastThreeMonthData();
+
+    // console.log("Response res: ", res);
+
     for (let index = 0; index < finalData.length; index++) {
-      let sum =
-        finalData[index].todayClicks +
-        finalData[index].yesterdayClicks +
-        finalData[index].weekClicks;
-      finalData[index].viewPercent =
-        Math.round((sum / finalData[index].totalPlays) * 100) + "%";
+      let obj1 = res.filter((f) => f.MediaId === finalData[index].mediaId)[0];
+      if (obj1) {
+        let sum =
+          finalData[index].todayViews +
+          finalData[index].yesterdayViews +
+          finalData[index].weekViews;
+        let total = obj1.plays + obj1.embeds;
+        finalData[index].viewPercent = Math.round((sum / total) * 100) + "%";
+        // console.log("finalData: ",finalData);
+
+      }
+      //  console.log("final array: ", finalData[index].totalViews);
     }
-    // console.log("final array: ", finalData);
 
     return finalData;
   }
@@ -231,5 +262,21 @@ export class TopTenComponent implements OnInit {
       this.showTable = true;
       console.log("Response in load data: ", res);
     });
+  }
+
+  async getLastThreeMonthData() {
+    let date = this.getDaysByNumber(80, "");
+
+    let data = {
+      start_date: date.startDate,
+      end_date: date.endDate,
+      page: this.page,
+      page_length: this.rows,
+    };
+
+    let array: any = await this._dashboard.getCustomRangeData(data).toPromise();
+
+
+    return array.Data;
   }
 }
