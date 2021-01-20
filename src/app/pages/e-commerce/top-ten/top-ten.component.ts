@@ -247,7 +247,16 @@ export class TopTenComponent implements OnInit {
           finalData[index].weekViews;
         let total = obj1.plays + obj1.embeds;
         finalData[index].viewPercent = Math.round((sum / total) * 100) + "%";
-        // console.log("finalData: ",finalData);
+
+
+        console.log(this._decimalPipe.transform(finalData[index].weekClicks,"1.0") + " transform");
+
+        finalData[index].todayViews = this._decimalPipe.transform(finalData[index].todayViews,"1.0")
+        finalData[index].todayClicks = this._decimalPipe.transform(finalData[index].todayClicks,"1.0")
+        finalData[index].yesterdayViews = this._decimalPipe.transform(finalData[index].yesterdayViews,"1.0")
+        finalData[index].yesterdayClicks = this._decimalPipe.transform(finalData[index].yesterdayClicks,"1.0")
+        finalData[index].weekViews = this._decimalPipe.transform(finalData[index].weekViews,"1.0")
+        finalData[index].weekClicks = this._decimalPipe.transform(finalData[index].weekClicks,"1.0")
 
       }
       //  console.log("final array: ", finalData[index].totalViews);
