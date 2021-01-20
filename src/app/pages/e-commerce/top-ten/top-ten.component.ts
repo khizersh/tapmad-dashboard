@@ -196,8 +196,14 @@ export class TopTenComponent implements OnInit {
         if (index == 0) {
           finalData[j]["mediaId"] = obj.mediaId;
           finalData[j]["mediaTitle"] = obj.mediaTitle;
-          finalData[j]["weekViews"] = obj.plays + obj.embeds;
-          finalData[j]["weekClicks"] = obj.plays;
+          finalData[j]["weekViews"] = this._decimalPipe.transform(
+            obj.plays + obj.embeds,
+            "1.0"
+          );
+          finalData[j]["weekClicks"] = this._decimalPipe.transform(
+            obj.plays,
+            "1.0"
+          );
           // finalData[j]["totalViews"] = obj.totalViews;
         } else if (index == 1) {
           let indexOfExisting = finalData.indexOf(
@@ -206,13 +212,22 @@ export class TopTenComponent implements OnInit {
           if (indexOfExisting == -1) {
             finalData[j]["mediaId"] = obj.mediaId;
             finalData[j]["mediaTitle"] = obj.mediaTitle;
-            finalData[j]["yesterdayViews"] = obj.plays + obj.embeds;
-            finalData[j]["yesterdayClicks"] = obj.plays;
+            finalData[j]["yesterdayViews"] = this._decimalPipe.transform(
+              obj.plays + obj.embeds,
+              "1.0"
+            );
+            finalData[j]["yesterdayClicks"] = this._decimalPipe.transform(
+              obj.plays,
+              "1.0"
+            );
           } else {
             finalData[indexOfExisting]["mediaTitle"] = obj.mediaTitle;
-            finalData[indexOfExisting]["yesterdayViews"] =
-              obj.plays + obj.embeds;
-            finalData[indexOfExisting]["yesterdayClicks"] = obj.plays;
+            finalData[indexOfExisting][
+              "yesterdayViews"
+            ] = this._decimalPipe.transform(obj.plays + obj.embeds, "1.0");
+            finalData[indexOfExisting][
+              "yesterdayClicks"
+            ] = this._decimalPipe.transform(obj.plays, "1.0");
           }
           // finalData[j]["totalViews"] = obj.totalViews;
         } else if (index == 2) {
@@ -222,12 +237,22 @@ export class TopTenComponent implements OnInit {
           if (indexOfExisting == -1) {
             finalData[j]["mediaId"] = obj.mediaId;
             finalData[j]["mediaTitle"] = obj.mediaTitle;
-            finalData[j]["todayViews"] = obj.plays + obj.embeds;
-            finalData[j]["todayClicks"] = obj.plays;
+            finalData[j]["todayViews"] = this._decimalPipe.transform(
+              obj.plays + obj.embeds,
+              "1.0"
+            );
+            finalData[j]["todayClicks"] = this._decimalPipe.transform(
+              obj.plays,
+              "1.0"
+            );
           } else {
             finalData[indexOfExisting]["mediaTitle"] = obj.mediaTitle;
-            finalData[indexOfExisting]["todayViews"] = obj.plays + obj.embeds;
-            finalData[indexOfExisting]["todayClicks"] = obj.plays;
+            finalData[indexOfExisting][
+              "todayViews"
+            ] = this._decimalPipe.transform(obj.plays + obj.embeds, "1.0");
+            finalData[indexOfExisting][
+              "todayClicks"
+            ] = this._decimalPipe.transform(obj.plays, "1.0");
           }
           // finalData[j]["totalViews"] = obj.totalViews;
         }
@@ -242,21 +267,10 @@ export class TopTenComponent implements OnInit {
       let obj1 = res.filter((f) => f.MediaId === finalData[index].mediaId)[0];
       if (obj1) {
         let sum =
-          finalData[index].todayViews +
-          finalData[index].yesterdayViews +
-          finalData[index].weekViews;
+          (+finalData[index].todayViews.toString().split(',').join('')) + (+finalData[index].yesterdayViews.toString().split(',').join('') ) + (+finalData[index].weekViews.toString().split(',').join(''));
         let total = obj1.plays + obj1.embeds;
         finalData[index].viewPercent = Math.round((sum / total) * 100) + "%";
 
-
-        console.log(this._decimalPipe.transform(finalData[index].weekClicks,"1.0") + " transform");
-
-        finalData[index].todayViews = this._decimalPipe.transform(finalData[index].todayViews,"1.0")
-        finalData[index].todayClicks = this._decimalPipe.transform(finalData[index].todayClicks,"1.0")
-        finalData[index].yesterdayViews = this._decimalPipe.transform(finalData[index].yesterdayViews,"1.0")
-        finalData[index].yesterdayClicks = this._decimalPipe.transform(finalData[index].yesterdayClicks,"1.0")
-        finalData[index].weekViews = this._decimalPipe.transform(finalData[index].weekViews,"1.0")
-        finalData[index].weekClicks = this._decimalPipe.transform(finalData[index].weekClicks,"1.0")
 
       }
       //  console.log("final array: ", finalData[index].totalViews);
@@ -284,7 +298,6 @@ export class TopTenComponent implements OnInit {
     };
 
     let array: any = await this._dashboard.getCustomRangeData(data).toPromise();
-
 
     return array.Data;
   }
