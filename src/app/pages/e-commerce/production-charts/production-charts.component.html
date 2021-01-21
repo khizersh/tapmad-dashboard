@@ -20,7 +20,7 @@
         [data]="pieChartDataToday"
         [labels]="pieChartLabels"
         [chartType]="pieChartType"
-        [options]="barChartOptions"
+        [options]="options"
       ></canvas>
     </div>
     <div
@@ -38,12 +38,11 @@
         </div>
       </div>
       <canvas
-        class="display-block"
         baseChart
         [data]="pieChartDataYesterday"
         [labels]="pieChartLabels"
         [chartType]="pieChartType"
-        [options]="barChartOptions"
+        [options]="options"
       >
       </canvas>
     </div>

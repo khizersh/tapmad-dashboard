@@ -18,13 +18,15 @@ export class CustomCardComponent implements OnInit {
   totalData = [
     {
       clicks: null,
-      views: null,
+      plays: null,
+      embeds: null,
       completes: null,
       timeWatched: null,
     },
     {
       clicks: null,
-      views: null,
+      plays: null,
+      embeds: null,
       completes: null,
       timeWatched: null,
     },
@@ -34,7 +36,8 @@ export class CustomCardComponent implements OnInit {
     {
       icon: "../../../../assets//images//web.png",
       clicks: "",
-      views: "",
+      plays: null,
+      embeds: null,
       completes: "",
       timeWatched: "",
       name: "Web",
@@ -42,7 +45,8 @@ export class CustomCardComponent implements OnInit {
     {
       icon: "../../../../assets//images//android.png",
       clicks: "",
-      views: "",
+      plays: null,
+      embeds: null,
       completes: "",
       timeWatched: "",
       name: "Android",
@@ -50,7 +54,8 @@ export class CustomCardComponent implements OnInit {
     {
       icon: "../../../../assets//images//apple.png",
       clicks: "",
-      views: "",
+      plays: null,
+      embeds: null,
       completes: "",
       timeWatched: "",
       name: "IOS",
@@ -58,7 +63,8 @@ export class CustomCardComponent implements OnInit {
     {
       icon: "../../../../assets//images//tv.png",
       clicks: "",
-      views: "",
+      plays: null,
+      embeds: null,
       completes: "",
       timeWatched: "",
       name: "TV",
@@ -68,14 +74,16 @@ export class CustomCardComponent implements OnInit {
     {
       icon: "../../../../assets//images//web.png",
       clicks: null,
-      views: null,
+      plays: null,
+      embeds: null,
       completes: null,
       timeWatched: null,
     },
     {
       icon: "../../../../assets//images//android.png",
       clicks: null,
-      views: null,
+      plays: null,
+      embeds: null,
       completes: null,
       timeWatched: null,
     },
@@ -89,7 +97,8 @@ export class CustomCardComponent implements OnInit {
     {
       icon: "../../../../assets//images//tv.png",
       clicks: null,
-      views: null,
+      plays: null,
+      embeds: null,
       completes: null,
       timeWatched: null,
     },
@@ -122,10 +131,14 @@ export class CustomCardComponent implements OnInit {
         data.Data[i].plays,
         "1.0"
       )),
-        (this.CurrentWeek[i].views = this._decimalPipe.transform(
-          data.Data[i].plays + data.Data[i].embeds,
+        (this.CurrentWeek[i].plays = this._decimalPipe.transform(
+          data.Data[i].plays,
           "1.0"
         ));
+      this.CurrentWeek[i].embeds = this._decimalPipe.transform(
+        data.Data[i].embeds,
+        "1.0"
+      );
       (this.CurrentWeek[i].completes = this._decimalPipe.transform(
         data.Data[i].completes,
         "1.0"
@@ -146,10 +159,12 @@ export class CustomCardComponent implements OnInit {
         dataLastWeek.Data[i].plays - data.Data[i].plays,
         "1.0"
       );
-      this.LastWeek[i].views = this._decimalPipe.transform(
-        dataLastWeek.Data[i].plays +
-          dataLastWeek.Data[i].embeds -
-          (data.Data[i].plays + data.Data[i].embeds),
+      this.LastWeek[i].plays = this._decimalPipe.transform(
+        dataLastWeek.Data[i].plays - data.Data[i].plays,
+        "1.0"
+      );
+      this.LastWeek[i].embeds = this._decimalPipe.transform(
+        dataLastWeek.Data[i].embeds - data.Data[i].embeds,
         "1.0"
       );
       this.LastWeek[i].completes = this._decimalPipe.transform(
@@ -165,9 +180,11 @@ export class CustomCardComponent implements OnInit {
   }
 
   async loadTotalData(date) {
+    // 0 index of total data is current week 1 index is last week
     this.CurrentWeek.map((d, i) => {
       this.totalData[0].clicks += parseFloat(d.clicks.replace(/,/g, ""));
-      this.totalData[0].views += parseFloat(d.views.replace(/,/g, ""));
+      this.totalData[0].plays += parseFloat(d.plays.replace(/,/g, ""));
+      this.totalData[0].embeds += parseFloat(d.embeds.replace(/,/g, ""));
       this.totalData[0].completes += parseFloat(d.completes.replace(/,/g, ""));
       this.totalData[0].timeWatched += parseFloat(
         d.timeWatched.replace(/,/g, "")
@@ -179,7 +196,8 @@ export class CustomCardComponent implements OnInit {
 
       for (let d of res.Data) {
         this.totalData[1].clicks += d.plays;
-        this.totalData[1].views += d.plays + d.embeds;
+        this.totalData[1].plays += d.plays;
+        this.totalData[1].embeds += d.embeds;
         this.totalData[1].completes += d.completes;
         this.totalData[1].timeWatched += d.time_watched;
       }
@@ -188,9 +206,14 @@ export class CustomCardComponent implements OnInit {
           parseFloat(this.totalData[0].clicks.replace(/,/g, "")),
         "1.0"
       );
-      this.totalData[1].views = this._decimalPipe.transform(
-        this.totalData[1].views -
-          parseFloat(this.totalData[0].views.replace(/,/g, "")),
+      this.totalData[1].plays = this._decimalPipe.transform(
+        this.totalData[1].plays -
+          parseFloat(this.totalData[0].plays.replace(/,/g, "")),
+        "1.0"
+      );
+      this.totalData[1].embeds = this._decimalPipe.transform(
+        this.totalData[1].embeds -
+          parseFloat(this.totalData[0].embeds.replace(/,/g, "")),
         "1.0"
       );
       this.totalData[1].completes = this._decimalPipe.transform(
@@ -203,16 +226,18 @@ export class CustomCardComponent implements OnInit {
           parseFloat(this.totalData[0].timeWatched.replace(/,/g, "")),
         "1.0"
       );
-
-      console.log("Total Data: ", this.totalData);
     });
 
     this.totalData[0].clicks = this._decimalPipe.transform(
       this.totalData[0].clicks,
       "1.0"
     );
-    this.totalData[0].views = this._decimalPipe.transform(
-      this.totalData[0].views,
+    this.totalData[0].plays = this._decimalPipe.transform(
+      this.totalData[0].plays,
+      "1.0"
+    );
+    this.totalData[0].embeds = this._decimalPipe.transform(
+      this.totalData[0].embeds,
       "1.0"
     );
     this.totalData[0].completes = this._decimalPipe.transform(
@@ -223,23 +248,6 @@ export class CustomCardComponent implements OnInit {
       this.totalData[0].timeWatched,
       "1.0"
     );
-
-    // this.totalData[1].clicks = this._decimalPipe.transform(
-    //   this.totalData[1].clicks,
-    //   "1.0"
-    // );
-    // this.totalData[1].views = this._decimalPipe.transform(
-    //   this.totalData[1].views,
-    //   "1.0"
-    // );
-    // this.totalData[1].completes = this._decimalPipe.transform(
-    //   this.totalData[1].completes,
-    //   "1.0"
-    // );
-    // this.totalData[1].timeWatched = this._decimalPipe.transform(
-    //   this.totalData[1].timeWatched,
-    //   "1.0"
-    // );
   }
 
   getSelectedPeriod() {

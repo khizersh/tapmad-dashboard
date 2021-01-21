@@ -14,11 +14,11 @@
         </div>
         <div class="card-body">
           <div class="row pl-3">
-
             <div class="col-md-8 col-sm-8 pt-3">
+              <span class="half-rem">Plays: </span>{{ d.plays }}<br />
               <span class="half-rem">Clicks:</span> {{ d.clicks }}
               <br />
-              <span class="half-rem">Views: </span>{{ d.views }}<br />
+              <span class="half-rem">Embeds: </span>{{ d.embeds }}<br />
               <span class="half-rem">Completed:</span>
               {{ d.completes }}<br />
               <span class="half-rem"> Time watch: </span>
@@ -26,11 +26,13 @@
             </div>
             <div class="col-md-4 col-sm-4">
               <div class="row">
-                  <div *ngFor="let d of CurrentWeek; let i = index"  class="col-6 pt-4 pr-2">
-                    <img  src={{d.icon}} width="30"/>
-                  </div>
+                <div
+                  *ngFor="let d of CurrentWeek; let i = index"
+                  class="col-6 pt-4 pr-2"
+                >
+                  <img src="{{ d.icon }}" width="30" />
+                </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -58,7 +60,9 @@
       class="col-md-6 card p-3 mb-2"
     >
       <div class="row">
-        <div class="col-12"><h6 class="text-center">{{d.name}}</h6></div>
+        <div class="col-12">
+          <h6 class="text-center">{{ d.name }}</h6>
+        </div>
         <div class="col-md-6">
           <div class="card shadow">
             <div class="card-header">
@@ -78,14 +82,13 @@
                   <img src="{{ d.icon }}" width="45" />
                 </div>
                 <div class="col-md-9 col-sm-12 pt-3">
+                  <p style="line-height: 0.25rem">Plays: {{ d.plays }}</p>
                   <p style="line-height: 0.25rem">Clicks: {{ d.clicks }}</p>
-                  <p style="line-height: 0.25rem">Views: {{ d.views }}</p>
+                  <p style="line-height: 0.25rem">Embeds: {{ d.embeds }}</p>
                   <p style="line-height: 0.25rem">
                     Completed: {{ d.completes }}
                   </p>
-                  <p style="line-height: 0.25rem">
-                    TW: {{ d.timeWatched }}
-                  </p>
+                  <p style="line-height: 0.25rem">TW: {{ d.timeWatched }}</p>
                 </div>
               </div>
             </div>
@@ -111,10 +114,13 @@
                 </div>
                 <div class="col-md-9 col-sm-12 pt-3">
                   <p style="line-height: 0.25rem">
+                    Plays: {{ LastWeek[i].plays }}
+                  </p>
+                  <p style="line-height: 0.25rem">
                     Clicks: {{ LastWeek[i].clicks }}
                   </p>
                   <p style="line-height: 0.25rem">
-                    Views: {{ LastWeek[i].views }}
+                    Embeds: {{ LastWeek[i].embeds }}
                   </p>
                   <p style="line-height: 0.25rem">
                     Completed: {{ LastWeek[i].completes }}

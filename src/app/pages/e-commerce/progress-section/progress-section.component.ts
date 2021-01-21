@@ -37,7 +37,7 @@ export class ECommerceProgressSectionComponent implements OnDestroy, OnInit {
     },
   ];
 
-  timePeriodList = ["Last Week", "Last 30 Days", "Todays"];
+  timePeriodList = ["Last Week", "Last 3 Months", "Last 30 Days", "Todays"];
   selectedTimePeriodList = "Last Week";
 
   constructor(
@@ -81,6 +81,9 @@ export class ECommerceProgressSectionComponent implements OnDestroy, OnInit {
     console.log("selectedTimePeriodList: ", this.selectedTimePeriodList);
     let period = 7,
       date;
+    if (this.selectedTimePeriodList == "Last 3 Months") {
+      period = 90;
+    }
     if (this.selectedTimePeriodList == "Last Week") {
       period = 7;
     }

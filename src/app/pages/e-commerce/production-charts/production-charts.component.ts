@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { NbThemeService } from "@nebular/theme";
 import { DashbaordChartService } from "../../../services/dashboard-chart";
 import { DateUtils } from "../../../utils/date.utls";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 @Component({
   selector: "ngx-production-charts",
@@ -22,9 +23,24 @@ export class ProductionChartsComponent implements OnInit {
 
   public barChartOptions = {
     scaleShowVerticalLines: false,
+    maintainAspectRatio: false,
     responsive: true,
   };
-
+  public chartColors: Array<any> = [
+    {
+      backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+      hoverBackgroundColor: [
+        "#FF5A5E",
+        "#5AD3D1",
+        "#FFC870",
+        "#A8B3C5",
+        "#616774",
+      ],
+      borderWidth: 2,
+      size: 110,
+      width: 400,
+    },
+  ];
   constructor(
     private service: DashbaordChartService,
     private _utils: DateUtils
@@ -37,8 +53,29 @@ export class ProductionChartsComponent implements OnInit {
       this.loadChart(this.phData, yesterday, "yesterday");
     });
   }
+  options = {
+    tooltips: {
+      enabled: true,
+    },
+    plugins: {
+      datalabels: {
+        formatter: (value, ctx) => {
+          let sum = 0;
+          let dataArr = ctx.chart.data.datasets[0].data;
+          dataArr.map((data) => {
+            sum += data;
+          });
+          let percentage = ((value * 100) / sum).toFixed(2) + "%";
+          return percentage;
+        },
+        color: "#fff",
+      },
+    },
+  };
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log("Ctx options ", this.options);
+  }
 
   rangeDatesPlay($event, type: string) {
     let date = {
@@ -80,7 +117,7 @@ export class ProductionChartsComponent implements OnInit {
 
     let viewsArray = res.Data.map((m) => (m.plays ? m.plays : 0));
     let PHArray = res.Data.map((m) =>
-      m.Category ? m.Category : "not defined"
+      m.Category ? m.Category.split("_")[1] : "not defined"
     );
     this.pieChartLabels = PHArray;
     if (type == "today" || type == "all") {

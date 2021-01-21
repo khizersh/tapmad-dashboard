@@ -10,6 +10,17 @@
   margin: 0px;
 }
 
-.clr-white{
-  color:white;
+.chart-size {
+  width: 500px !important;
+  height: 500px !important;
+}
+.clr-white {
+  color: white;
+}
+
+.chart-container {
+  position: relative;
+  margin: auto;
+  height: 80vh;
+  width: 80vw;
 }
