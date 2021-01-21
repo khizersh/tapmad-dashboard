@@ -24,28 +24,32 @@ export class UserChartComponent implements OnInit {
     {
       icon: "../../../../assets//images//web.png",
       clicks: "",
-      views: "",
+      plays: "",
+      embeds: "",
       completes: "",
       timeWatched: "",
     },
     {
       icon: "../../../../assets//images//android.png",
       clicks: "",
-      views: "",
+      plays: "",
+      embeds: "",
       completes: "",
       timeWatched: "",
     },
     {
       icon: "../../../../assets//images//apple.png",
       clicks: "",
-      views: "",
+      plays: "",
+      embeds: "",
       completes: "",
       timeWatched: "",
     },
     {
       icon: "../../../../assets//images//tv.png",
       clicks: "",
-      views: "",
+      plays: "",
+      embeds: "",
       completes: "",
       timeWatched: "",
     },
@@ -68,10 +72,10 @@ export class UserChartComponent implements OnInit {
     this.start_date = date.start;
     this.end_date = date.end;
 
-      this.loadPlatformData({
-        start_date: this.start_date,
-        end_date: this.end_date,
-      })
+    this.loadPlatformData({
+      start_date: this.start_date,
+      end_date: this.end_date,
+    });
   }
 
   async loadPlatformData(date) {
@@ -82,8 +86,12 @@ export class UserChartComponent implements OnInit {
         plat.plays,
         "1.0"
       );
-      this.platformData[i].views = this._decimalPipe.transform(
-        plat.plays + plat.embeds,
+      this.platformData[i].plays = this._decimalPipe.transform(
+        plat.plays,
+        "1.0"
+      );
+      this.platformData[i].embeds = this._decimalPipe.transform(
+        plat.embeds,
         "1.0"
       );
       this.platformData[i].completes = this._decimalPipe.transform(
