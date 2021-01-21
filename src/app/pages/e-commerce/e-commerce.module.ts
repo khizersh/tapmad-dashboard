@@ -65,12 +65,10 @@ import { TopMoviesComponent } from "../top-movies/top-movies.component";
 import { TopTenComponent } from "./top-ten/top-ten.component";
 import { ProdHouseComponent } from "./prod-house/prod-house.component";
 import { UserChartComponent } from "./user-chart/user-chart.component";
-import { ProductionChartsComponent } from './production-charts/production-charts.component';
-import { ChartsModule } from 'ng2-charts';
-import { UserPieChartComponent } from './user-pie-chart/user-pie-chart.component';
-
-
-
+import { ProductionChartsComponent } from "./production-charts/production-charts.component";
+import { ChartsModule } from "ng2-charts";
+import { UserPieChartComponent } from "./user-pie-chart/user-pie-chart.component";
+import { NgApexchartsModule } from "ng-apexcharts";
 
 @NgModule({
   imports: [
@@ -95,8 +93,8 @@ import { UserPieChartComponent } from './user-pie-chart/user-pie-chart.component
     FormsModule,
     DateRangeModule,
     NgSelectModule,
-    ChartsModule
-
+    ChartsModule,
+    NgApexchartsModule,
   ],
   declarations: [
     TopMoviesComponent,
@@ -137,8 +135,7 @@ import { UserPieChartComponent } from './user-pie-chart/user-pie-chart.component
     ProdHouseComponent,
     UserChartComponent,
     ProductionChartsComponent,
-    UserPieChartComponent
-
+    UserPieChartComponent,
   ],
   providers: [CountryOrdersMapService],
 })

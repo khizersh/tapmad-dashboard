@@ -1,8 +1,19 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { NbThemeService } from "@nebular/theme";
 import { DashbaordChartService } from "../../../services/dashboard-chart";
 import { DateUtils } from "../../../utils/date.utls";
-import ChartDataLabels from "chartjs-plugin-datalabels";
+import { ChartComponent } from "ng-apexcharts";
+import {
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ApexChart,
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+};
 
 @Component({
   selector: "ngx-production-charts",
@@ -10,71 +21,39 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
   styleUrls: ["./production-charts.component.scss"],
 })
 export class ProductionChartsComponent implements OnInit {
-  // public pieChartLabels = ['Sales Q1', 'Sales Q2', 'Sales Q3', 'Sales Q4'];
+  @ViewChild("chart") chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
+  public chartOptionYesterday: Partial<ChartOptions>;
+
   public pieChartLabels = [];
   public pieChartType = "pie";
   chartShowToday = false;
   chartShowYesterday = false;
-
   phData = [];
-
   public pieChartDataToday = [];
   public pieChartDataYesterday = [];
-
   public barChartOptions = {
     scaleShowVerticalLines: false,
     maintainAspectRatio: false,
     responsive: true,
   };
-  public chartColors: Array<any> = [
-    {
-      backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
-      hoverBackgroundColor: [
-        "#FF5A5E",
-        "#5AD3D1",
-        "#FFC870",
-        "#A8B3C5",
-        "#616774",
-      ],
-      borderWidth: 2,
-      size: 110,
-      width: 400,
-    },
-  ];
+
   constructor(
     private service: DashbaordChartService,
     private _utils: DateUtils
-  ) {
-    let today = this.getDateOfGivenDays(0, "normal");
-    let yesterday = this.getDateOfGivenDays(1, "yesterday");
-    this.service.getProductHouseFilter().subscribe((res: any) => {
-      this.phData = res.Data;
-      this.loadChart(this.phData, today, "today");
-      this.loadChart(this.phData, yesterday, "yesterday");
-    });
-  }
-  options = {
-    tooltips: {
-      enabled: true,
-    },
-    plugins: {
-      datalabels: {
-        formatter: (value, ctx) => {
-          let sum = 0;
-          let dataArr = ctx.chart.data.datasets[0].data;
-          dataArr.map((data) => {
-            sum += data;
-          });
-          let percentage = ((value * 100) / sum).toFixed(2) + "%";
-          return percentage;
-        },
-        color: "#fff",
-      },
-    },
-  };
+  ) {}
 
   ngOnInit(): void {
-    console.log("Ctx options ", this.options);
+    let today = this.getDateOfGivenDays(0, "normal");
+    let yesterday = this.getDateOfGivenDays(0, "yesterday");
+    console.log("yesterday: ", yesterday);
+    console.log("today: ", today);
+
+    this.service.getProductHouseFilter().subscribe((res: any) => {
+      this.phData = res.Data;
+      this.loadChart(this.phData, yesterday, "yesterday");
+      this.loadChart(this.phData, today, "today");
+    });
   }
 
   rangeDatesPlay($event, type: string) {
@@ -92,7 +71,8 @@ export class ProductionChartsComponent implements OnInit {
     var d = new Date();
     if (type == "yesterday") {
       let endDate = this._utils.formatDate(d.setDate(d.getDate() - 1));
-      let startDate = this._utils.formatDate(d.setDate(d.getDate() - 1));
+      let startDate = endDate;
+
       return { start: startDate, end: endDate };
     } else {
       let endDate = this._utils.formatDate(d.setDate(d.getDate()));
@@ -120,13 +100,68 @@ export class ProductionChartsComponent implements OnInit {
       m.Category ? m.Category.split("_")[1] : "not defined"
     );
     this.pieChartLabels = PHArray;
+
     if (type == "today" || type == "all") {
       this.pieChartDataToday = viewsArray;
+      this.setOption(this.pieChartDataToday, this.pieChartLabels, "today");
       this.chartShowToday = true;
     }
     if (type == "yesterday" || type == "all") {
       this.pieChartDataYesterday = viewsArray;
+      this.setOption(
+        this.pieChartDataYesterday,
+        this.pieChartLabels,
+        "yesterday"
+      );
       this.chartShowYesterday = true;
+    }
+  }
+
+  setOption(data: any, labels: any, type: string) {
+    if (type === "today") {
+      this.chartOptions = {
+        series: data,
+        chart: {
+          width: 380,
+          type: "pie",
+        },
+        labels: labels,
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      };
+    } else {
+      this.chartOptionYesterday = {
+        series: data,
+        chart: {
+          width: 380,
+          type: "pie",
+        },
+        labels: labels,
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      };
     }
   }
 }

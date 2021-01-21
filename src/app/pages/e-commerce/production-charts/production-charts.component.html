@@ -1,4 +1,4 @@
-<nb-card size="large" class="mt-3">
+<nb-card size="medium" class="mt-3">
   <div class="row">
     <div
       *ngIf="chartShowToday"
@@ -14,14 +14,14 @@
           ></ngx-date-range>
         </div>
       </div>
-      <canvas
-        class="display-block"
-        baseChart
-        [data]="pieChartDataToday"
-        [labels]="pieChartLabels"
-        [chartType]="pieChartType"
-        [options]="options"
-      ></canvas>
+      <div class="padding-14">
+        <apx-chart
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [labels]="chartOptions.labels"
+          [responsive]="chartOptions.responsive"
+        ></apx-chart>
+      </div>
     </div>
     <div
       *ngIf="chartShowYesterday"
@@ -37,14 +37,14 @@
           ></ngx-date-range>
         </div>
       </div>
-      <canvas
-        baseChart
-        [data]="pieChartDataYesterday"
-        [labels]="pieChartLabels"
-        [chartType]="pieChartType"
-        [options]="options"
-      >
-      </canvas>
+      <div class="padding-14">
+        <apx-chart
+          [series]="chartOptionYesterday.series"
+          [chart]="chartOptionYesterday.chart"
+          [labels]="chartOptionYesterday.labels"
+          [responsive]="chartOptionYesterday.responsive"
+        ></apx-chart>
+      </div>
     </div>
   </div>
 </nb-card>
