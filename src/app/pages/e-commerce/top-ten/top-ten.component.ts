@@ -46,38 +46,33 @@ export class TopTenComponent implements OnInit {
         type: "string",
         filter: false,
       },
-      mediaTitle: {
+      MediaTitle: {
         title: "Media Title",
         type: "string",
         filter: false,
       },
-      todayViews: {
+      viewsCurrent: {
         title: "Today Views",
         type: "string",
         filter: false,
       },
-      todayClicks: {
-        title: "Today Clicks",
-        type: "string",
-        filter: false,
-      },
-      yesterdayViews: {
+      // todayClicks: {
+      //   title: "Today Clicks",
+      //   type: "string",
+      //   filter: false,
+      // },
+      viewYesterday: {
         title: "Yesterday Views",
         type: "string",
         filter: false,
       },
-      yesterdayClicks: {
-        title: "Yesterday Clicks",
-        type: "string",
-        filter: false,
-      },
-      weekViews: {
+      // yesterdayClicks: {
+      //   title: "Yesterday Clicks",
+      //   type: "string",
+      //   filter: false,
+      // },
+      viewsWeek: {
         title: "Week ago Views",
-        type: "string",
-        filter: false,
-      },
-      weekClicks: {
-        title: "Week ago Clicks",
         type: "string",
         filter: false,
       },
@@ -96,209 +91,213 @@ export class TopTenComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    let dateArray = [];
-    let week = this.getDaysByNumber(7, "");
-    let yesterday = this.getDaysByNumber(1, "yesterday");
-    let today = this.getDaysByNumber(0, "");
-    dateArray.push(week);
-    dateArray.push(yesterday);
-    dateArray.push(today);
-    console.log("date array: ", dateArray);
-
-    this.loadTable(dateArray);
+    this.getTopContentData();
   }
 
-  getDaysByNumber(num: number, type) {
-    var d = new Date();
-    if (type) {
-      let endDate = this._utils.formatDate(d.setDate(d.getDate() - 1));
-      let startDate = this._utils.formatDate(d.setDate(d.getDate() - 1));
-      return { startDate: startDate, endDate: endDate };
-    } else {
-      let endDate = this._utils.formatDate(d.setDate(d.getDate()));
-      let startDate = this._utils.formatDate(d.setDate(d.getDate() - num));
-      return { startDate: startDate, endDate: endDate };
-    }
-  }
   // rangeDates($event) {
   //   this.startDate = $event.start;
   //   this.endDate = $event.end;
   // }
 
-  getSelectedPeriod() {
-    let period = 7,
-      date;
-    if (this.selectedTimePeriodList === "Last Week") {
-      period = 7;
-    } else if (this.selectedTimePeriodList === "Last 30 Days") {
-      period = 30;
-    }
-    if (this.selectedTimePeriodList === "Todays") {
-      period = 0;
-    }
-    // date = this.getDaysByNumber(period);
-  }
+  // getSelectedPeriod() {
+  //   let period = 7,
+  //     date;
+  //   if (this.selectedTimePeriodList === "Last Week") {
+  //     period = 7;
+  //   } else if (this.selectedTimePeriodList === "Last 30 Days") {
+  //     period = 30;
+  //   }
+  //   if (this.selectedTimePeriodList === "Todays") {
+  //     period = 0;
+  //   }
+  //   // date = this.getDaysByNumber(period);
+  // }
 
-  async getAllData(date) {
-    let customData = [],
-      customDataLength = [],
-      finalData = [];
-
-    for (var i = 0; i < date.length; i++) {
-      let index = i;
-      let data = {
-        start_date: date[i].startDate,
-        end_date: date[i].endDate,
-        page: this.page,
-        page_length: this.rows,
-      };
-
-      let array: any = await this._dashboard
-        .getCustomRangeData(data)
-        .toPromise();
-
-      customData.push(array.Data);
-      customDataLength.push(array?.Data?.length);
-    }
-
-    let maxLength = Math.max(...customDataLength);
-
-    for (let index = 0; index < maxLength; index++) {
-      finalData.push({
-        serial: index + 1,
-        mediaId: "",
-        mediaTitle: "",
-        todayViews: 0,
-        todayClicks: 0,
-        yesterdayViews: 0,
-        yesterdayClicks: 0,
-        weekViews: 0,
-        weekClicks: 0,
-        viewPercent: 0,
-      });
-    }
-
-    for (let i = 0; i < customData.length; i++) {
-      let index = i;
-      for (let j = 0; j < customData[i].length; j++) {
-        let obj = {
-          mediaId: customData[i][j]?.MediaId,
-          mediaTitle: customData[i][j]?.MediaTitle
-            ? customData[i][j]?.MediaTitle
-            : "",
-          plays: customData[i][j]?.plays ? customData[i][j]?.plays : 0,
-          embeds: customData[i][j]?.embeds ? customData[i][j]?.embeds : 0,
-          // totalViews: customData[i][j]?.play_Embeds
-          //   ? customData[i][j]?.play_Embeds
-          //   : 0,
-        };
-
-        if (index == 0) {
-          finalData[j]["mediaId"] = obj.mediaId;
-          finalData[j]["mediaTitle"] = obj.mediaTitle;
-          finalData[j]["weekViews"] = this._decimalPipe.transform(
-            obj.plays + obj.embeds,
-            "1.0"
-          );
-          finalData[j]["weekClicks"] = this._decimalPipe.transform(
-            obj.plays,
-            "1.0"
-          );
-          // finalData[j]["totalViews"] = obj.totalViews;
-        } else if (index == 1) {
-          let indexOfExisting = finalData.indexOf(
-            finalData.filter((f) => f.mediaId === obj.mediaId)[0]
-          );
-          if (indexOfExisting == -1) {
-            finalData[j]["mediaId"] = obj.mediaId;
-            finalData[j]["mediaTitle"] = obj.mediaTitle;
-            finalData[j]["yesterdayViews"] = this._decimalPipe.transform(
-              obj.plays + obj.embeds,
-              "1.0"
-            );
-            finalData[j]["yesterdayClicks"] = this._decimalPipe.transform(
-              obj.plays,
-              "1.0"
-            );
-          } else {
-            finalData[indexOfExisting]["mediaTitle"] = obj.mediaTitle;
-            finalData[indexOfExisting][
-              "yesterdayViews"
-            ] = this._decimalPipe.transform(obj.plays + obj.embeds, "1.0");
-            finalData[indexOfExisting][
-              "yesterdayClicks"
-            ] = this._decimalPipe.transform(obj.plays, "1.0");
-          }
-          // finalData[j]["totalViews"] = obj.totalViews;
-        } else if (index == 2) {
-          let indexOfExisting = finalData.indexOf(
-            finalData.filter((f) => f.mediaId === obj.mediaId)[0]
-          );
-          if (indexOfExisting == -1) {
-            finalData[j]["mediaId"] = obj.mediaId;
-            finalData[j]["mediaTitle"] = obj.mediaTitle;
-            finalData[j]["todayViews"] = this._decimalPipe.transform(
-              obj.plays + obj.embeds,
-              "1.0"
-            );
-            finalData[j]["todayClicks"] = this._decimalPipe.transform(
-              obj.plays,
-              "1.0"
-            );
-          } else {
-            finalData[indexOfExisting]["mediaTitle"] = obj.mediaTitle;
-            finalData[indexOfExisting][
-              "todayViews"
-            ] = this._decimalPipe.transform(obj.plays + obj.embeds, "1.0");
-            finalData[indexOfExisting][
-              "todayClicks"
-            ] = this._decimalPipe.transform(obj.plays, "1.0");
-          }
-          // finalData[j]["totalViews"] = obj.totalViews;
-        }
-      }
-    }
-
-    const res = await this.getLastThreeMonthData();
-
-    // console.log("Response res: ", res);
-
-    for (let index = 0; index < finalData.length; index++) {
-      let obj1 = res.filter((f) => f.MediaId === finalData[index].mediaId)[0];
-      if (obj1) {
-        let sum =
-          (+finalData[index].todayViews.toString().split(',').join('')) + (+finalData[index].yesterdayViews.toString().split(',').join('') ) + (+finalData[index].weekViews.toString().split(',').join(''));
-        let total = obj1.plays + obj1.embeds;
-        finalData[index].viewPercent = Math.round((sum / total) * 100) + "%";
-
-
-      }
-      //  console.log("final array: ", finalData[index].totalViews);
-    }
-
-    return finalData;
-  }
-
-  async loadTable(array) {
-    this.getAllData(array).then((res) => {
-      this.source = res;
-      this.showTable = true;
-      console.log("Response in load data: ", res);
-    });
-  }
-
-  async getLastThreeMonthData() {
-    let date = this.getDaysByNumber(80, "");
-
+  async getTopContentData() {
     let data = {
-      start_date: date.startDate,
-      end_date: date.endDate,
-      page: this.page,
-      page_length: this.rows,
+      start_date: "2021-1-17",
+      end_date: "2021-1-17",
+      page: "0",
+      page_length: "25",
     };
+    const res: any = await this._dashboard.get25TopContent(data).toPromise();
 
-    let array: any = await this._dashboard.getCustomRangeData(data).toPromise();
+    this.source = res.Data.map((m, i) => {
+      let sum = m.viewsCurrent + m.viewYesterday + m.viewsWeek;
+      m.viewPercent = Math.round((sum / m.viewThreesMonthly) * 100) + "%";
 
-    return array.Data;
+      m.serial = i + 1;
+      m.viewMonth = this._decimalPipe.transform(m.viewMonth, "1.0");
+      m.viewsWeek = this._decimalPipe.transform(m.viewsWeek, "1.0");
+      m.viewYesterday = this._decimalPipe.transform(m.viewYesterday, "1.0");
+      m.viewsCurrent = this._decimalPipe.transform(m.viewsCurrent, "1.0");
+
+      return m;
+    });
+    if (this.source.length) {
+      this.showTable = true;
+    }
   }
+  // async getAllData(date) {
+  //   let customData = [],
+  //     customDataLength = [],
+  //     finalData = [];
+
+  //   for (var i = 0; i < date.length; i++) {
+  //     let index = i;
+  //     let data = {
+  //       start_date: date[i].startDate,
+  //       end_date: date[i].endDate,
+  //       page: this.page,
+  //       page_length: this.rows,
+  //     };
+
+  //     let array: any = await this._dashboard
+  //       .getCustomRangeData(data)
+  //       .toPromise();
+
+  //     customData.push(array.Data);
+  //     customDataLength.push(array?.Data?.length);
+  //   }
+
+  //   let maxLength = Math.max(...customDataLength);
+
+  //   for (let index = 0; index < maxLength; index++) {
+  //     finalData.push({
+  //       serial: index + 1,
+  //       mediaId: "",
+  //       mediaTitle: "",
+  //       todayViews: 0,
+  //       todayClicks: 0,
+  //       yesterdayViews: 0,
+  //       yesterdayClicks: 0,
+  //       weekViews: 0,
+  //       weekClicks: 0,
+  //       viewPercent: 0,
+  //     });
+  //   }
+
+  //   for (let i = 0; i < customData.length; i++) {
+  //     let index = i;
+  //     for (let j = 0; j < customData[i].length; j++) {
+  //       let obj = {
+  //         mediaId: customData[i][j]?.MediaId,
+  //         mediaTitle: customData[i][j]?.MediaTitle
+  //           ? customData[i][j]?.MediaTitle
+  //           : "",
+  //         plays: customData[i][j]?.plays ? customData[i][j]?.plays : 0,
+  //         embeds: customData[i][j]?.embeds ? customData[i][j]?.embeds : 0,
+  //         // totalViews: customData[i][j]?.play_Embeds
+  //         //   ? customData[i][j]?.play_Embeds
+  //         //   : 0,
+  //       };
+
+  //       if (index == 0) {
+  //         finalData[j]["mediaId"] = obj.mediaId;
+  //         finalData[j]["mediaTitle"] = obj.mediaTitle;
+  //         finalData[j]["weekViews"] = this._decimalPipe.transform(
+  //           obj.plays + obj.embeds,
+  //           "1.0"
+  //         );
+  //         finalData[j]["weekClicks"] = this._decimalPipe.transform(
+  //           obj.plays,
+  //           "1.0"
+  //         );
+  //         // finalData[j]["totalViews"] = obj.totalViews;
+  //       } else if (index == 1) {
+  //         let indexOfExisting = finalData.indexOf(
+  //           finalData.filter((f) => f.mediaId === obj.mediaId)[0]
+  //         );
+  //         if (indexOfExisting == -1) {
+  //           finalData[j]["mediaId"] = obj.mediaId;
+  //           finalData[j]["mediaTitle"] = obj.mediaTitle;
+  //           finalData[j]["yesterdayViews"] = this._decimalPipe.transform(
+  //             obj.plays + obj.embeds,
+  //             "1.0"
+  //           );
+  //           finalData[j]["yesterdayClicks"] = this._decimalPipe.transform(
+  //             obj.plays,
+  //             "1.0"
+  //           );
+  //         } else {
+  //           finalData[indexOfExisting]["mediaTitle"] = obj.mediaTitle;
+  //           finalData[indexOfExisting][
+  //             "yesterdayViews"
+  //           ] = this._decimalPipe.transform(obj.plays + obj.embeds, "1.0");
+  //           finalData[indexOfExisting][
+  //             "yesterdayClicks"
+  //           ] = this._decimalPipe.transform(obj.plays, "1.0");
+  //         }
+  //         // finalData[j]["totalViews"] = obj.totalViews;
+  //       } else if (index == 2) {
+  //         let indexOfExisting = finalData.indexOf(
+  //           finalData.filter((f) => f.mediaId === obj.mediaId)[0]
+  //         );
+  //         if (indexOfExisting == -1) {
+  //           finalData[j]["mediaId"] = obj.mediaId;
+  //           finalData[j]["mediaTitle"] = obj.mediaTitle;
+  //           finalData[j]["todayViews"] = this._decimalPipe.transform(
+  //             obj.plays + obj.embeds,
+  //             "1.0"
+  //           );
+  //           finalData[j]["todayClicks"] = this._decimalPipe.transform(
+  //             obj.plays,
+  //             "1.0"
+  //           );
+  //         } else {
+  //           finalData[indexOfExisting]["mediaTitle"] = obj.mediaTitle;
+  //           finalData[indexOfExisting][
+  //             "todayViews"
+  //           ] = this._decimalPipe.transform(obj.plays + obj.embeds, "1.0");
+  //           finalData[indexOfExisting][
+  //             "todayClicks"
+  //           ] = this._decimalPipe.transform(obj.plays, "1.0");
+  //         }
+  //         // finalData[j]["totalViews"] = obj.totalViews;
+  //       }
+  //     }
+  //   }
+
+  //   const res = await this.getLastThreeMonthData();
+
+  //   // console.log("Response res: ", res);
+
+  //   for (let index = 0; index < finalData.length; index++) {
+  //     let obj1 = res.filter((f) => f.MediaId === finalData[index].mediaId)[0];
+  //     if (obj1) {
+  //       let sum =
+  //         +finalData[index].todayViews.toString().split(",").join("") +
+  //         +finalData[index].yesterdayViews.toString().split(",").join("") +
+  //         +finalData[index].weekViews.toString().split(",").join("");
+  //       let total = obj1.plays + obj1.embeds;
+  //       finalData[index].viewPercent = Math.round((sum / total) * 100) + "%";
+  //     }
+  //     //  console.log("final array: ", finalData[index].totalViews);
+  //   }
+
+  //   return finalData;
+  // }
+
+  // async loadTable(array) {
+  //   this.getAllData(array).then((res) => {
+  //     this.source = res;
+  //     this.showTable = true;
+  //     console.log("Response in load data: ", res);
+  //   });
+  // }
+
+  // async getLastThreeMonthData() {
+  //   let date = this.getDaysByNumber(80, "");
+
+  //   let data = {
+  //     start_date: date.startDate,
+  //     end_date: date.endDate,
+  //     page: this.page,
+  //     page_length: this.rows,
+  //   };
+
+  //   let array: any = await this._dashboard.getCustomRangeData(data).toPromise();
+
+  //   return array.Data;
+  // }
 }

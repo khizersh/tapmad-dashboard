@@ -70,4 +70,8 @@ export class DashbaordChartService {
   getUsersAndNewUsers(data) {
     return this._http.post(`${this._api.getUsersAndNewUsers}`, data);
   }
+
+  get25TopContent(data) {
+    return this._http.post(`${this._api.getTop25Content}`, data);
+  }
 }
