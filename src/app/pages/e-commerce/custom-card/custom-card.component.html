@@ -1,139 +1,176 @@
+<!-- combine data -->
 <div class="card col-xxl-12 mb-3 pb-4">
-  <div class="row mt-3">
-    <div class="col-md-2"></div>
-    <div
-      *ngFor="let d of totalData; let i = index"
-      class="col-lg-4 col-md-4 col-sm-6"
-    >
-      <div class="card shadow">
-        <div class="card-header bg-pink">
-          <h3 class="text-center text-white">
-            {{ weekList[i] }}
-          </h3>
-          <sub>Combine data of all platforms</sub>
-        </div>
-        <div class="card-body">
-          <div class="row pl-3">
-            <div class="col-md-8 col-sm-8 pt-3">
-              <span class="half-rem">Plays: </span>{{ d.plays }}<br />
-              <span class="half-rem">Clicks:</span> {{ d.clicks }}
-              <br />
-              <span class="half-rem">Embeds: </span>{{ d.embeds }}<br />
-              <span class="half-rem">Completed:</span>
-              {{ d.completes }}<br />
-              <span class="half-rem"> Time watch: </span>
-              {{ d.timeWatched }}<br />
-            </div>
-            <div class="col-md-4 col-sm-4">
-              <div class="row">
-                <div
-                  *ngFor="let d of CurrentWeek; let i = index"
-                  class="col-6 pt-4 pr-2"
-                >
-                  <img src="{{ d.icon }}" width="30" />
+  <nb-card>
+    <nb-card-header class="bg-pink">
+      Combine Data of all platforms
+    </nb-card-header>
+    <nb-card-body>
+      <div *ngIf="tableShow" class="row">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>
+                <div class="row">
+                  <div
+                    *ngFor="let d of CurrentWeek; let i = index"
+                    class="col-6 pt-4 pr-2"
+                  >
+                    <img src="{{ d.icon }}" width="30" />
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
+              </th>
+              <th>Current Week</th>
+              <th>Last Week</th>
+              <th>Avg week over past 90 days</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let label of labelsArray; let i = index">
+              <th scope="row">{{ label }}</th>
+              <td *ngFor="let data of totalArray[label]">
+                {{ data }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-    <div class="col-md-2"></div>
-  </div>
-  <div class="row mt-2 mb-2">
-    <!-- <div class="col-lg-3 col-md-4 offset-lg-9 offset-md-8">
-      <ng-select
-        [items]="timePeriodList"
-        bindLabel="weeklyName"
-        placeholder="Select Channel"
-        appendTo="body"
-        [(ngModel)]="selectedTimePeriodList"
-        (change)="getSelectedPeriod()"
-        [clearable]="false"
-      >
-      </ng-select>
-    </div> -->
-  </div>
-  <div class="row">
-    <div
-      *ngFor="let d of CurrentWeek; let i = index"
-      class="col-md-6 card p-3 mb-2"
-    >
-      <div class="row">
-        <div class="col-12">
-          <h6 class="text-center">{{ d.name }}</h6>
-        </div>
-        <div class="col-md-6">
-          <div class="card shadow">
-            <div class="card-header">
-              <!-- {{ selectedTimePeriodList }} -->
-              Current Week
-              <a
-                class="float-right"
-                [routerLink]="['/pages/platform']"
-                routerLinkActive="active"
-                >View detail</a
-              >
-            </div>
+    </nb-card-body>
+  </nb-card>
+</div>
 
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-3 col-sm-12 pt-3">
-                  <img src="{{ d.icon }}" width="45" />
-                </div>
-                <div class="col-md-9 col-sm-12 pt-3">
-                  <p style="line-height: 0.25rem">Plays: {{ d.plays }}</p>
-                  <p style="line-height: 0.25rem">Clicks: {{ d.clicks }}</p>
-                  <p style="line-height: 0.25rem">Embeds: {{ d.embeds }}</p>
-                  <p style="line-height: 0.25rem">
-                    Completed: {{ d.completes }}
-                  </p>
-                  <p style="line-height: 0.25rem">TW: {{ d.timeWatched }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card shadow">
-            <div class="card-header">
-              <!-- {{ selectedTimePeriodList }} -->
-              Last Week
-              <a
-                class="float-right"
-                [routerLink]="['/pages/platform']"
-                routerLinkActive="active"
-                >View detail</a
-              >
-            </div>
+<!-- plays chart -->
+<div id="chart">
+  <apx-chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [xaxis]="chartOptions.xaxis"
+    [dataLabels]="chartOptions.dataLabels"
+    [grid]="chartOptions.grid"
+    [stroke]="chartOptions.stroke"
+    [title]="chartOptions.title"
+  ></apx-chart>
+</div>
 
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-3 col-sm-12 pt-3">
-                  <img src="{{ d.icon }}" width="45" />
-                </div>
-                <div class="col-md-9 col-sm-12 pt-3">
-                  <p style="line-height: 0.25rem">
-                    Plays: {{ LastWeek[i].plays }}
-                  </p>
-                  <p style="line-height: 0.25rem">
-                    Clicks: {{ LastWeek[i].clicks }}
-                  </p>
-                  <p style="line-height: 0.25rem">
-                    Embeds: {{ LastWeek[i].embeds }}
-                  </p>
-                  <p style="line-height: 0.25rem">
-                    Completed: {{ LastWeek[i].completes }}
-                  </p>
-                  <p style="line-height: 0.25rem">
-                    TW: {{ LastWeek[i].timeWatched }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+<!-- Web data -->
+<div class="card col-xxl-12 mb-3 pb-4">
+  <nb-card>
+    <nb-card-header class="bg-blue"> Website </nb-card-header>
+    <nb-card-body>
+      <div *ngIf="tableShow" class="row">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>
+                <img src="../../../../assets//images//web.png" width="30" />
+              </th>
+              <th>Current Week</th>
+              <th>Last Week</th>
+              <th>Avg week over past 90 days</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let label of labelsArray; let i = index">
+              <th scope="row">{{ label }}</th>
+              <td *ngFor="let data of webData[label]">
+                {{ data }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-  </div>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<!-- Android data -->
+<div class="card col-xxl-12 mb-3 pb-4">
+  <nb-card>
+    <nb-card-header class="bg-pink"> Android </nb-card-header>
+    <nb-card-body>
+      <div *ngIf="tableShow" class="row">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>
+                <img src="../../../../assets//images//android.png" width="30" />
+              </th>
+              <th>Current Week</th>
+              <th>Last Week</th>
+              <th>Avg week over past 90 days</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let label of labelsArray; let i = index">
+              <th scope="row">{{ label }}</th>
+              <td *ngFor="let data of androidData[label]">
+                {{ data }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<!-- IOS data -->
+<div class="card col-xxl-12 mb-3 pb-4">
+  <nb-card>
+    <nb-card-header class="bg-blue"> IOS </nb-card-header>
+    <nb-card-body>
+      <div *ngIf="tableShow" class="row">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>
+                <img src="../../../../assets//images//apple.png" width="30" />
+              </th>
+              <th>Current Week</th>
+              <th>Last Week</th>
+              <th>Avg week over past 90 days</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let label of labelsArray; let i = index">
+              <th scope="row">{{ label }}</th>
+              <td *ngFor="let data of iosData[label]">
+                {{ data }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<!-- TV data -->
+<div class="card col-xxl-12 mb-3 pb-4">
+  <nb-card>
+    <nb-card-header class="bg-pink"> Tv </nb-card-header>
+    <nb-card-body>
+      <div *ngIf="tableShow" class="row">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>
+                <img src="../../../../assets//images//apple.png" width="30" />
+              </th>
+              <th>Current Week</th>
+              <th>Last Week</th>
+              <th>Avg week over past 90 days</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let label of labelsArray; let i = index">
+              <th scope="row">{{ label }}</th>
+              <td *ngFor="let data of tvData[label]">
+                {{ data }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </nb-card-body>
+  </nb-card>
 </div>

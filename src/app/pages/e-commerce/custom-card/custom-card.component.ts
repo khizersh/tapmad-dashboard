@@ -1,7 +1,27 @@
 import { DecimalPipe } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { DashbaordChartService } from "../../../services/dashboard-chart";
 import { DateUtils } from "../../../utils/date.utls";
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexDataLabels,
+  ApexTitleSubtitle,
+  ApexStroke,
+  ApexGrid,
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  dataLabels: ApexDataLabels;
+  grid: ApexGrid;
+  stroke: ApexStroke;
+  title: ApexTitleSubtitle;
+};
 
 @Component({
   selector: "ngx-custom-card",
@@ -9,108 +29,173 @@ import { DateUtils } from "../../../utils/date.utls";
   styleUrls: ["./custom-card.component.scss"],
 })
 export class CustomCardComponent implements OnInit {
+  @ViewChild("chart") chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
   constructor(
     private _dashboard: DashbaordChartService,
     private _utils: DateUtils,
     private _decimalPipe: DecimalPipe
   ) {}
 
+  tableShow = false;
   totalData = [
     {
-      clicks: null,
-      plays: null,
-      embeds: null,
-      completes: null,
-      timeWatched: null,
+      Clicks: null,
+      Plays: null,
+      Embeds: null,
+      Completes: null,
+      Time_Watched: null,
+      User_Base: null,
+      Avg_Eng_Time: null,
+      Avg_session_Duration: null,
     },
     {
-      clicks: null,
-      plays: null,
-      embeds: null,
-      completes: null,
-      timeWatched: null,
+      Clicks: null,
+      Plays: null,
+      Embeds: null,
+      Completes: null,
+      Time_Watched: null,
+      User_Base: null,
+      Avg_Eng_Time: null,
+      Avg_session_Duration: null,
+    },
+    {
+      Clicks: null,
+      Plays: null,
+      Embeds: null,
+      Completes: null,
+      Time_Watched: null,
+      User_Base: null,
+      Avg_Eng_Time: null,
+      Avg_session_Duration: null,
     },
   ];
 
+  webData = [];
+  androidData = [];
+  iosData = [];
+  tvData = [];
   CurrentWeek = [
     {
       icon: "../../../../assets//images//web.png",
-      clicks: "",
-      plays: null,
-      embeds: null,
-      completes: "",
-      timeWatched: "",
+      Clicks: "",
+      Plays: "",
+      Embeds: "",
+      Completes: "",
+      Time_Watched: "",
+      User_Base: "",
+      Avg_Eng_Time: "",
+      Avg_session_Duration: "",
       name: "Web",
     },
     {
       icon: "../../../../assets//images//android.png",
-      clicks: "",
-      plays: null,
-      embeds: null,
-      completes: "",
-      timeWatched: "",
+      Clicks: "",
+      Plays: "",
+      Embeds: "",
+      Completes: "",
+      Time_Watched: "",
+      User_Base: "",
+      Avg_Eng_Time: "",
+      Avg_session_Duration: "",
       name: "Android",
     },
     {
       icon: "../../../../assets//images//apple.png",
-      clicks: "",
-      plays: null,
-      embeds: null,
-      completes: "",
-      timeWatched: "",
+      Clicks: "",
+      Plays: "",
+      Embeds: "",
+      Completes: "",
+      Time_Watched: "",
+      User_Base: "",
+      Avg_Eng_Time: "",
+      Avg_session_Duration: "",
       name: "IOS",
     },
     {
       icon: "../../../../assets//images//tv.png",
-      clicks: "",
-      plays: null,
-      embeds: null,
-      completes: "",
-      timeWatched: "",
+      Clicks: "",
+      Plays: "",
+      Embeds: "",
+      Completes: "",
+      Time_Watched: "",
+      User_Base: "",
+      Avg_Eng_Time: "",
+      Avg_session_Duration: "",
       name: "TV",
     },
   ];
   LastWeek = [
     {
       icon: "../../../../assets//images//web.png",
-      clicks: null,
-      plays: null,
-      embeds: null,
-      completes: null,
-      timeWatched: null,
+      Clicks: null,
+      Plays: null,
+      Embeds: null,
+      Completes: null,
+      Time_Watched: null,
+      User_Base: null,
+      Avg_Eng_Time: null,
+      Avg_session_Duration: null,
     },
     {
       icon: "../../../../assets//images//android.png",
-      clicks: null,
-      plays: null,
-      embeds: null,
-      completes: null,
-      timeWatched: null,
+      Clicks: null,
+      Plays: null,
+      Embeds: null,
+      Completes: null,
+      Time_Watched: null,
+      User_Base: null,
+      Avg_Eng_Time: null,
+      Avg_session_Duration: null,
     },
     {
       icon: "../../../../assets//images//apple.png",
-      plays: null,
-      embeds: null,
-      completes: null,
-      timeWatched: null,
+      Clicks: null,
+      Plays: null,
+      Embeds: null,
+      Completes: null,
+      Time_Watched: null,
+      User_Base: null,
+      Avg_Eng_Time: null,
+      Avg_session_Duration: null,
     },
     {
       icon: "../../../../assets//images//tv.png",
-      clicks: null,
-      plays: null,
-      embeds: null,
-      completes: null,
-      timeWatched: null,
+      Clicks: null,
+      Plays: null,
+      Embeds: null,
+      Completes: null,
+      Time_Watched: null,
+      User_Base: null,
+      Avg_Eng_Time: null,
+      Avg_session_Duration: null,
     },
   ];
+
+  labelsArray = [
+    "Clicks",
+    "Plays",
+    "Embeds",
+    "Completes",
+    "Time_Watched",
+    "User_Base",
+    "Avg_Eng_Time",
+    "Avg_session_Duration",
+  ];
+  totalArray = [];
 
   weekList = ["Current Week", "Last Week"];
   timePeriodList = ["Last Week", "Last 30 Days", "Todays"];
   selectedTimePeriodList = "Last Week";
 
   ngOnInit(): void {
-    this.loadData(this.getDaysByNumber(7), 14).then((res) => {
-      this.loadTotalData(this.getDaysByNumber(14));
+    this.setOptions();
+    this.initializeData();
+    this.gett3MonthData().then((data: any) => {
+      this.loadData(this.getDaysByNumber(7), 14, data).then(async (res) => {
+        this.loadTotalData(this.getDaysByNumber(14), data);
+        this.tableShow = true;
+      });
     });
   }
 
@@ -121,32 +206,46 @@ export class CustomCardComponent implements OnInit {
     return { start_date: startDate, end_date: endDate };
   }
 
-  async loadData(dateCurrentWeek, LastWeek: number) {
+  initializeData() {
+    this.labelsArray.map((m) => {
+      this.totalArray[m] = new Array();
+      this.webData[m] = new Array();
+      this.androidData[m] = new Array();
+      this.iosData[m] = new Array();
+      this.tvData[m] = new Array();
+    });
+  }
+
+  async loadData(dateCurrentWeek, LastWeek: number, last30DaysData) {
     // current Week
     const data: any = await this._dashboard
       .getByPlatform(dateCurrentWeek)
       .toPromise();
     for (let i = 0; i < data.Data.length; i++) {
-      (this.CurrentWeek[i].clicks = this._decimalPipe.transform(
+      (this.CurrentWeek[i].Clicks = this._decimalPipe.transform(
         data.Data[i].plays,
         "1.0"
       )),
-        (this.CurrentWeek[i].plays = this._decimalPipe.transform(
+        (this.CurrentWeek[i].Embeds = this._decimalPipe.transform(
+          data.Data[i].embeds,
+          "1.0"
+        )),
+        (this.CurrentWeek[i].Plays = this._decimalPipe.transform(
           data.Data[i].plays,
           "1.0"
         ));
-      this.CurrentWeek[i].embeds = this._decimalPipe.transform(
-        data.Data[i].embeds,
-        "1.0"
-      );
-      (this.CurrentWeek[i].completes = this._decimalPipe.transform(
+      (this.CurrentWeek[i].Completes = this._decimalPipe.transform(
         data.Data[i].completes,
         "1.0"
       )),
-        (this.CurrentWeek[i].timeWatched = this._decimalPipe.transform(
+        (this.CurrentWeek[i].Time_Watched = this._decimalPipe.transform(
           data.Data[i].time_watched,
           "1.0"
         ));
+      this.CurrentWeek[i].Avg_Eng_Time = this._decimalPipe.transform(
+        data.Data[i].time_watched / data.Data[i].plays,
+        "1.0"
+      );
     }
 
     // Last Week
@@ -155,112 +254,275 @@ export class CustomCardComponent implements OnInit {
       .getByPlatform(dateLastWeek)
       .toPromise();
     for (let i = 0; i < dataLastWeek.Data.length; i++) {
-      this.LastWeek[i].clicks = this._decimalPipe.transform(
+      this.LastWeek[i].Clicks = this._decimalPipe.transform(
         dataLastWeek.Data[i].plays - data.Data[i].plays,
         "1.0"
       );
-      this.LastWeek[i].plays = this._decimalPipe.transform(
+      this.LastWeek[i].Embeds = this._decimalPipe.transform(
+        dataLastWeek.Data[i].embeds - data.Data[i].plays,
+        "1.0"
+      );
+      this.LastWeek[i].Plays = this._decimalPipe.transform(
         dataLastWeek.Data[i].plays - data.Data[i].plays,
         "1.0"
       );
-      this.LastWeek[i].embeds = this._decimalPipe.transform(
-        dataLastWeek.Data[i].embeds - data.Data[i].embeds,
-        "1.0"
-      );
-      this.LastWeek[i].completes = this._decimalPipe.transform(
+      this.LastWeek[i].Completes = this._decimalPipe.transform(
         dataLastWeek.Data[i].completes - data.Data[i].completes,
         "1.0"
       );
-      this.LastWeek[i].timeWatched = this._decimalPipe.transform(
+      this.LastWeek[i].Time_Watched = this._decimalPipe.transform(
         dataLastWeek.Data[i].time_watched - data.Data[i].time_watched,
         "1.0"
       );
+      this.LastWeek[i].Avg_Eng_Time = this._decimalPipe.transform(
+        dataLastWeek.Data[i].time_watched / dataLastWeek.Data[i].plays -
+          data.Data[i].time_watched / data.Data[i].plays,
+        "1.0"
+      );
     }
-    return this.CurrentWeek;
+
+    // creating specific array for web , android , ios etc
+
+    for (let index = 0; index < 4; index++) {
+      this.labelsArray.map((m, i) => {
+        this.CurrentWeek[index][m] = this.CurrentWeek[index][m]
+          ? this.CurrentWeek[index][m]
+          : 0;
+        this.LastWeek[index][m] = this.LastWeek[index][m]
+          ? this.LastWeek[index][m]
+          : 0;
+        last30DaysData[index][m] = last30DaysData[index][m]
+          ? Math.round(last30DaysData[index][m])
+          : 0;
+
+        if (index == 0) {
+          this.webData[m].push(this.CurrentWeek[index][m]);
+          this.webData[m].push(this.LastWeek[index][m]);
+          this.webData[m].push(
+            this._decimalPipe.transform(last30DaysData[index][m], "1.0")
+          );
+        } else if (index == 1) {
+          this.androidData[m].push(this.CurrentWeek[index][m]);
+          this.androidData[m].push(this.LastWeek[index][m]);
+          this.androidData[m].push(
+            this._decimalPipe.transform(last30DaysData[index][m], "1.0")
+          );
+        } else if (index == 2) {
+          this.iosData[m].push(this.CurrentWeek[index][m]);
+          this.iosData[m].push(this.LastWeek[index][m]);
+          this.iosData[m].push(
+            this._decimalPipe.transform(last30DaysData[index][m], "1.0")
+          );
+        } else if (index == 3) {
+          this.tvData[m].push(this.CurrentWeek[index][m]);
+          this.tvData[m].push(this.LastWeek[index][m]);
+          this.tvData[m].push(
+            this._decimalPipe.transform(last30DaysData[index][m], "1.0")
+          );
+        }
+      });
+    }
   }
 
-  async loadTotalData(date) {
-    // 0 index of total data is current week 1 index is last week
+  async loadTotalData(date, last90DaysData) {
+    // summing current week data for combine data
     this.CurrentWeek.map((d, i) => {
-      this.totalData[0].clicks += parseFloat(d.clicks.replace(/,/g, ""));
-      this.totalData[0].plays += parseFloat(d.plays.replace(/,/g, ""));
-      this.totalData[0].embeds += parseFloat(d.embeds.replace(/,/g, ""));
-      this.totalData[0].completes += parseFloat(d.completes.replace(/,/g, ""));
-      this.totalData[0].timeWatched += parseFloat(
-        d.timeWatched.replace(/,/g, "")
+      this.totalData[0].Clicks += parseFloat(d.Clicks.replace(/,/g, ""));
+      this.totalData[0].Embeds += parseFloat(d.Embeds.replace(/,/g, ""));
+      this.totalData[0].Plays += parseFloat(d.Plays.replace(/,/g, ""));
+      this.totalData[0].Completes += parseFloat(d.Completes.replace(/,/g, ""));
+      this.totalData[0].Time_Watched += parseFloat(
+        d.Time_Watched.replace(/,/g, "")
       );
+      this.totalData[0].Avg_Eng_Time +=
+        parseFloat(d.Time_Watched.replace(/,/g, "")) /
+        parseFloat(d.Plays.replace(/,/g, ""));
     });
 
-    await this._dashboard.getByPlatform(date).subscribe((res: any) => {
-      console.log("REs: ", res);
+    const lastWeek: any = await this._dashboard.getByPlatform(date).toPromise();
 
-      for (let d of res.Data) {
-        this.totalData[1].clicks += d.plays;
-        this.totalData[1].plays += d.plays;
-        this.totalData[1].embeds += d.embeds;
-        this.totalData[1].completes += d.completes;
-        this.totalData[1].timeWatched += d.time_watched;
-      }
-      this.totalData[1].clicks = this._decimalPipe.transform(
-        this.totalData[1].clicks -
-          parseFloat(this.totalData[0].clicks.replace(/,/g, "")),
-        "1.0"
-      );
-      this.totalData[1].plays = this._decimalPipe.transform(
-        this.totalData[1].plays -
-          parseFloat(this.totalData[0].plays.replace(/,/g, "")),
-        "1.0"
-      );
-      this.totalData[1].embeds = this._decimalPipe.transform(
-        this.totalData[1].embeds -
-          parseFloat(this.totalData[0].embeds.replace(/,/g, "")),
-        "1.0"
-      );
-      this.totalData[1].completes = this._decimalPipe.transform(
-        this.totalData[1].completes -
-          parseFloat(this.totalData[0].completes.replace(/,/g, "")),
-        "1.0"
-      );
-      this.totalData[1].timeWatched = this._decimalPipe.transform(
-        this.totalData[1].timeWatched -
-          parseFloat(this.totalData[0].timeWatched.replace(/,/g, "")),
-        "1.0"
-      );
+    // summing Last week data for combine data
+    for (let d of lastWeek.Data) {
+      this.totalData[1].Clicks += d.plays;
+      this.totalData[1].Plays += d.plays;
+      this.totalData[1].Embeds += d.embeds;
+      this.totalData[1].Completes += d.completes;
+      this.totalData[1].Time_Watched += d.time_watched;
+      this.totalData[1].Avg_Eng_Time += d.time_watched / d.plays;
+    }
+
+    // Inserting commas
+    this.totalData[0].Clicks = this._decimalPipe.transform(
+      this.totalData[0].Clicks,
+      "1.0"
+    );
+    this.totalData[0].Embeds = this._decimalPipe.transform(
+      this.totalData[0].Embeds,
+      "1.0"
+    );
+    this.totalData[0].Plays = this._decimalPipe.transform(
+      this.totalData[0].Plays,
+      "1.0"
+    );
+    this.totalData[0].Completes = this._decimalPipe.transform(
+      this.totalData[0].Completes,
+      "1.0"
+    );
+    this.totalData[0].Time_Watched = this._decimalPipe.transform(
+      this.totalData[0].Time_Watched,
+      "1.0"
+    );
+    this.totalData[0].Avg_Eng_Time = this._decimalPipe.transform(
+      parseFloat(this.totalData[0].Time_Watched.toString().replace(/,/g, "")) /
+        parseFloat(this.totalData[0].Plays.toString().replace(/,/g, "")),
+      "1.0"
+    );
+
+    this.totalData[1].Embeds = this._decimalPipe.transform(
+      this.totalData[1].Embeds -
+        parseFloat(this.totalData[0].Embeds.toString().replace(/,/g, "")),
+      "1.0"
+    );
+    this.totalData[1].Clicks = this._decimalPipe.transform(
+      this.totalData[1].Clicks -
+        parseFloat(this.totalData[0].Clicks.toString().replace(/,/g, "")),
+      "1.0"
+    );
+    this.totalData[1].Plays = this._decimalPipe.transform(
+      this.totalData[1].Plays -
+        parseFloat(this.totalData[0].Plays.toString().replace(/,/g, "")),
+      "1.0"
+    );
+    this.totalData[1].Completes = this._decimalPipe.transform(
+      this.totalData[1].Completes -
+        parseFloat(this.totalData[0].Completes.toString().replace(/,/g, "")),
+      "1.0"
+    );
+    this.totalData[1].Time_Watched = this._decimalPipe.transform(
+      this.totalData[1].Time_Watched -
+        parseFloat(this.totalData[0].Time_Watched.toString().replace(/,/g, "")),
+      "1.0"
+    );
+    this.totalData[1].Avg_Eng_Time = this._decimalPipe.transform(
+      parseFloat(this.totalData[1].Time_Watched.toString().replace(/,/g, "")) /
+        parseFloat(this.totalData[1].Plays.toString().replace(/,/g, "")) -
+        parseFloat(this.totalData[0].Avg_Eng_Time.toString().replace(/,/g, "")),
+      "1.0"
+    );
+
+    // summing last 90 days data for combine data
+    for (let d of last90DaysData) {
+      this.totalData[2].Clicks += d.Plays;
+      this.totalData[2].Embeds += d.Embeds;
+      this.totalData[2].Plays += d.Plays;
+      this.totalData[2].Completes += d.Completes;
+      this.totalData[2].Time_Watched += d.Time_Watched;
+      this.totalData[2].Avg_Eng_Time += d.Time_Watched / d.Plays;
+    }
+
+    //  inserting commas
+    this.totalData[2].Embeds = this._decimalPipe.transform(
+      this.totalData[2].Embeds / 12,
+      "1.0"
+    );
+    this.totalData[2].Clicks = this._decimalPipe.transform(
+      this.totalData[2].Clicks / 12,
+      "1.0"
+    );
+    this.totalData[2].Plays = this._decimalPipe.transform(
+      this.totalData[2].Plays / 12,
+      "1.0"
+    );
+    this.totalData[2].Completes = this._decimalPipe.transform(
+      this.totalData[2].Completes / 12,
+      "1.0"
+    );
+    this.totalData[2].Time_Watched = this._decimalPipe.transform(
+      this.totalData[2].Time_Watched / 12,
+      "1.0"
+    );
+    (this.totalData[2].Avg_Eng_Time = this._decimalPipe.transform(
+      parseFloat(this.totalData[2].Time_Watched.toString().replace(/,/g, "")) /
+        parseFloat(this.totalData[2].Plays.toString().replace(/,/g, ""))
+    )),
+      "1.0";
+
+    // customizing array for showing data
+    this.labelsArray.map((m) => {
+      this.totalArray[m].push(this.totalData[0][m] ? this.totalData[0][m] : 0);
+      this.totalArray[m].push(this.totalData[1][m] ? this.totalData[1][m] : 0);
+      this.totalArray[m].push(this.totalData[2][m] ? this.totalData[2][m] : 0);
     });
 
-    this.totalData[0].clicks = this._decimalPipe.transform(
-      this.totalData[0].clicks,
-      "1.0"
-    );
-    this.totalData[0].plays = this._decimalPipe.transform(
-      this.totalData[0].plays,
-      "1.0"
-    );
-    this.totalData[0].embeds = this._decimalPipe.transform(
-      this.totalData[0].embeds,
-      "1.0"
-    );
-    this.totalData[0].completes = this._decimalPipe.transform(
-      this.totalData[0].completes,
-      "1.0"
-    );
-    this.totalData[0].timeWatched = this._decimalPipe.transform(
-      this.totalData[0].timeWatched,
-      "1.0"
-    );
+    return this.totalData;
   }
 
-  getSelectedPeriod() {
-    let period = 7,
-      date;
-    if (this.selectedTimePeriodList === "Last Week") {
-      period = 7;
-    } else if (this.selectedTimePeriodList === "Last 30 Days") {
-      period = 30;
-    } else if (this.selectedTimePeriodList === "Todays") {
-      period = 0;
-    }
-    date = this.getDaysByNumber(period);
-    this.loadData(date, period);
+  async gett3MonthData() {
+    const last90Days: any = await this._dashboard
+      .getByPlatform(this.getDaysByNumber(90))
+      .toPromise();
+
+    let customArray = last90Days.Data.map((m) => {
+      let obj = {
+        Clicks: m.plays,
+        Plays: m.plays,
+        Embeds: m.embeds,
+        Completes: m.completes,
+        Time_Watched: m.time_watched,
+        User_Base: "",
+        Avg_Eng_Time: m.time_watched / m.plays,
+        Avg_session_Duration: "",
+      };
+      return obj;
+    });
+
+    return customArray;
+  }
+
+  setOptions() {
+    this.chartOptions = {
+      series: [
+        {
+          name: "Desktops",
+          data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+        },
+      ],
+      chart: {
+        height: 350,
+        type: "line",
+        zoom: {
+          enabled: false,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "straight",
+      },
+      title: {
+        text: "Product Trends by Month",
+        align: "left",
+      },
+      grid: {
+        row: {
+          colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+          opacity: 0.5,
+        },
+      },
+      xaxis: {
+        categories: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+        ],
+      },
+    };
   }
 }

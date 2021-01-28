@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { DashbaordChartService } from "../../../services/dashboard-chart";
 import { DateUtils } from "../../../utils/date.utls";
 import { ChartComponent } from "ng-apexcharts";
+
 import {
   ApexNonAxisChartSeries,
   ApexResponsive,
@@ -16,11 +17,11 @@ export type ChartOptions = {
 };
 
 @Component({
-  selector: "ngx-production-charts",
-  templateUrl: "./production-charts.component.html",
-  styleUrls: ["./production-charts.component.scss"],
+  selector: "ngx-category-chart",
+  templateUrl: "./category-chart.component.html",
+  styleUrls: ["./category-chart.component.scss"],
 })
-export class ProductionChartsComponent implements OnInit {
+export class CategoryChartComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptionCurrentWeek: Partial<ChartOptions>;
   public chartOptionLastWeek: Partial<ChartOptions>;
@@ -31,7 +32,7 @@ export class ProductionChartsComponent implements OnInit {
   chartShowCurrentWeek = false;
   chartShowLastWeek = false;
   chartShowLast90Days = false;
-  phData = [];
+  allCategories = [];
   public pieChartDataCurrentWeek = [];
   public pieChartDataLastWeek = [];
   public pieChartDataLast90Days = [];
@@ -42,36 +43,24 @@ export class ProductionChartsComponent implements OnInit {
   };
 
   chartWidth = 380;
-
   constructor(
-    private service: DashbaordChartService,
+    private _dashboard: DashbaordChartService,
     private _utils: DateUtils
   ) {}
 
   ngOnInit(): void {
-    let currentWeek = this.getDateOfGivenDays(7, "currentWeek");
-    let lastWeek = this.getDateOfGivenDays(14, "lastWeek");
-    let last90Days = this.getDateOfGivenDays(90, "last90Days");
+    let dateArray = [
+      this.getDateOfGivenDays(7, "currentWeek"),
+      this.getDateOfGivenDays(14, "lastWeek"),
+      this.getDateOfGivenDays(7, "last90Days"),
+    ];
 
-    this.service.getProductHouseFilter().subscribe((res: any) => {
-      this.phData = res.Data;
-      this.loadChart(this.phData, currentWeek, "currentWeek");
-      this.loadChart(this.phData, lastWeek, "lastWeek");
-      this.loadChart(this.phData, last90Days, "last90Days");
+    this._dashboard.getCategorList().subscribe((res: any) => {
+      this.allCategories = res.Data.map((m) => m.CategoryFiltersName);
+      this.loadChart(dateArray, this.allCategories);
     });
   }
 
-  rangeDatesPlay($event, type: string) {
-    let date = {
-      start: $event.start,
-      end: $event.end,
-    };
-    if (type == "today" || type == "all") {
-      this.loadChart(this.phData, date, "today");
-    } else if (type == "yesterday" || type == "all") {
-      this.loadChart(this.phData, date, "yesterday");
-    }
-  }
   getDateOfGivenDays(day: number, type) {
     var d = new Date();
     if (type == "lastWeek") {
@@ -85,53 +74,55 @@ export class ProductionChartsComponent implements OnInit {
     }
   }
 
-  async loadChart(phData, date, type: string) {
-    let obj = {
-      start_date: date.start,
-      end_date: date.end,
-      page: 0,
-      page_length: 100,
-      reportType: "plays",
-      sortBy: "plays",
-      data: phData,
-    };
-    const res: any = await this.service
-      .getPlaysByProductionHouse(obj)
-      .toPromise();
+  async loadChart(dateArray, categoryArray: any) {
+    for (let index = 0; index < dateArray.length; index++) {
+      let obj = {};
+      obj = {
+        start_date: dateArray[index].start,
+        end_date: dateArray[index].end,
+        page: 0,
+        page_length: 100,
+        reportType: "plays",
+        data: categoryArray,
+      };
 
-    let viewsArray = res.Data.map((m) => (m.plays ? m.plays : 0));
-    let PHArray = res.Data.map((m) =>
-      m.Category ? m.Category.split("_")[1] : "not defined"
-    );
-    this.pieChartLabels = PHArray;
+      const res: any = await this._dashboard
+        .getPlaceGrowthSummary(obj)
+        .toPromise();
 
-    if (type == "currentWeek" || type == "all") {
-      this.pieChartDataCurrentWeek = viewsArray;
-      this.setOption(
-        this.pieChartDataCurrentWeek,
-        this.pieChartLabels,
-        "currentWeek"
+      let viewsArray = res.Data.map((m) => (m.plays ? m.plays : 0));
+      let categoryLabels = res.Data.map((m) =>
+        m.Category ? m.Category.split("_")[1] : "not defined"
       );
-      this.chartShowCurrentWeek = true;
-    }
-    if (type == "lastWeek" || type == "all") {
-      this.pieChartDataLastWeek = viewsArray;
-      this.setOption(
-        this.pieChartDataLastWeek,
-        this.pieChartLabels,
-        "lastWeek"
-      );
-      this.chartShowLastWeek = true;
-    }
-    if (type == "last90Days" || type == "all") {
-      this.pieChartDataLast90Days = viewsArray.map((m) => Math.round(m / 12));
+      this.pieChartLabels = categoryLabels;
 
-      this.setOption(
-        this.pieChartDataLast90Days,
-        this.pieChartLabels,
-        "last90Days"
-      );
-      this.chartShowLast90Days = true;
+      if (index == 0) {
+        this.pieChartDataCurrentWeek = viewsArray;
+        this.setOption(
+          this.pieChartDataCurrentWeek,
+          this.pieChartLabels,
+          "currentWeek"
+        );
+        this.chartShowCurrentWeek = true;
+      }
+      if (index == 1) {
+        this.pieChartDataLastWeek = viewsArray;
+        this.setOption(
+          this.pieChartDataLastWeek,
+          this.pieChartLabels,
+          "lastWeek"
+        );
+        this.chartShowLastWeek = true;
+      } else if (index == 2) {
+        this.pieChartDataLast90Days = viewsArray.map((m) => Math.round(m / 12));
+
+        this.setOption(
+          this.pieChartDataLast90Days,
+          this.pieChartLabels,
+          "last90Days"
+        );
+        this.chartShowLast90Days = true;
+      }
     }
   }
 

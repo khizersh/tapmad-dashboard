@@ -69,6 +69,7 @@ import { ProductionChartsComponent } from "./production-charts/production-charts
 import { ChartsModule } from "ng2-charts";
 import { UserPieChartComponent } from "./user-pie-chart/user-pie-chart.component";
 import { NgApexchartsModule } from "ng-apexcharts";
+import { CategoryChartComponent } from './category-chart/category-chart.component';
 
 @NgModule({
   imports: [
@@ -136,6 +137,7 @@ import { NgApexchartsModule } from "ng-apexcharts";
     UserChartComponent,
     ProductionChartsComponent,
     UserPieChartComponent,
+    CategoryChartComponent,
   ],
   providers: [CountryOrdersMapService],
 })
