@@ -13,7 +13,7 @@
                 <div class="row">
                   <div
                     *ngFor="let d of CurrentWeek; let i = index"
-                    class="col-6 pt-4 pr-2"
+                    class="col-4 pt-4 pr-2"
                   >
                     <img src="{{ d.icon }}" width="30" />
                   </div>
@@ -154,7 +154,7 @@
           <thead>
             <tr>
               <th>
-                <img src="../../../../assets//images//apple.png" width="30" />
+                <img src="../../../../assets//images//tv.png" width="30" />
               </th>
               <th>Current Week</th>
               <th>Last Week</th>
@@ -165,6 +165,37 @@
             <tr *ngFor="let label of labelsArray; let i = index">
               <th scope="row">{{ label }}</th>
               <td *ngFor="let data of tvData[label]">
+                {{ data }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </nb-card-body>
+  </nb-card>
+</div>
+
+<!-- Fireos data -->
+<div class="card col-xxl-12 mb-3 pb-4">
+  <nb-card>
+    <nb-card-header class="bg-blue"> Fireos </nb-card-header>
+    <nb-card-body>
+      <div *ngIf="tableShow" class="row">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>
+                <img src="../../../../assets//images//video.png" width="30" />
+              </th>
+              <th>Current Week</th>
+              <th>Last Week</th>
+              <th>Avg week over past 90 days</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let label of labelsArray; let i = index">
+              <th scope="row">{{ label }}</th>
+              <td *ngFor="let data of fireosData[label]">
                 {{ data }}
               </td>
             </tr>

@@ -75,6 +75,7 @@ export class CustomCardComponent implements OnInit {
   androidData = [];
   iosData = [];
   tvData = [];
+  fireosData = [];
   CurrentWeek = [
     {
       icon: "../../../../assets//images//web.png",
@@ -111,6 +112,18 @@ export class CustomCardComponent implements OnInit {
       Avg_Eng_Time: "",
       Avg_session_Duration: "",
       name: "IOS",
+    },
+    {
+      icon: "../../../../assets//images//video.png",
+      Clicks: "",
+      Plays: "",
+      Embeds: "",
+      Completes: "",
+      Time_Watched: "",
+      User_Base: "",
+      Avg_Eng_Time: "",
+      Avg_session_Duration: "",
+      name: "TV",
     },
     {
       icon: "../../../../assets//images//tv.png",
@@ -160,7 +173,7 @@ export class CustomCardComponent implements OnInit {
       Avg_session_Duration: null,
     },
     {
-      icon: "../../../../assets//images//tv.png",
+      icon: "../../../../assets//images//video.png",
       Clicks: null,
       Plays: null,
       Embeds: null,
@@ -169,6 +182,16 @@ export class CustomCardComponent implements OnInit {
       User_Base: null,
       Avg_Eng_Time: null,
       Avg_session_Duration: null,
+    },
+    {
+      icon: "../../../../assets//images//tv.png",
+      Clicks: null,
+      Plays: null,
+      Embeds: null,
+      Completes: null,
+      Time_Watched: null,
+      User_Base: null,
+      Avg_Eng_Time: null,
     },
   ];
 
@@ -213,6 +236,7 @@ export class CustomCardComponent implements OnInit {
       this.androidData[m] = new Array();
       this.iosData[m] = new Array();
       this.tvData[m] = new Array();
+      this.fireosData[m] = new Array();
     });
   }
 
@@ -221,29 +245,31 @@ export class CustomCardComponent implements OnInit {
     const data: any = await this._dashboard
       .getByPlatform(dateCurrentWeek)
       .toPromise();
+    console.log("current week: ", data);
+
     for (let i = 0; i < data.Data.length; i++) {
       (this.CurrentWeek[i].Clicks = this._decimalPipe.transform(
-        data.Data[i].plays,
+        Math.round(data.Data[i].plays),
         "1.0"
       )),
         (this.CurrentWeek[i].Embeds = this._decimalPipe.transform(
-          data.Data[i].embeds,
+          Math.round(data.Data[i].embeds),
           "1.0"
         )),
         (this.CurrentWeek[i].Plays = this._decimalPipe.transform(
-          data.Data[i].plays,
+          Math.round(data.Data[i].plays),
           "1.0"
         ));
       (this.CurrentWeek[i].Completes = this._decimalPipe.transform(
-        data.Data[i].completes,
+        Math.round(data.Data[i].completes),
         "1.0"
       )),
         (this.CurrentWeek[i].Time_Watched = this._decimalPipe.transform(
-          data.Data[i].time_watched,
+          Math.round(data.Data[i].time_watched),
           "1.0"
         ));
       this.CurrentWeek[i].Avg_Eng_Time = this._decimalPipe.transform(
-        data.Data[i].time_watched / data.Data[i].plays,
+        Math.round(data.Data[i].time_watched / data.Data[i].plays),
         "1.0"
       );
     }
@@ -253,13 +279,16 @@ export class CustomCardComponent implements OnInit {
     const dataLastWeek: any = await this._dashboard
       .getByPlatform(dateLastWeek)
       .toPromise();
+
+    console.log("dataLastWeek: ", dataLastWeek);
+
     for (let i = 0; i < dataLastWeek.Data.length; i++) {
       this.LastWeek[i].Clicks = this._decimalPipe.transform(
-        dataLastWeek.Data[i].plays - data.Data[i].plays,
+        Math.round(dataLastWeek.Data[i].plays - data.Data[i].plays),
         "1.0"
       );
       this.LastWeek[i].Embeds = this._decimalPipe.transform(
-        dataLastWeek.Data[i].embeds - data.Data[i].plays,
+        Math.round(dataLastWeek.Data[i].embeds - data.Data[i].plays),
         "1.0"
       );
       this.LastWeek[i].Plays = this._decimalPipe.transform(
@@ -267,23 +296,26 @@ export class CustomCardComponent implements OnInit {
         "1.0"
       );
       this.LastWeek[i].Completes = this._decimalPipe.transform(
-        dataLastWeek.Data[i].completes - data.Data[i].completes,
+        Math.round(dataLastWeek.Data[i].completes - data.Data[i].completes),
         "1.0"
       );
       this.LastWeek[i].Time_Watched = this._decimalPipe.transform(
-        dataLastWeek.Data[i].time_watched - data.Data[i].time_watched,
+        Math.round(
+          dataLastWeek.Data[i].time_watched - data.Data[i].time_watched
+        ),
         "1.0"
       );
       this.LastWeek[i].Avg_Eng_Time = this._decimalPipe.transform(
-        dataLastWeek.Data[i].time_watched / dataLastWeek.Data[i].plays -
-          data.Data[i].time_watched / data.Data[i].plays,
+        Math.round(
+          dataLastWeek.Data[i].time_watched / dataLastWeek.Data[i].plays
+        ),
         "1.0"
       );
     }
 
     // creating specific array for web , android , ios etc
 
-    for (let index = 0; index < 4; index++) {
+    for (let index = 0; index < 5; index++) {
       this.labelsArray.map((m, i) => {
         this.CurrentWeek[index][m] = this.CurrentWeek[index][m]
           ? this.CurrentWeek[index][m]
@@ -314,6 +346,12 @@ export class CustomCardComponent implements OnInit {
             this._decimalPipe.transform(last30DaysData[index][m], "1.0")
           );
         } else if (index == 3) {
+          this.fireosData[m].push(this.CurrentWeek[index][m]);
+          this.fireosData[m].push(this.LastWeek[index][m]);
+          this.fireosData[m].push(
+            this._decimalPipe.transform(last30DaysData[index][m], "1.0")
+          );
+        } else if (index == 4) {
           this.tvData[m].push(this.CurrentWeek[index][m]);
           this.tvData[m].push(this.LastWeek[index][m]);
           this.tvData[m].push(
@@ -353,64 +391,81 @@ export class CustomCardComponent implements OnInit {
 
     // Inserting commas
     this.totalData[0].Clicks = this._decimalPipe.transform(
-      this.totalData[0].Clicks,
+      Math.round(this.totalData[0].Clicks),
       "1.0"
     );
     this.totalData[0].Embeds = this._decimalPipe.transform(
-      this.totalData[0].Embeds,
+      Math.round(this.totalData[0].Embeds),
       "1.0"
     );
     this.totalData[0].Plays = this._decimalPipe.transform(
-      this.totalData[0].Plays,
+      Math.round(this.totalData[0].Plays),
       "1.0"
     );
     this.totalData[0].Completes = this._decimalPipe.transform(
-      this.totalData[0].Completes,
+      Math.round(this.totalData[0].Completes),
       "1.0"
     );
     this.totalData[0].Time_Watched = this._decimalPipe.transform(
-      this.totalData[0].Time_Watched,
+      Math.round(this.totalData[0].Time_Watched),
       "1.0"
     );
     this.totalData[0].Avg_Eng_Time = this._decimalPipe.transform(
-      parseFloat(this.totalData[0].Time_Watched.toString().replace(/,/g, "")) /
-        parseFloat(this.totalData[0].Plays.toString().replace(/,/g, "")),
+      Math.round(
+        parseFloat(
+          this.totalData[0].Time_Watched.toString().replace(/,/g, "")
+        ) / parseFloat(this.totalData[0].Plays.toString().replace(/,/g, ""))
+      ),
       "1.0"
     );
 
     this.totalData[1].Embeds = this._decimalPipe.transform(
-      this.totalData[1].Embeds -
-        parseFloat(this.totalData[0].Embeds.toString().replace(/,/g, "")),
+      Math.round(
+        this.totalData[1].Embeds -
+          parseFloat(this.totalData[0].Embeds.toString().replace(/,/g, ""))
+      ),
       "1.0"
     );
     this.totalData[1].Clicks = this._decimalPipe.transform(
-      this.totalData[1].Clicks -
-        parseFloat(this.totalData[0].Clicks.toString().replace(/,/g, "")),
+      Math.round(
+        this.totalData[1].Clicks -
+          parseFloat(this.totalData[0].Clicks.toString().replace(/,/g, ""))
+      ),
       "1.0"
     );
     this.totalData[1].Plays = this._decimalPipe.transform(
-      this.totalData[1].Plays -
-        parseFloat(this.totalData[0].Plays.toString().replace(/,/g, "")),
+      Math.round(
+        this.totalData[1].Plays -
+          parseFloat(this.totalData[0].Plays.toString().replace(/,/g, ""))
+      ),
       "1.0"
     );
     this.totalData[1].Completes = this._decimalPipe.transform(
-      this.totalData[1].Completes -
-        parseFloat(this.totalData[0].Completes.toString().replace(/,/g, "")),
+      Math.round(
+        this.totalData[1].Completes -
+          parseFloat(this.totalData[0].Completes.toString().replace(/,/g, ""))
+      ),
       "1.0"
     );
     this.totalData[1].Time_Watched = this._decimalPipe.transform(
-      this.totalData[1].Time_Watched -
-        parseFloat(this.totalData[0].Time_Watched.toString().replace(/,/g, "")),
+      Math.round(
+        this.totalData[1].Time_Watched -
+          parseFloat(
+            this.totalData[0].Time_Watched.toString().replace(/,/g, "")
+          )
+      ),
       "1.0"
     );
     this.totalData[1].Avg_Eng_Time = this._decimalPipe.transform(
-      parseFloat(this.totalData[1].Time_Watched.toString().replace(/,/g, "")) /
-        parseFloat(this.totalData[1].Plays.toString().replace(/,/g, "")) -
-        parseFloat(this.totalData[0].Avg_Eng_Time.toString().replace(/,/g, "")),
+      Math.round(
+        parseFloat(
+          this.totalData[1].Time_Watched.toString().replace(/,/g, "")
+        ) / parseFloat(this.totalData[1].Plays.toString().replace(/,/g, ""))
+      ),
       "1.0"
     );
 
-    // summing last 90 days data for combine data
+    //   // summing last 90 days data for combine data
     for (let d of last90DaysData) {
       this.totalData[2].Clicks += d.Plays;
       this.totalData[2].Embeds += d.Embeds;
@@ -422,28 +477,31 @@ export class CustomCardComponent implements OnInit {
 
     //  inserting commas
     this.totalData[2].Embeds = this._decimalPipe.transform(
-      this.totalData[2].Embeds / 12,
+      Math.round(this.totalData[2].Embeds / 12),
       "1.0"
     );
     this.totalData[2].Clicks = this._decimalPipe.transform(
-      this.totalData[2].Clicks / 12,
+      Math.round(this.totalData[2].Clicks / 12),
       "1.0"
     );
     this.totalData[2].Plays = this._decimalPipe.transform(
-      this.totalData[2].Plays / 12,
+      Math.round(this.totalData[2].Plays / 12),
       "1.0"
     );
     this.totalData[2].Completes = this._decimalPipe.transform(
-      this.totalData[2].Completes / 12,
+      Math.round(this.totalData[2].Completes / 12),
       "1.0"
     );
     this.totalData[2].Time_Watched = this._decimalPipe.transform(
-      this.totalData[2].Time_Watched / 12,
+      Math.round(this.totalData[2].Time_Watched / 12),
       "1.0"
     );
     (this.totalData[2].Avg_Eng_Time = this._decimalPipe.transform(
-      parseFloat(this.totalData[2].Time_Watched.toString().replace(/,/g, "")) /
-        parseFloat(this.totalData[2].Plays.toString().replace(/,/g, ""))
+      Math.round(
+        parseFloat(
+          this.totalData[2].Time_Watched.toString().replace(/,/g, "")
+        ) / parseFloat(this.totalData[2].Plays.toString().replace(/,/g, ""))
+      )
     )),
       "1.0";
 
@@ -479,12 +537,17 @@ export class CustomCardComponent implements OnInit {
     return customArray;
   }
 
+  //
   setOptions() {
     this.chartOptions = {
       series: [
         {
           name: "Desktops",
           data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+        },
+        {
+          name: "Desktops",
+          data: [40, 50, 35, 67, 43, 66, 69, 91, 148],
         },
       ],
       chart: {
@@ -506,7 +569,7 @@ export class CustomCardComponent implements OnInit {
       },
       grid: {
         row: {
-          colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+          colors: ["#f3f3f3", "white"], // takes an array which will be repeated on columns
           opacity: 0.5,
         },
       },
