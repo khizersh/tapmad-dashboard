@@ -34,15 +34,9 @@ export class DashbaordChartService {
       "Content-Type": "application/json",
     });
     return this._http.post(`${this._api.byTagName}`, data);
-    // return this._http.post(`${this._api.byTagName}`, JSON.stringify( data) , { headers: httpHeaders });
   }
 
   getProductHouseFilter() {
-    //   let local = JSON.parse( localStorage.getItem('auth_app_token'));
-    //   const httpHeaders: HttpHeaders = new HttpHeaders({
-    // 'auth-token': local.value,
-    // 'Content-Type': 'application/json',
-    //   });
     return this._http.get(this._api.byProductHouse);
   }
 
@@ -73,5 +67,9 @@ export class DashbaordChartService {
 
   get25TopContent(data) {
     return this._http.post(`${this._api.getTop25Content}`, data);
+  }
+
+  getAvgEngTime(data) {
+    return this._http.post(this._api.getAvgEngagedTime, data);
   }
 }

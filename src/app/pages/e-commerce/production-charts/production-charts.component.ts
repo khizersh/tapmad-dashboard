@@ -95,6 +95,7 @@ export class ProductionChartsComponent implements OnInit {
       sortBy: "plays",
       data: phData,
     };
+
     const res: any = await this.service
       .getPlaysByProductionHouse(obj)
       .toPromise();
@@ -106,6 +107,8 @@ export class ProductionChartsComponent implements OnInit {
     this.pieChartLabels = PHArray;
 
     if (type == "currentWeek" || type == "all") {
+      console.log("current week:");
+
       this.pieChartDataCurrentWeek = viewsArray;
       this.setOption(
         this.pieChartDataCurrentWeek,

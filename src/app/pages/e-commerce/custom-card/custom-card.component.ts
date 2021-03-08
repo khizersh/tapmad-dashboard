@@ -212,7 +212,7 @@ export class CustomCardComponent implements OnInit {
   selectedTimePeriodList = "Last Week";
 
   ngOnInit(): void {
-    this.setOptions();
+    // this.setOptions();
     this.initializeData();
     this.gett3MonthData().then((data: any) => {
       this.loadData(this.getDaysByNumber(7), 14, data).then(async (res) => {
@@ -245,7 +245,6 @@ export class CustomCardComponent implements OnInit {
     const data: any = await this._dashboard
       .getByPlatform(dateCurrentWeek)
       .toPromise();
-    console.log("current week: ", data);
 
     for (let i = 0; i < data.Data.length; i++) {
       (this.CurrentWeek[i].Clicks = this._decimalPipe.transform(
@@ -279,8 +278,6 @@ export class CustomCardComponent implements OnInit {
     const dataLastWeek: any = await this._dashboard
       .getByPlatform(dateLastWeek)
       .toPromise();
-
-    console.log("dataLastWeek: ", dataLastWeek);
 
     for (let i = 0; i < dataLastWeek.Data.length; i++) {
       this.LastWeek[i].Clicks = this._decimalPipe.transform(

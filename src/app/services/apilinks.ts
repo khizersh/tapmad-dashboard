@@ -26,4 +26,5 @@ export class ApiLinks {
   getUsersAndNewUsers =
     this.baseUrl + this.googleAnalytics + "/NewUsersAndUsers";
   getTop25Content = this.baseUrl + "/contentOverview/UserViews";
+  getAvgEngagedTime = this.baseUrl + "/contentOverview/avgEngagementTime";
 }
