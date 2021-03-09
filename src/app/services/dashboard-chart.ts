@@ -72,4 +72,8 @@ export class DashbaordChartService {
   getAvgEngTime(data) {
     return this._http.post(this._api.getAvgEngagedTime, data);
   }
+
+  getAvgSessionDuration(data) {
+    return this._http.post(this._api.getAvgSessionDuration, data);
+  }
 }

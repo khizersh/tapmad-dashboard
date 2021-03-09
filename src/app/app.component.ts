@@ -17,8 +17,23 @@ export class AppComponent implements OnInit {
     private seoService: SeoService
   ) {}
 
+  scroll = function () {
+    if (window.pageYOffset != undefined) {
+      return [pageXOffset, pageYOffset];
+    } else {
+      var sx,
+        sy,
+        d = document,
+        r = d.documentElement,
+        b = d.body;
+      sx = r.scrollLeft || b.scrollLeft || 0;
+      sy = r.scrollTop || b.scrollTop || 0;
+      return [sx, sy];
+    }
+  };
   ngOnInit(): void {
-    this.analytics.trackPageViews();
-    this.seoService.trackCanonicalChanges();
+    // this.analytics.trackPageViews();
+    // this.seoService.trackCanonicalChanges();
+    console.log(this.scroll());
   }
 }
