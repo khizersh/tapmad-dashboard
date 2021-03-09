@@ -30,7 +30,8 @@ export type ChartOptions = {
 })
 export class TrendlineChartsComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
+  public chartOptionsAvgEngTime: Partial<ChartOptions>;
+  public chartOptionsSessionDuration: Partial<ChartOptions>;
   constructor(
     private _dashboard: DashbaordChartService,
     private _utils: DateUtils,
@@ -47,9 +48,10 @@ export class TrendlineChartsComponent implements OnInit {
   ];
 
   avgEngchartShow = false;
+  avgSessionDurationShow = false;
 
   avgEngTime = [];
-  // avgEngTime = []
+  avgSessionDuration = [];
   // avgEngTime = []
 
   ngOnInit(): void {
@@ -63,6 +65,7 @@ export class TrendlineChartsComponent implements OnInit {
     dateArray.push({ ...past90Days, type: "past90Days" });
 
     this.getAvgEngTimeData(dateArray);
+    this.getAvgSessionDuartion(dateArray);
   }
 
   getDateByNumber(day: number, type) {
@@ -102,28 +105,62 @@ export class TrendlineChartsComponent implements OnInit {
             sum += +m.value;
           });
           if (date[i].type == "past90Days") {
-            this.avgEngTime[date[i].type].push((+sum / 12).toFixed(2));
+            this.avgEngTime[date[i].type].push(+(sum / 12).toFixed(1));
           } else {
-            this.avgEngTime[date[i].type].push(+sum.toFixed(2));
+            this.avgEngTime[date[i].type].push(+sum.toFixed(1));
           }
         });
       }
     }
 
-    this.setOptions();
+    this.setOptionAvgEngTime();
     if (this.avgEngTime) {
       this.avgEngchartShow = true;
+    }
+  }
+
+  async getAvgSessionDuartion(date) {
+    for (let i = 0; i < date.length; i++) {
+      let data = {
+        start_date: date[i].start,
+        end_date: date[i].end,
+      };
+      const resp: any = await this._dashboard
+        .getAvgSessionDuration(data)
+        .toPromise();
+      if (resp.response && resp.response.status == 1) {
+        this.daysArray.map((day) => {
+          let specificDayArray = resp.Data.filter((f) => f.day == day);
+          let sum = 0;
+          specificDayArray.map((m) => {
+            sum += +m.value;
+          });
+          if (date[i].type == "past90Days") {
+            this.avgSessionDuration[date[i].type].push(+(sum / 12).toFixed(1));
+          } else {
+            this.avgSessionDuration[date[i].type].push(+sum.toFixed(1));
+          }
+        });
+      }
+    }
+
+    console.log("this.avgSessionDuration: ", this.avgSessionDuration);
+
+    this.setOptionAvgSessionDuration();
+    if (this.avgSessionDuration) {
+      this.avgSessionDurationShow = true;
     }
   }
 
   initializeArray() {
     ["currentWeek", "lastWeek", "past90Days"].map((m) => {
       this.avgEngTime[m] = new Array();
+      this.avgSessionDuration[m] = new Array();
     });
   }
 
-  setOptions() {
-    this.chartOptions = {
+  setOptionAvgEngTime() {
+    this.chartOptionsAvgEngTime = {
       series: [
         {
           name: "Current Week",
@@ -153,6 +190,51 @@ export class TrendlineChartsComponent implements OnInit {
       },
       title: {
         text: "Trendline Average Engaged Time",
+        align: "left",
+      },
+      grid: {
+        row: {
+          colors: ["#f3f3f3", "white"], // takes an array which will be repeated on columns
+          opacity: 0.5,
+        },
+      },
+      xaxis: {
+        categories: this.daysArray,
+      },
+    };
+  }
+
+  setOptionAvgSessionDuration() {
+    this.chartOptionsSessionDuration = {
+      series: [
+        {
+          name: "Current Week",
+          data: this.avgSessionDuration["currentWeek"],
+        },
+        {
+          name: "Last Week",
+          data: this.avgSessionDuration["lastWeek"],
+        },
+        {
+          name: "Avg week over last 90 days",
+          data: this.avgSessionDuration["past90Days"],
+        },
+      ],
+      chart: {
+        height: 350,
+        type: "line",
+        zoom: {
+          enabled: false,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "straight",
+      },
+      title: {
+        text: "Trendline Average Session Duration",
         align: "left",
       },
       grid: {

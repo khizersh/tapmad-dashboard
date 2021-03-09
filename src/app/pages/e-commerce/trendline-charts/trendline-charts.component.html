@@ -1,12 +1,29 @@
 <!-- plays chart -->
-<div id="chart" *ngIf="avgEngchartShow">
-  <apx-chart
-    [series]="chartOptions.series"
-    [chart]="chartOptions.chart"
-    [xaxis]="chartOptions.xaxis"
-    [dataLabels]="chartOptions.dataLabels"
-    [grid]="chartOptions.grid"
-    [stroke]="chartOptions.stroke"
-    [title]="chartOptions.title"
-  ></apx-chart>
+<div class="row">
+  <div class="col-12">
+    <div class="card" id="chart" *ngIf="avgEngchartShow">
+      <apx-chart
+        [series]="chartOptionsAvgEngTime.series"
+        [chart]="chartOptionsAvgEngTime.chart"
+        [xaxis]="chartOptionsAvgEngTime.xaxis"
+        [dataLabels]="chartOptionsAvgEngTime.dataLabels"
+        [grid]="chartOptionsAvgEngTime.grid"
+        [stroke]="chartOptionsAvgEngTime.stroke"
+        [title]="chartOptionsAvgEngTime.title"
+      ></apx-chart>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card" id="chart" *ngIf="avgSessionDurationShow">
+      <apx-chart
+        [series]="chartOptionsSessionDuration.series"
+        [chart]="chartOptionsSessionDuration.chart"
+        [xaxis]="chartOptionsSessionDuration.xaxis"
+        [dataLabels]="chartOptionsSessionDuration.dataLabels"
+        [grid]="chartOptionsSessionDuration.grid"
+        [stroke]="chartOptionsSessionDuration.stroke"
+        [title]="chartOptionsSessionDuration.title"
+      ></apx-chart>
+    </div>
+  </div>
 </div>
