@@ -57,7 +57,7 @@ export class TopTenComponent implements OnInit {
         filter: false,
       },
       viewLastWeek: {
-        title: "LAst Week Views",
+        title: "Last Week Views",
         type: "string",
         filter: false,
       },
@@ -104,7 +104,16 @@ export class TopTenComponent implements OnInit {
 
     console.log("res in top: ", res);
 
-    this.source = res.Data.map((m, i) => {
+    let array = res.Data.map((m) => {
+      if (m) {
+        return m;
+      }
+    });
+    // descending order
+    array.sort(function (a, b) {
+      return b.viewsWeek - a.viewsWeek;
+    });
+    this.source = array.map((m, i) => {
       if (m) {
         let sum = m.viewsWeek + m.viewLastWeek + m.viewThreeMonth / 12;
         m.viewPercent = Math.round((m.viewsWeek / sum) * 100) + "%";
