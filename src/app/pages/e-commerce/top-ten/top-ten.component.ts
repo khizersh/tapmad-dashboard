@@ -51,17 +51,17 @@ export class TopTenComponent implements OnInit {
         type: "string",
         filter: false,
       },
-      viewsWeek: {
+      currentWeek: {
         title: "Current Week Views",
         type: "string",
         filter: false,
       },
-      viewLastWeek: {
+      lastWeek: {
         title: "Last Week Views",
         type: "string",
         filter: false,
       },
-      viewThreeMonth: {
+      threeMonths: {
         title: "Weekly Average, of 90 days",
         type: "string",
         filter: false,
@@ -109,19 +109,19 @@ export class TopTenComponent implements OnInit {
         return m;
       }
     });
-    // descending order
+    //sort array descending order
     array.sort(function (a, b) {
-      return b.viewsWeek - a.viewsWeek;
+      return b.currentWeek - a.currentWeek;
     });
     this.source = array.map((m, i) => {
       if (m) {
-        let sum = m.viewsWeek + m.viewLastWeek + m.viewThreeMonth / 12;
-        m.viewPercent = Math.round((m.viewsWeek / sum) * 100) + "%";
+        let sum = m.currentWeek + m.lastWeek + m.threeMonths / 12;
+        m.viewPercent = ((m.currentWeek / sum) * 100).toFixed(1) + "%";
         m.serial = i + 1;
-        m.viewsWeek = this._decimalPipe.transform(m.viewsWeek, "1.0");
-        m.viewLastWeek = this._decimalPipe.transform(m.viewLastWeek, "1.0");
-        m.viewThreeMonth = this._decimalPipe.transform(
-          (m.viewThreeMonth / 12).toFixed(1),
+        m.currentWeek = this._decimalPipe.transform(m.currentWeek, "1.0");
+        m.lastWeek = this._decimalPipe.transform(m.lastWeek, "1.0");
+        m.threeMonths = this._decimalPipe.transform(
+          (m.threeMonths / 12).toFixed(1),
           "1.0"
         );
 
