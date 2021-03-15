@@ -23,7 +23,7 @@ export class TopTenComponent implements OnInit {
   settings = {
     pager: {
       display: true,
-      perPage: 5,
+      perPage: 10,
     },
     actions: { delete: false, edit: false, add: false },
     add: {
@@ -102,8 +102,6 @@ export class TopTenComponent implements OnInit {
     };
     const res: any = await this._dashboard.get25TopContent(data).toPromise();
 
-    console.log("res in top: ", res);
-
     let array = res.Data.map((m) => {
       if (m) {
         return m;
@@ -128,8 +126,6 @@ export class TopTenComponent implements OnInit {
         return m;
       }
     });
-
-    console.log("this.source: ", this.source);
 
     if (this.source.length) {
       this.showTable = true;

@@ -1,4 +1,4 @@
-@import '../@theme/styles/themes';
+@import "../@theme/styles/themes";
 
 @include nb-install-component() {
   ::ng-deep router-outlet + * {
@@ -17,12 +17,12 @@
   }
 }
 
-.bg-pink{
+.bg-pink {
   background-color: #ffa1b5;
   color: white;
 }
 
-.bg-blue{
+.bg-blue {
   background-color: #93d9d9 !important;
   color: white;
 }

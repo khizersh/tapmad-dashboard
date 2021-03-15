@@ -1,4 +1,4 @@
-@import './themes';
+@import "./themes";
 
 @mixin nb-overrides() {
   nb-select.size-medium button {
@@ -7,5 +7,25 @@
     nb-icon {
       right: 0.41rem !important;
     }
+  }
+
+  // main scroller
+  .scrollable-container::-webkit-scrollbar-thumb {
+    background: #3366ff !important;
+    cursor: pointer;
+    border-radius: 0.15625rem;
+    width: 2rem !important;
+  }
+
+  // sidebar scroller
+  .scrollable::-webkit-scrollbar-thumb {
+    background: #3366ff !important ;
+    cursor: pointer;
+    border-radius: 0.15625rem;
+    width: 2rem !important;
+  }
+
+  .nb-theme-default nb-layout ::-webkit-scrollbar {
+    width: 2rem !important;
   }
 }

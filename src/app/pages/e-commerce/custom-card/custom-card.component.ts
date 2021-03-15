@@ -79,7 +79,7 @@ export class CustomCardComponent implements OnInit {
   CurrentWeek = [
     {
       icon: "../../../../assets//images//web.png",
-      Clicks: "",
+      // Clicks: "",
       Plays: "",
       Embeds: "",
       Completes: "",
@@ -91,7 +91,7 @@ export class CustomCardComponent implements OnInit {
     },
     {
       icon: "../../../../assets//images//android.png",
-      Clicks: "",
+      // Clicks: "",
       Plays: "",
       Embeds: "",
       Completes: "",
@@ -103,7 +103,7 @@ export class CustomCardComponent implements OnInit {
     },
     {
       icon: "../../../../assets//images//apple.png",
-      Clicks: "",
+      // Clicks: "",
       Plays: "",
       Embeds: "",
       Completes: "",
@@ -115,7 +115,7 @@ export class CustomCardComponent implements OnInit {
     },
     {
       icon: "../../../../assets//images//video.png",
-      Clicks: "",
+      // Clicks: "",
       Plays: "",
       Embeds: "",
       Completes: "",
@@ -127,7 +127,7 @@ export class CustomCardComponent implements OnInit {
     },
     {
       icon: "../../../../assets//images//tv.png",
-      Clicks: "",
+      // Clicks: "",
       Plays: "",
       Embeds: "",
       Completes: "",
@@ -141,7 +141,7 @@ export class CustomCardComponent implements OnInit {
   LastWeek = [
     {
       icon: "../../../../assets//images//web.png",
-      Clicks: null,
+      // Clicks: null,
       Plays: null,
       Embeds: null,
       Completes: null,
@@ -152,7 +152,7 @@ export class CustomCardComponent implements OnInit {
     },
     {
       icon: "../../../../assets//images//android.png",
-      Clicks: null,
+      // Clicks: null,
       Plays: null,
       Embeds: null,
       Completes: null,
@@ -163,7 +163,7 @@ export class CustomCardComponent implements OnInit {
     },
     {
       icon: "../../../../assets//images//apple.png",
-      Clicks: null,
+      // Clicks: null,
       Plays: null,
       Embeds: null,
       Completes: null,
@@ -174,7 +174,7 @@ export class CustomCardComponent implements OnInit {
     },
     {
       icon: "../../../../assets//images//video.png",
-      Clicks: null,
+      // Clicks: null,
       Plays: null,
       Embeds: null,
       Completes: null,
@@ -185,7 +185,7 @@ export class CustomCardComponent implements OnInit {
     },
     {
       icon: "../../../../assets//images//tv.png",
-      Clicks: null,
+      // Clicks: null,
       Plays: null,
       Embeds: null,
       Completes: null,
@@ -196,7 +196,7 @@ export class CustomCardComponent implements OnInit {
   ];
 
   labelsArray = [
-    "Clicks",
+    // "Clicks",
     "Plays",
     "Embeds",
     "Completes",
@@ -247,14 +247,14 @@ export class CustomCardComponent implements OnInit {
       .toPromise();
 
     for (let i = 0; i < data.Data.length; i++) {
-      (this.CurrentWeek[i].Clicks = this._decimalPipe.transform(
-        Math.round(data.Data[i].plays),
+      // (this.CurrentWeek[i].Clicks = this._decimalPipe.transform(
+      //   Math.round(data.Data[i].plays),
+      //   "1.0"
+      // )),
+      (this.CurrentWeek[i].Embeds = this._decimalPipe.transform(
+        Math.round(data.Data[i].embeds),
         "1.0"
       )),
-        (this.CurrentWeek[i].Embeds = this._decimalPipe.transform(
-          Math.round(data.Data[i].embeds),
-          "1.0"
-        )),
         (this.CurrentWeek[i].Plays = this._decimalPipe.transform(
           Math.round(data.Data[i].plays),
           "1.0"
@@ -280,10 +280,10 @@ export class CustomCardComponent implements OnInit {
       .toPromise();
 
     for (let i = 0; i < dataLastWeek.Data.length; i++) {
-      this.LastWeek[i].Clicks = this._decimalPipe.transform(
-        Math.round(dataLastWeek.Data[i].plays - data.Data[i].plays),
-        "1.0"
-      );
+      // this.LastWeek[i].Clicks = this._decimalPipe.transform(
+      //   Math.round(dataLastWeek.Data[i].plays - data.Data[i].plays),
+      //   "1.0"
+      // );
       this.LastWeek[i].Embeds = this._decimalPipe.transform(
         Math.round(dataLastWeek.Data[i].embeds - data.Data[i].plays),
         "1.0"
@@ -362,7 +362,7 @@ export class CustomCardComponent implements OnInit {
   async loadTotalData(date, last90DaysData) {
     // summing current week data for combine data
     this.CurrentWeek.map((d, i) => {
-      this.totalData[0].Clicks += parseFloat(d.Clicks.replace(/,/g, ""));
+      // this.totalData[0].Clicks += parseFloat(d.Clicks.replace(/,/g, ""));
       this.totalData[0].Embeds += parseFloat(d.Embeds.replace(/,/g, ""));
       this.totalData[0].Plays += parseFloat(d.Plays.replace(/,/g, ""));
       this.totalData[0].Completes += parseFloat(d.Completes.replace(/,/g, ""));
@@ -378,7 +378,7 @@ export class CustomCardComponent implements OnInit {
 
     // summing Last week data for combine data
     for (let d of lastWeek.Data) {
-      this.totalData[1].Clicks += d.plays;
+      // this.totalData[1].Clicks += d.plays;
       this.totalData[1].Plays += d.plays;
       this.totalData[1].Embeds += d.embeds;
       this.totalData[1].Completes += d.completes;
@@ -387,10 +387,10 @@ export class CustomCardComponent implements OnInit {
     }
 
     // Inserting commas
-    this.totalData[0].Clicks = this._decimalPipe.transform(
-      Math.round(this.totalData[0].Clicks),
-      "1.0"
-    );
+    // this.totalData[0].Clicks = this._decimalPipe.transform(
+    //   Math.round(this.totalData[0].Clicks),
+    //   "1.0"
+    // );
     this.totalData[0].Embeds = this._decimalPipe.transform(
       Math.round(this.totalData[0].Embeds),
       "1.0"
@@ -423,13 +423,13 @@ export class CustomCardComponent implements OnInit {
       ),
       "1.0"
     );
-    this.totalData[1].Clicks = this._decimalPipe.transform(
-      Math.round(
-        this.totalData[1].Clicks -
-          parseFloat(this.totalData[0].Clicks.toString().replace(/,/g, ""))
-      ),
-      "1.0"
-    );
+    // this.totalData[1].Clicks = this._decimalPipe.transform(
+    //   Math.round(
+    //     this.totalData[1].Clicks -
+    //       parseFloat(this.totalData[0].Clicks.toString().replace(/,/g, ""))
+    //   ),
+    //   "1.0"
+    // );
     this.totalData[1].Plays = this._decimalPipe.transform(
       Math.round(
         this.totalData[1].Plays -
@@ -477,10 +477,10 @@ export class CustomCardComponent implements OnInit {
       Math.round(this.totalData[2].Embeds / 12),
       "1.0"
     );
-    this.totalData[2].Clicks = this._decimalPipe.transform(
-      Math.round(this.totalData[2].Clicks / 12),
-      "1.0"
-    );
+    // this.totalData[2].Clicks = this._decimalPipe.transform(
+    //   Math.round(this.totalData[2].Clicks / 12),
+    //   "1.0"
+    // );
     this.totalData[2].Plays = this._decimalPipe.transform(
       Math.round(this.totalData[2].Plays / 12),
       "1.0"
@@ -519,7 +519,7 @@ export class CustomCardComponent implements OnInit {
 
     let customArray = last90Days.Data.map((m) => {
       let obj = {
-        Clicks: m.plays,
+        // Clicks: m.plays,
         Plays: m.plays,
         Embeds: m.embeds,
         Completes: m.completes,

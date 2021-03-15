@@ -1,19 +1,19 @@
 <!-- combine data -->
-<div class="card col-xxl-12 mb-3 pb-4">
+<div class="col-xxl-12 mb-3 pb-4">
   <nb-card>
     <nb-card-header class="bg-pink">
       Combine Data of all platforms
     </nb-card-header>
     <nb-card-body>
       <div *ngIf="tableShow" class="row">
-        <table class="table table-hover table-striped">
+        <table class="table table-bordered table-hover">
           <thead>
             <tr>
               <th>
                 <div class="row">
                   <div
                     *ngFor="let d of CurrentWeek; let i = index"
-                    class="col-4 pt-4 pr-2"
+                    class="col-2"
                   >
                     <img src="{{ d.icon }}" width="30" />
                   </div>
@@ -38,13 +38,16 @@
   </nb-card>
 </div>
 
+<div class="col-12 mt-3 mb-3">
+  <ngx-trendline-charts></ngx-trendline-charts>
+</div>
 <!-- Web data -->
-<div class="card col-xxl-12 mb-3 pb-4">
+<div class="col-xxl-12 mb-3 pb-4">
   <nb-card>
     <nb-card-header class="bg-blue"> Website </nb-card-header>
     <nb-card-body>
       <div *ngIf="tableShow" class="row">
-        <table class="table table-hover table-striped">
+        <table class="table table-bordered table-hover">
           <thead>
             <tr>
               <th>
@@ -70,12 +73,12 @@
 </div>
 
 <!-- Android data -->
-<div class="card col-xxl-12 mb-3 pb-4">
+<div class="col-xxl-12 mb-3 pb-4">
   <nb-card>
     <nb-card-header class="bg-pink"> Android </nb-card-header>
     <nb-card-body>
       <div *ngIf="tableShow" class="row">
-        <table class="table table-hover table-striped">
+        <table class="table table-bordered table-hover">
           <thead>
             <tr>
               <th>
@@ -101,12 +104,12 @@
 </div>
 
 <!-- IOS data -->
-<div class="card col-xxl-12 mb-3 pb-4">
+<div class="col-xxl-12 mb-3 pb-4">
   <nb-card>
     <nb-card-header class="bg-blue"> IOS </nb-card-header>
     <nb-card-body>
       <div *ngIf="tableShow" class="row">
-        <table class="table table-hover table-striped">
+        <table class="table table-bordered table-hover">
           <thead>
             <tr>
               <th>
@@ -132,12 +135,12 @@
 </div>
 
 <!-- TV data -->
-<div class="card col-xxl-12 mb-3 pb-4">
+<div class="col-xxl-12 mb-3 pb-4">
   <nb-card>
     <nb-card-header class="bg-pink"> Tv </nb-card-header>
     <nb-card-body>
       <div *ngIf="tableShow" class="row">
-        <table class="table table-hover table-striped">
+        <table class="table table-bordered table-hover">
           <thead>
             <tr>
               <th>
@@ -163,12 +166,12 @@
 </div>
 
 <!-- Fireos data -->
-<div class="card col-xxl-12 mb-3 pb-4">
+<div class="col-xxl-12 mb-3 pb-4">
   <nb-card>
     <nb-card-header class="bg-blue"> Fireos </nb-card-header>
     <nb-card-body>
       <div *ngIf="tableShow" class="row">
-        <table class="table table-hover table-striped">
+        <table class="table table-bordered table-hover">
           <thead>
             <tr>
               <th>

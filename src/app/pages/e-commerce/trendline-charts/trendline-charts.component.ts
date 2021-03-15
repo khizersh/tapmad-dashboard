@@ -187,12 +187,12 @@ export class TrendlineChartsComponent implements OnInit {
         curve: "straight",
       },
       title: {
-        text: "Trendline Average Engaged Time",
+        text: "Trendline Average Engagement Time",
         align: "left",
       },
       grid: {
         row: {
-          colors: ["#f3f3f3", "white"], // takes an array which will be repeated on columns
+          colors: ["white"], // takes an array which will be repeated on columns
           opacity: 0.5,
         },
       },
@@ -237,7 +237,7 @@ export class TrendlineChartsComponent implements OnInit {
       },
       grid: {
         row: {
-          colors: ["#f3f3f3", "white"], // takes an array which will be repeated on columns
+          colors: ["white"], // takes an array which will be repeated on columns
           opacity: 0.5,
         },
       },
