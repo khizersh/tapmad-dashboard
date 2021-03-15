@@ -17,7 +17,7 @@ export class TopTenComponent implements OnInit {
   showTable = false;
   data = {};
 
-  timePeriodList = ["Last Week", "Last 30 Days", "Todays"];
+  timePeriodList = ["Current Week", "Last Week", "Todays"];
   selectedTimePeriodList = "Last Week";
   source = [];
   settings = {
@@ -51,18 +51,18 @@ export class TopTenComponent implements OnInit {
         type: "string",
         filter: false,
       },
-      viewsCurrent: {
-        title: "Today Views",
-        type: "string",
-        filter: false,
-      },
-      viewYesterday: {
-        title: "Yesterday Views",
-        type: "string",
-        filter: false,
-      },
       viewsWeek: {
-        title: "Week ago Views",
+        title: "Current Week Views",
+        type: "string",
+        filter: false,
+      },
+      viewLastWeek: {
+        title: "LAst Week Views",
+        type: "string",
+        filter: false,
+      },
+      viewThreeMonth: {
+        title: "Weekly Average, of 90 days",
         type: "string",
         filter: false,
       },
@@ -84,27 +84,44 @@ export class TopTenComponent implements OnInit {
     this.getTopContentData();
   }
 
+  getDaysByNumber(num: number) {
+    var d = new Date();
+    let endDate = this._utils.formatDate(d.setDate(d.getDate()));
+    let startDate = this._utils.formatDate(d.setDate(d.getDate() - num));
+    return { start_date: startDate, end_date: endDate };
+  }
+
   async getTopContentData() {
+    let date = this.getDaysByNumber(89);
+
     let data = {
-      start_date: "2021-1-17",
-      end_date: "2021-1-17",
-      page: "0",
-      page_length: "25",
+      start_date: date.start_date,
+      end_date: date.end_date,
+      page: 0,
+      page_length: 25,
     };
     const res: any = await this._dashboard.get25TopContent(data).toPromise();
 
+    console.log("res in top: ", res);
+
     this.source = res.Data.map((m, i) => {
-      let sum = m.viewsCurrent + m.viewYesterday + m.viewsWeek;
-      m.viewPercent = Math.round((sum / m.viewThreesMonthly) * 100) + "%";
+      if (m) {
+        let sum = m.viewsWeek + m.viewLastWeek + m.viewThreeMonth / 12;
+        m.viewPercent = Math.round((m.viewsWeek / sum) * 100) + "%";
+        m.serial = i + 1;
+        m.viewsWeek = this._decimalPipe.transform(m.viewsWeek, "1.0");
+        m.viewLastWeek = this._decimalPipe.transform(m.viewLastWeek, "1.0");
+        m.viewThreeMonth = this._decimalPipe.transform(
+          (m.viewThreeMonth / 12).toFixed(1),
+          "1.0"
+        );
 
-      m.serial = i + 1;
-      m.viewMonth = this._decimalPipe.transform(m.viewMonth, "1.0");
-      m.viewsWeek = this._decimalPipe.transform(m.viewsWeek, "1.0");
-      m.viewYesterday = this._decimalPipe.transform(m.viewYesterday, "1.0");
-      m.viewsCurrent = this._decimalPipe.transform(m.viewsCurrent, "1.0");
-
-      return m;
+        return m;
+      }
     });
+
+    console.log("this.source: ", this.source);
+
     if (this.source.length) {
       this.showTable = true;
     }

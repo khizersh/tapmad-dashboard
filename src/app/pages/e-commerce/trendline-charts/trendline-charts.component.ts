@@ -144,8 +144,6 @@ export class TrendlineChartsComponent implements OnInit {
       }
     }
 
-    console.log("this.avgSessionDuration: ", this.avgSessionDuration);
-
     this.setOptionAvgSessionDuration();
     if (this.avgSessionDuration) {
       this.avgSessionDurationShow = true;
