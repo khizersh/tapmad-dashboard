@@ -32,6 +32,8 @@ export class TrendlineChartsComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptionsAvgEngTime: Partial<ChartOptions>;
   public chartOptionsSessionDuration: Partial<ChartOptions>;
+  public chartOptionsPlays: Partial<ChartOptions>;
+
   constructor(
     private _dashboard: DashbaordChartService,
     private _utils: DateUtils,
@@ -47,9 +49,11 @@ export class TrendlineChartsComponent implements OnInit {
     "Sunday",
   ];
 
+  avgPlaysShow = false;
   avgEngchartShow = false;
   avgSessionDurationShow = false;
 
+  avgPlays = [];
   avgEngTime = [];
   avgSessionDuration = [];
   // avgEngTime = []
@@ -66,6 +70,7 @@ export class TrendlineChartsComponent implements OnInit {
 
     this.getAvgEngTimeData(dateArray);
     this.getAvgSessionDuartion(dateArray);
+    this.getPlays(dateArray);
   }
 
   getDateByNumber(day: number, type) {
@@ -82,6 +87,40 @@ export class TrendlineChartsComponent implements OnInit {
       let endDate = this._utils.formatDate(d.setDate(d.getDate()));
       let startDate = this._utils.formatDate(d.setDate(d.getDate() - day));
       return { start: startDate, end: endDate };
+    }
+  }
+
+  async getPlays(date) {
+    for (let i = 0; i < date.length; i++) {
+      let data = {
+        start_date: date[i].start,
+        end_date: date[i].end,
+        page: 0,
+        reportType: "plays",
+        sortBy: "plays",
+        page_length: 100,
+        dimensions: "date",
+      };
+      const resp: any = await this._dashboard.getAvgPlays(data).toPromise();
+      if (resp.response && resp.response.status == 1) {
+        this.daysArray.map((day) => {
+          let specificDayArray = resp.Data.filter((f) => f.day == day);
+          let sum = 0;
+          specificDayArray.map((m) => {
+            sum += +m.value;
+          });
+          if (date[i].type == "past90Days") {
+            this.avgPlays[date[i].type].push(+(sum / 12).toFixed(1));
+          } else {
+            this.avgPlays[date[i].type].push(+sum.toFixed(1));
+          }
+        });
+      }
+    }
+
+    this.setOptionPlays();
+    if (this.avgPlays) {
+      this.avgPlaysShow = true;
     }
   }
 
@@ -152,9 +191,55 @@ export class TrendlineChartsComponent implements OnInit {
 
   initializeArray() {
     ["currentWeek", "lastWeek", "past90Days"].map((m) => {
-      this.avgEngTime[m] = new Array();
-      this.avgSessionDuration[m] = new Array();
+      this.avgPlays[m] = [];
+      this.avgEngTime[m] = [];
+      this.avgSessionDuration[m] = [];
     });
+  }
+
+  setOptionPlays() {
+    this.chartOptionsPlays = {
+      series: [
+        {
+          name: "Current Week",
+          data: this.avgPlays["currentWeek"],
+        },
+        {
+          name: "Last Week",
+          data: this.avgPlays["lastWeek"],
+        },
+        {
+          name: "Avg week over last 90 days",
+          data: this.avgPlays["past90Days"],
+        },
+      ],
+      chart: {
+        height: 350,
+        type: "line",
+        zoom: {
+          enabled: false,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "straight",
+      },
+      title: {
+        text: "Trendline Plays",
+        align: "left",
+      },
+      grid: {
+        row: {
+          colors: ["white"], // takes an array which will be repeated on columns
+          opacity: 0.5,
+        },
+      },
+      xaxis: {
+        categories: this.daysArray,
+      },
+    };
   }
 
   setOptionAvgEngTime() {

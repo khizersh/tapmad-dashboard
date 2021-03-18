@@ -12,15 +12,15 @@
   // main scroller
   .scrollable-container::-webkit-scrollbar-thumb {
     background: #3366ff !important;
-    cursor: pointer;
+    cursor: pointer !important;
     border-radius: 0.15625rem;
     width: 2rem !important;
   }
 
   // sidebar scroller
   .scrollable::-webkit-scrollbar-thumb {
-    background: #3366ff !important ;
-    cursor: pointer;
+    background: #3366ff !important;
+    cursor: pointer !important;
     border-radius: 0.15625rem;
     width: 2rem !important;
   }

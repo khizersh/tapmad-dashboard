@@ -49,27 +49,22 @@ export class TopTenComponent implements OnInit {
       MediaTitle: {
         title: "Media Title",
         type: "string",
-        filter: false,
       },
       currentWeek: {
         title: "Current Week Views",
         type: "string",
-        filter: false,
       },
       lastWeek: {
         title: "Last Week Views",
         type: "string",
-        filter: false,
       },
       threeMonths: {
         title: "Weekly Average, of 90 days",
         type: "string",
-        filter: false,
       },
       viewPercent: {
         title: "viewership Percentage",
         type: "string",
-        filter: false,
       },
     },
   };

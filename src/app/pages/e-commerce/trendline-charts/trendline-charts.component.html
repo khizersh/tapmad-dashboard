@@ -1,6 +1,19 @@
 <!-- plays chart -->
 <div class="row">
   <div class="col-12">
+    <div class="" id="chart" *ngIf="avgPlaysShow">
+      <apx-chart
+        [series]="chartOptionsPlays.series"
+        [chart]="chartOptionsPlays.chart"
+        [xaxis]="chartOptionsPlays.xaxis"
+        [dataLabels]="chartOptionsPlays.dataLabels"
+        [grid]="chartOptionsPlays.grid"
+        [stroke]="chartOptionsPlays.stroke"
+        [title]="chartOptionsPlays.title"
+      ></apx-chart>
+    </div>
+  </div>
+  <div class="col-12">
     <div class="" id="chart" *ngIf="avgEngchartShow">
       <apx-chart
         [series]="chartOptionsAvgEngTime.series"
