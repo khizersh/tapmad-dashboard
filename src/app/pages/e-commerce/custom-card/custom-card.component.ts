@@ -246,6 +246,8 @@ export class CustomCardComponent implements OnInit {
       .getByPlatform(dateCurrentWeek)
       .toPromise();
 
+    console.log("data current: ", data);
+
     for (let i = 0; i < data.Data.length; i++) {
       // (this.CurrentWeek[i].Clicks = this._decimalPipe.transform(
       //   Math.round(data.Data[i].plays),
@@ -278,36 +280,43 @@ export class CustomCardComponent implements OnInit {
     const dataLastWeek: any = await this._dashboard
       .getByPlatform(dateLastWeek)
       .toPromise();
+    console.log("dataLastWeek: ", dataLastWeek);
 
     for (let i = 0; i < dataLastWeek.Data.length; i++) {
-      // this.LastWeek[i].Clicks = this._decimalPipe.transform(
-      //   Math.round(dataLastWeek.Data[i].plays - data.Data[i].plays),
-      //   "1.0"
-      // );
-      this.LastWeek[i].Embeds = this._decimalPipe.transform(
-        Math.round(dataLastWeek.Data[i].embeds - data.Data[i].plays),
-        "1.0"
-      );
-      this.LastWeek[i].Plays = this._decimalPipe.transform(
-        dataLastWeek.Data[i].plays - data.Data[i].plays,
-        "1.0"
-      );
-      this.LastWeek[i].Completes = this._decimalPipe.transform(
-        Math.round(dataLastWeek.Data[i].completes - data.Data[i].completes),
-        "1.0"
-      );
-      this.LastWeek[i].Time_Watched = this._decimalPipe.transform(
-        Math.round(
-          dataLastWeek.Data[i].time_watched - data.Data[i].time_watched
-        ),
-        "1.0"
-      );
-      this.LastWeek[i].Avg_Eng_Time = this._decimalPipe.transform(
-        Math.round(
-          dataLastWeek.Data[i].time_watched / dataLastWeek.Data[i].plays
-        ),
-        "1.0"
-      );
+      this.LastWeek[i].Embeds = data.Data[i]
+        ? this._decimalPipe.transform(
+            Math.round(dataLastWeek.Data[i].embeds - data.Data[i].embeds),
+            "1.0"
+          )
+        : 0;
+      this.LastWeek[i].Plays = data.Data[i]
+        ? this._decimalPipe.transform(
+            dataLastWeek.Data[i].plays - data.Data[i].plays,
+            "1.0"
+          )
+        : 0;
+      this.LastWeek[i].Completes = data.Data[i]
+        ? this._decimalPipe.transform(
+            Math.round(dataLastWeek.Data[i].completes - data.Data[i].completes),
+            "1.0"
+          )
+        : 0;
+      this.LastWeek[i].Time_Watched = data.Data[i]
+        ? this._decimalPipe.transform(
+            Math.round(
+              dataLastWeek.Data[i].time_watched - data.Data[i].time_watched
+            ),
+            "1.0"
+          )
+        : 0;
+      this.LastWeek[i].Avg_Eng_Time = data.Data[i]
+        ? this._decimalPipe.transform(
+            Math.round(
+              dataLastWeek.Data[i].time_watched / dataLastWeek.Data[i].plays
+            ),
+            "1.0"
+          )
+        : 0;
     }
 
     // creating specific array for web , android , ios etc
@@ -363,15 +372,22 @@ export class CustomCardComponent implements OnInit {
     // summing current week data for combine data
     this.CurrentWeek.map((d, i) => {
       // this.totalData[0].Clicks += parseFloat(d.Clicks.replace(/,/g, ""));
-      this.totalData[0].Embeds += parseFloat(d.Embeds.replace(/,/g, ""));
-      this.totalData[0].Plays += parseFloat(d.Plays.replace(/,/g, ""));
-      this.totalData[0].Completes += parseFloat(d.Completes.replace(/,/g, ""));
-      this.totalData[0].Time_Watched += parseFloat(
-        d.Time_Watched.replace(/,/g, "")
-      );
-      this.totalData[0].Avg_Eng_Time +=
-        parseFloat(d.Time_Watched.replace(/,/g, "")) /
-        parseFloat(d.Plays.replace(/,/g, ""));
+      d.Embeds &&
+        (this.totalData[0].Embeds += parseFloat(d.Embeds.replace(/,/g, "")));
+      d.Plays &&
+        (this.totalData[0].Plays += parseFloat(d.Plays.replace(/,/g, "")));
+      d.Completes &&
+        (this.totalData[0].Completes += parseFloat(
+          d.Completes.replace(/,/g, "")
+        ));
+      d.Time_Watched &&
+        (this.totalData[0].Time_Watched += parseFloat(
+          d.Time_Watched.replace(/,/g, "")
+        ));
+      d.Plays &&
+        (this.totalData[0].Avg_Eng_Time +=
+          parseFloat(d.Time_Watched.replace(/,/g, "")) /
+          parseFloat(d.Plays.replace(/,/g, "")));
     });
 
     const lastWeek: any = await this._dashboard.getByPlatform(date).toPromise();
