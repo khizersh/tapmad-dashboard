@@ -246,8 +246,6 @@ export class CustomCardComponent implements OnInit {
       .getByPlatform(dateCurrentWeek)
       .toPromise();
 
-    console.log("data current: ", data);
-
     for (let i = 0; i < data.Data.length; i++) {
       // (this.CurrentWeek[i].Clicks = this._decimalPipe.transform(
       //   Math.round(data.Data[i].plays),
@@ -530,22 +528,24 @@ export class CustomCardComponent implements OnInit {
 
   async gett3MonthData() {
     const last90Days: any = await this._dashboard
-      .getByPlatform(this.getDaysByNumber(90))
+      .getByPlatform(this.getDaysByNumber(89))
       .toPromise();
 
     let customArray = last90Days.Data.map((m) => {
       let obj = {
         // Clicks: m.plays,
-        Plays: m.plays,
-        Embeds: m.embeds,
-        Completes: m.completes,
-        Time_Watched: m.time_watched,
+        Plays: m.plays / 12,
+        Embeds: m.embeds / 12,
+        Completes: m.completes / 12,
+        Time_Watched: m.time_watched / 12,
         User_Base: "",
-        Avg_Eng_Time: m.time_watched / m.plays,
+        Avg_Eng_Time: m.time_watched / m.plays / 12,
         Avg_session_Duration: "",
       };
       return obj;
     });
+
+    console.log("last90Days: ", last90Days);
 
     return customArray;
   }
