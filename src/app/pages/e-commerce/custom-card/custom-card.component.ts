@@ -545,12 +545,9 @@ export class CustomCardComponent implements OnInit {
       return obj;
     });
 
-    console.log("last90Days: ", last90Days);
-
     return customArray;
   }
 
-  //
   setOptions() {
     this.chartOptions = {
       series: [
