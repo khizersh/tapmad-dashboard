@@ -126,8 +126,6 @@ export class ViewsByChannelComponent implements OnInit {
 
   changeDateToMonth(start: any, end: any) {
     var a = moment(start);
-    // var b = moment(end);
-
     let dateArrayy = [];
 
     for (let i = 0; i < 3; i++) {
@@ -206,10 +204,13 @@ export class ViewsByChannelComponent implements OnInit {
         this._dashboard.getPlaceGrowthSummary(data).subscribe((res: any) => {
           this.source = res.Data.map((m) => {
             if (m.plays === undefined || m.plays === null) {
-             return {...m , plays : '--'};
+              return { Category: m.Category.split("_")[1], plays: "--" };
             }
 
-            return {...m , plays:this._decimalPipe.transform(m.plays,"1.0")};
+            return {
+              Category: m.Category.split("_")[1],
+              plays: this._decimalPipe.transform(m.plays, "1.0"),
+            };
           });
           this.showTable = true;
         });
@@ -275,7 +276,10 @@ export class ViewsByChannelComponent implements OnInit {
                   d.plays = "--";
                 }
                 this.weeklyDataArray[d.Category].push({
-                  plays: d.plays != '--' ? this._decimalPipe.transform(d.plays,"1.0") : d.plays,
+                  plays:
+                    d.plays != "--"
+                      ? this._decimalPipe.transform(d.plays, "1.0")
+                      : d.plays,
                   week: i,
                 });
               });
@@ -299,8 +303,6 @@ export class ViewsByChannelComponent implements OnInit {
       });
 
       this._dashboard.getChannelList().subscribe((res1: any) => {
-
-
         if (this.monthlySelectedChannel.length) {
           this.monthlySelectedChannelToShow = this.monthlySelectedChannel;
         } else {
@@ -318,7 +320,9 @@ export class ViewsByChannelComponent implements OnInit {
           this.monthlySelectedChannelToShow
         ).then((res) => {
           for (let play of res) {
-            this.MonthDataArray[play.Category].push(this._decimalPipe.transform(play.plays,"1.0"));
+            this.MonthDataArray[play.Category].push(
+              this._decimalPipe.transform(play.plays, "1.0")
+            );
           }
         });
       });
@@ -392,7 +396,7 @@ export class ViewsByChannelComponent implements OnInit {
           customArray[r] = new Array();
         });
 
-        if (dateArrayy.length) {
+        if (dateArrayy && dateArrayy.length) {
           customDate = dateArrayy;
         } else {
           customDate = this.weeklyDate;

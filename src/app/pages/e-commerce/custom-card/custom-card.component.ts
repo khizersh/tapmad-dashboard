@@ -437,13 +437,6 @@ export class CustomCardComponent implements OnInit {
       ),
       "1.0"
     );
-    // this.totalData[1].Clicks = this._decimalPipe.transform(
-    //   Math.round(
-    //     this.totalData[1].Clicks -
-    //       parseFloat(this.totalData[0].Clicks.toString().replace(/,/g, ""))
-    //   ),
-    //   "1.0"
-    // );
     this.totalData[1].Plays = this._decimalPipe.transform(
       Math.round(
         this.totalData[1].Plays -

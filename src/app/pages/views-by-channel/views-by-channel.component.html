@@ -2,9 +2,18 @@
   <!-- current report -->
   <div class="row">
     <div class="col-12">
-
       <nb-card>
-        <nb-card-header class="bg-pink"> Today's Report <span class="float-right" ><a class="btn btn-primary color-white"  [routerLink]="['/pages/add-channel']" routerLinkActive="active" >Add Channel</a></span></nb-card-header>
+        <nb-card-header style="background-color: #1c4e80; color: white">
+          Today's Report
+          <span class="float-right"
+            ><a
+              class="btn btn-primary color-white"
+              [routerLink]="['/pages/add-channel']"
+              routerLinkActive="active"
+              >Add Channel</a
+            ></span
+          ></nb-card-header
+        >
         <nb-card-body>
           <div class="row">
             <!-- <div class="col-3">
@@ -30,10 +39,12 @@
   </div>
 
   <div class="row">
-     <!-- Weekly Report Chart -->
-     <div class="col-12">
+    <!-- Weekly Report Chart -->
+    <div class="col-12">
       <nb-card>
-        <nb-card-header class="bg-pink"> Weekly Report </nb-card-header>
+        <nb-card-header style="background-color: #1c4e80; color: white">
+          Weekly Report
+        </nb-card-header>
         <nb-card-body>
           <div class="row mb-5">
             <div class="col-3">
@@ -79,10 +90,12 @@
         </nb-card-body>
       </nb-card>
     </div>
-     <!--  weekly report Table-->
+    <!--  weekly report Table-->
     <div class="col-12">
       <nb-card>
-        <nb-card-header class="bg-pink"> Weekly Report</nb-card-header>
+        <nb-card-header style="background-color: #1c4e80; color: white">
+          Weekly Report</nb-card-header
+        >
         <nb-card-body>
           <div class="row">
             <!-- <div class="col-6">
@@ -118,7 +131,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let channel of weeklyChannelListToShow; let i = index">
+                <tr
+                  *ngFor="let channel of weeklyChannelListToShow; let i = index"
+                >
                   <th scope="row">{{ channel }}</th>
                   <td *ngFor="let data of weeklyDataArray[channel]">
                     {{ data.plays }}
@@ -132,12 +147,13 @@
         </nb-card-body>
       </nb-card>
     </div>
-
   </div>
   <div class="row">
     <div class="col-12">
       <nb-card>
-        <nb-card-header class="bg-pink"> Monthly Report </nb-card-header>
+        <nb-card-header style="background-color: #1c4e80; color: white">
+          Monthly Report
+        </nb-card-header>
         <nb-card-body>
           <div class="row mb-5">
             <div class="col-6">
@@ -180,7 +196,9 @@
     </div>
     <div class="col-12">
       <nb-card>
-        <nb-card-header class="bg-pink"> Monthly Report</nb-card-header>
+        <nb-card-header style="background-color: #1c4e80; color: white">
+          Monthly Report</nb-card-header
+        >
         <nb-card-body>
           <div class="responsive-horizontal">
             <table class="table table-hover table-striped">
@@ -196,7 +214,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let channel of monthlySelectedChannelToShow; let i = index">
+                <tr
+                  *ngFor="
+                    let channel of monthlySelectedChannelToShow;
+                    let i = index
+                  "
+                >
                   <th scope="row">{{ channel }}</th>
                   <td *ngFor="let data of MonthDataArray[channel]">
                     {{ data }}
@@ -209,6 +232,4 @@
       </nb-card>
     </div>
   </div>
-
-
 </div>
