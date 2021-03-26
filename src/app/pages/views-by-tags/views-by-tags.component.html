@@ -1,7 +1,9 @@
 <div class="row">
   <div class="col-12">
     <nb-card>
-      <nb-card-header> Top Views By Production House </nb-card-header>
+      <nb-card-header style="background-color: #1c4e80; color: white">
+        Top Views By Production House
+      </nb-card-header>
       <nb-card-body>
         <!-- <div *ngIf="msg" id="msg" classs="mce-notification-success"> Notification</div> -->
         <div class="row">
@@ -24,20 +26,24 @@
           <div class="col-3">
             <h6>Select Chart Type</h6>
             <ng-select
-            [items]="chartStyle"
-            bindLabel="nameBar"
-            placeholder="Select Chart Type"
-            appendTo="body"
-            [(ngModel)]="chartStyleSelect"
-            [clearable]="false"
-            [searchable]="false"
-            (change)="getSelectedValueOfChartType()"
-          >
-          </ng-select>
+              [items]="chartStyle"
+              bindLabel="nameBar"
+              placeholder="Select Chart Type"
+              appendTo="body"
+              [(ngModel)]="chartStyleSelect"
+              [clearable]="false"
+              [searchable]="false"
+              (change)="getSelectedValueOfChartType()"
+            >
+            </ng-select>
           </div>
         </div>
         <div class="chart-config">
-          <chart type={{chartStyleSelect}} [data]="data" [options]="options"></chart>
+          <chart
+            type="{{ chartStyleSelect }}"
+            [data]="data"
+            [options]="options"
+          ></chart>
         </div>
       </nb-card-body>
     </nb-card>

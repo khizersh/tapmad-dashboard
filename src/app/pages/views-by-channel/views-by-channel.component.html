@@ -134,7 +134,13 @@
                 <tr
                   *ngFor="let channel of weeklyChannelListToShow; let i = index"
                 >
-                  <th scope="row">{{ channel }}</th>
+                  <th scope="row">
+                    {{
+                      channel.toString().split("_")[1]
+                        ? channel.toString().split("_")[1]
+                        : channel
+                    }}
+                  </th>
                   <td *ngFor="let data of weeklyDataArray[channel]">
                     {{ data.plays }}
                   </td>
@@ -220,7 +226,13 @@
                     let i = index
                   "
                 >
-                  <th scope="row">{{ channel }}</th>
+                  <th scope="row">
+                    {{
+                      channel.toString().split("_")[1]
+                        ? channel.toString().split("_")[1]
+                        : channel
+                    }}
+                  </th>
                   <td *ngFor="let data of MonthDataArray[channel]">
                     {{ data }}
                   </td>

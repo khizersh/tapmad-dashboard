@@ -93,7 +93,6 @@ export class ViewsByChannelComponent implements OnInit {
     return yyyy + "-" + mm + "-" + dd;
   }
 
-  goToAddChannel() {}
   getDateOfGivenDays(day: number) {
     var d = new Date();
     let endDate = this._utils.formatDate(d.setDate(d.getDate()));
@@ -418,7 +417,7 @@ export class ViewsByChannelComponent implements OnInit {
           });
 
           this.weeklyChartData = {
-            labels: dateArrayy.slice(1, dateArrayy.length),
+            labels: customDate.slice(1, customDate.length),
             datasets: showArray,
           };
 

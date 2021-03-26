@@ -15,7 +15,7 @@ import { rgb } from "d3-color";
 export class ViewsByTagsComponent implements OnDestroy {
   data: any;
   options: any;
-  productionFilter:any = [];
+  productionFilter: any = [];
   filteredDate: any;
   themeSubscription: any;
   date = {
@@ -47,8 +47,9 @@ export class ViewsByTagsComponent implements OnDestroy {
       end: this.endDate,
     };
 
+    let selectedArray = this.selected.map((m) => "ProductHouse_" + m);
     this.filteredDate = this.changeDateToWeek(this.startDate, this.endDate);
-    this.loadChartData(date, this.selected, this.filteredDate);
+    this.loadChartData(date, selectedArray, this.filteredDate);
   }
   // Multi select Data end
 
@@ -140,14 +141,14 @@ export class ViewsByTagsComponent implements OnDestroy {
       let fDate = formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
 
       let tempData1 = {};
-
+      let fullName = this.productionFilter.map((m) => "ProductionHouse_" + m);
       if (!i) {
         tempData1 = {
           start_date: dateArrayy[i],
           end_date: dateArrayy[i + 1],
           page: 0,
           page_length: 100,
-          data: this.productionFilter,
+          data: fullName,
         };
       } else {
         tempData1 = {
@@ -155,7 +156,7 @@ export class ViewsByTagsComponent implements OnDestroy {
           end_date: dateArrayy[i + 1],
           page: 0,
           page_length: 100,
-          data: this.productionFilter,
+          data: fullName,
         };
       }
 
@@ -165,7 +166,7 @@ export class ViewsByTagsComponent implements OnDestroy {
 
       for (let j = 0; j < array.Data.length; j++) {
         let obj = {
-          Category: array.Data[j].Category,
+          Category: array.Data[j].Category.split("_")[1],
           plays: array.Data[j].plays,
           week: i + 1,
         };
@@ -202,14 +203,12 @@ export class ViewsByTagsComponent implements OnDestroy {
 
       this._dashboard.getProductHouseFilter().subscribe((res: any) => {
         if (selected.length && selected.length > 0) {
-          this.productionFilter = selected;
+          this.productionFilter = selected.map((m) => m.split("_")[1]);
         } else {
-          this.productionFilter = res.Data;
+          this.productionFilter = res.Data.map((m) => m.split("_")[1]);
         }
 
-        this.productionHouseData = res.Data;
-        //console.log("Selected: ",res.Data );
-        //console.log("this.productionFilter: " ,this.productionFilter );
+        this.productionHouseData = res.Data.map((m) => m.split("_")[1]);
 
         this.productionFilter.map((r) => {
           this.customArray[r] = new Array();
@@ -218,13 +217,11 @@ export class ViewsByTagsComponent implements OnDestroy {
         // if data is on weekly bases
         if (dateArrayy && dateArrayy.length) {
           this.getAllWeeksData(dateArrayy).then((res) => {
-            let data = [];
-            let labels = [];
-            let array = [];
+            console.log("res in all: ", res);
+
             for (let play of res) {
               this.customArray[play.Category].push(play.plays);
             }
-
 
             let showArray = [];
             this.productionFilter.map((r) => {
@@ -232,7 +229,8 @@ export class ViewsByTagsComponent implements OnDestroy {
                 data: this.customArray[r],
                 label: r,
                 // borderColor: rgb(Math.floor(Math.random() * 255) , 255 , 1)
-                borderColor: "#" + Math.floor(Math.random()*16777215).toString(16)
+                borderColor:
+                  "#" + Math.floor(Math.random() * 16777215).toString(16),
               });
             });
 
@@ -241,7 +239,6 @@ export class ViewsByTagsComponent implements OnDestroy {
             this.data = {
               labels: dateArrayy.slice(1, dateArrayy.length),
               datasets: showArray,
-
             };
 
             this.options = {
