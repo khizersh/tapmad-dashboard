@@ -392,7 +392,8 @@ export class ViewsByChannelComponent implements OnInit {
         }
 
         this.customArrayWeek.map((r) => {
-          customArray[r] = new Array();
+          let chan = r.split("_")[1] || r;
+          customArray[chan] = new Array();
         });
 
         if (dateArrayy && dateArrayy.length) {
@@ -403,14 +404,16 @@ export class ViewsByChannelComponent implements OnInit {
 
         this.getAllWeeksData(customDate, selectedChannel).then((res: any) => {
           for (let play of res) {
-            customArray[play.Category].push(play.plays);
+            let chan = play.Category.split("_")[1] || play.Category;
+            customArray[chan].push(play.plays);
           }
 
           let showArray = [];
           this.customArrayWeek.map((r) => {
+            let chan = r.split("_")[1] || r
             showArray.push({
-              data: customArray[r],
-              label: r,
+              data: customArray[chan],
+              label: chan,
               borderColor:
                 "#" + Math.floor(Math.random() * 16777215).toString(16),
             });
@@ -494,19 +497,22 @@ export class ViewsByChannelComponent implements OnInit {
         }
 
         this.customArrayMonth.map((r) => {
-          customArray[r] = new Array();
+          let chan = r.split("_")[1] || r;
+          customArray[chan] = new Array();
         });
 
         this.getAllWeeksData(monthDate, selectedChannel).then((res: any) => {
           for (let play of res) {
-            customArray[play.Category].push(play.plays);
+            let chan = play.Category.split("_")[1] || play.Category;
+            customArray[chan].push(play.plays);
           }
 
           let showArray = [];
           this.customArrayMonth.map((r) => {
+            let chan = r.split("_")[1] || r
             showArray.push({
-              data: customArray[r],
-              label: r,
+              data: customArray[chan],
+              label: chan,
               borderColor:
                 "#" + Math.floor(Math.random() * 16777215).toString(16),
             });

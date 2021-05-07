@@ -59,6 +59,12 @@ export class ViewsByCategoryComponent implements OnInit {
 
   getSelectedCategory() {
     let category = this.weeklySelectedList.map((m) => "Category_" + m);
+    let date = [];
+    if (this.weeklyChartDate.length > 0) {
+      date = this.weeklyChartDate;
+    } else {
+      date = this.last35DaysDate;
+    }
     this.loadChart(category, this.weeklyChartDate);
   }
   changeDateToWeek(start: any, end: any) {
@@ -192,7 +198,7 @@ export class ViewsByCategoryComponent implements OnInit {
     this.themeSubscription = this.theme.getJsTheme().subscribe((config) => {
       const colors: any = config.variables;
       const chartjs: any = config.variables.chartjs;
-      let selectedChannel = categoryCompleteArray;
+      let selectedChannel: any = [];
 
       let customArray = [];
       let customDate: any = [];
@@ -204,8 +210,9 @@ export class ViewsByCategoryComponent implements OnInit {
       }
 
       selectedChannel.map((r) => {
-        customArray[r] = [];
+        customArray[r.split("_")[1]] = [];
       });
+      console.log("");
 
       if (dateArrayy.length) {
         customDate = dateArrayy;
@@ -213,16 +220,17 @@ export class ViewsByCategoryComponent implements OnInit {
         customDate = this.last35DaysDate;
       }
 
+      // let showChannel = selectedChannel.map(m => m.split("_")[1])
       this.getAllWeeksData(customDate, selectedChannel).then((res: any) => {
         for (let play of res) {
-          customArray[play.Category].push(play.plays);
+          customArray[play.Category.split("_")[1]].push(play.plays);
         }
 
         let showArray = [];
         selectedChannel.map((r) => {
           showArray.push({
-            data: customArray[r],
-            label: r,
+            data: customArray[r.split("_")[1]],
+            label: r.split("_")[1],
             borderColor:
               "#" + Math.floor(Math.random() * 16777215).toString(16),
           });

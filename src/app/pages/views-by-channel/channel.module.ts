@@ -11,6 +11,7 @@ import { AddChannelComponent } from './add-channel/add-channel.component';
 import { ViewsByCategoryComponent } from '../views-by-category/views-by-category.component';
 import { TopMoviesComponent } from '../top-movies/top-movies.component';
 import { RouterModule } from '@angular/router';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 
 
@@ -29,6 +30,7 @@ import { RouterModule } from '@angular/router';
     NbButtonModule,
     Ng2SmartTableModule,
     NgSelectModule,
+    NgApexchartsModule
 
   ]
 })
