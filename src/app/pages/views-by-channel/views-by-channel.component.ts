@@ -243,27 +243,40 @@ export class ViewsByChannelComponent implements OnInit {
         });
         this.weeklyChannelList = channelArray;
 
+        console.log("this.weeklyDate: ", this.weeklyDate);
+
         for (let i = 0; i < this.weeklyDate.length - 1; i++) {
           let dataCustom = {};
           if (this.weeklySelectedList.length > 0) {
             this.weeklyChannelListToShow = this.weeklySelectedList;
-            dataCustom = {
-              start_date: this.weeklyDate[i],
-              end_date: this.weeklyDate[i + 1],
-              page: 0,
-              page_length: 99,
-              reportType: "plays",
-              data: this.weeklySelectedList,
-            };
           } else {
             this.weeklyChannelListToShow = this.weeklyChannelList;
+          }
+
+          if (i == 0) {
             dataCustom = {
               start_date: this.weeklyDate[i],
               end_date: this.weeklyDate[i + 1],
               page: 0,
               page_length: 99,
               reportType: "plays",
-              data: this.weeklyChannelList,
+              data: this.weeklyChannelListToShow,
+            };
+          } else {
+            let date1 = moment(this.weeklyDate[i]);
+            let date2 = date1.add(1, "day").calendar();
+            let formatDate = date2.split("/");
+            let fDate =
+              formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
+       
+
+            dataCustom = {
+              start_date: date2.length < 15 ? fDate : this.weeklyDate[i],
+              end_date: this.weeklyDate[i + 1],
+              page: 0,
+              page_length: 99,
+              reportType: "plays",
+              data: this.weeklyChannelListToShow,
             };
           }
 
@@ -339,15 +352,36 @@ export class ViewsByChannelComponent implements OnInit {
     }
 
     for (var i = 0; i < dateArrayy.length - 1; i++) {
-      var a = moment(dateArrayy[i]);
-      var b = moment(dateArrayy[i + 1]);
-
-      let date = a.add(1, "day").calendar();
-
-      let formatDate = date.split("/");
-      let fDate = formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
-
+ 
       let tempData1 = {};
+
+      if (i == 0) {
+        tempData1 = {
+          start_date: this.MonthDate[i],
+          end_date: dateArrayy[i + 1],
+          page: 0,
+          page_length: 99,
+          reportType: "plays",
+          data: channelArray,
+        };
+      } else {
+        let date1 = moment(this.MonthDate[i]);
+        let date2 = date1.add(1, "day").calendar();
+        let formatDate = date2.split("/");
+        let fDate =
+          formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
+
+          tempData1 = {
+          start_date: date2.length < 15 ? fDate : this.MonthDate[i],
+          end_date: this.MonthDate[i + 1],
+          page: 0,
+          page_length: 99,
+          reportType: "plays",
+          data: channelArray,
+        };
+      }
+
+  
       tempData1 = {
         start_date: dateArrayy[i],
         end_date: dateArrayy[i + 1],
@@ -410,7 +444,7 @@ export class ViewsByChannelComponent implements OnInit {
 
           let showArray = [];
           this.customArrayWeek.map((r) => {
-            let chan = r.split("_")[1] || r
+            let chan = r.split("_")[1] || r;
             showArray.push({
               data: customArray[chan],
               label: chan,
@@ -509,7 +543,7 @@ export class ViewsByChannelComponent implements OnInit {
 
           let showArray = [];
           this.customArrayMonth.map((r) => {
-            let chan = r.split("_")[1] || r
+            let chan = r.split("_")[1] || r;
             showArray.push({
               data: customArray[chan],
               label: chan,
