@@ -229,11 +229,23 @@ export class ViewsByChannelComponent implements OnInit {
       }
       this.weeklyDate = this.changeDateToWeek(date.start, date.end);
       this.weeklyDateToShow = [];
+      let test: any = [];
       this.weeklyDate.map((m, i) => {
         if (i < this.weeklyDate.length - 1) {
-          this.weeklyDateToShow.push(m);
+          // this.weeklyDateToShow.push(m);
+          if (i == 0) {
+            this.weeklyDateToShow.push({ start: m, end: this.weeklyDate[i + 1] });
+          } else {
+            let date1 = moment(this.weeklyDate[i]);
+            let date2 = date1.add(1, "day").calendar();
+            let formatDate = date2.split("/");
+            let fDate =
+              formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
+              this.weeklyDateToShow.push({ start: date2.length < 15 ? fDate : this.weeklyDate[i], end: this.weeklyDate[i + 1] });
+          }
         }
       });
+
 
       this._dashboard.getChannelList().subscribe((res1: any) => {
         let channelArray = [];
@@ -243,9 +255,7 @@ export class ViewsByChannelComponent implements OnInit {
         });
         this.weeklyChannelList = channelArray;
 
-        console.log("this.weeklyDate: ", this.weeklyDate);
-
-        for (let i = 0; i < this.weeklyDate.length - 1; i++) {
+        for (let i = 0; i <  this.weeklyDateToShow.length; i++) {
           let dataCustom = {};
           if (this.weeklySelectedList.length > 0) {
             this.weeklyChannelListToShow = this.weeklySelectedList;
@@ -253,32 +263,15 @@ export class ViewsByChannelComponent implements OnInit {
             this.weeklyChannelListToShow = this.weeklyChannelList;
           }
 
-          if (i == 0) {
-            dataCustom = {
-              start_date: this.weeklyDate[i],
-              end_date: this.weeklyDate[i + 1],
-              page: 0,
-              page_length: 99,
-              reportType: "plays",
-              data: this.weeklyChannelListToShow,
-            };
-          } else {
-            let date1 = moment(this.weeklyDate[i]);
-            let date2 = date1.add(1, "day").calendar();
-            let formatDate = date2.split("/");
-            let fDate =
-              formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
-       
-
-            dataCustom = {
-              start_date: date2.length < 15 ? fDate : this.weeklyDate[i],
-              end_date: this.weeklyDate[i + 1],
-              page: 0,
-              page_length: 99,
-              reportType: "plays",
-              data: this.weeklyChannelListToShow,
-            };
-          }
+          dataCustom = {
+            start_date:  this.weeklyDateToShow[i].start,
+            end_date: this.weeklyDateToShow[i].end,
+            page: 0,
+            page_length: 99,
+            reportType: "plays",
+            data: this.weeklyChannelListToShow,
+          };
+        
 
           this._dashboard
             .getPlaceGrowthSummary(dataCustom)
@@ -308,11 +301,29 @@ export class ViewsByChannelComponent implements OnInit {
       this.MonthDate = this.changeDateToMonth(last3Month.start, last3Month.end);
       this.MonthDateToShow = [];
 
+      // this.MonthDate.map((m, i) => {
+      //   if (i < this.MonthDate.length - 1) {
+      //     this.MonthDateToShow.push(m);
+      //   }
+      // });
+
       this.MonthDate.map((m, i) => {
         if (i < this.MonthDate.length - 1) {
-          this.MonthDateToShow.push(m);
+          if (i == 0) {
+            this.MonthDateToShow.push({ start: m, end: this.MonthDate[i + 1] });
+          } else {
+            let date1 = moment(this.MonthDate[i]);
+            let date2 = date1.add(1, "day").calendar();
+            let formatDate = date2.split("/");
+            let fDate =
+              formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
+              this.MonthDateToShow.push({ start: date2.length < 15 ? fDate : this.MonthDate[i], end: this.MonthDate[i + 1] });
+          }
         }
       });
+
+
+
 
       this._dashboard.getChannelList().subscribe((res1: any) => {
         if (this.monthlySelectedChannel.length) {
@@ -341,7 +352,7 @@ export class ViewsByChannelComponent implements OnInit {
     }
   }
 
-  async getAllWeeksData(dateArrayy: [], channelArray: []) {
+  async getAllWeeksData(dateArrayy: any, channelArray: []) {
     let combineArray = [];
     let channelList: any = [];
 
@@ -352,12 +363,11 @@ export class ViewsByChannelComponent implements OnInit {
     }
 
     for (var i = 0; i < dateArrayy.length - 1; i++) {
- 
       let tempData1 = {};
 
       if (i == 0) {
         tempData1 = {
-          start_date: this.MonthDate[i],
+          start_date:dateArrayy[i],
           end_date: dateArrayy[i + 1],
           page: 0,
           page_length: 99,
@@ -365,15 +375,14 @@ export class ViewsByChannelComponent implements OnInit {
           data: channelArray,
         };
       } else {
-        let date1 = moment(this.MonthDate[i]);
+        let date1 = moment(dateArrayy[i]);
         let date2 = date1.add(1, "day").calendar();
         let formatDate = date2.split("/");
-        let fDate =
-          formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
+        let fDate = formatDate[2] + "-" + formatDate[0] + "-" + formatDate[1];
 
-          tempData1 = {
-          start_date: date2.length < 15 ? fDate : this.MonthDate[i],
-          end_date: this.MonthDate[i + 1],
+        tempData1 = {
+          start_date: date2.length < 15 ? fDate : dateArrayy[i],
+          end_date: dateArrayy[i + 1],
           page: 0,
           page_length: 99,
           reportType: "plays",
@@ -381,15 +390,14 @@ export class ViewsByChannelComponent implements OnInit {
         };
       }
 
-  
-      tempData1 = {
-        start_date: dateArrayy[i],
-        end_date: dateArrayy[i + 1],
-        page: 0,
-        page_length: 100,
-        reportType: "plays",
-        data: channelList,
-      };
+      // tempData1 = {
+      //   start_date: dateArrayy[i],
+      //   end_date: dateArrayy[i + 1],
+      //   page: 0,
+      //   page_length: 100,
+      //   reportType: "plays",
+      //   data: channelList,
+      // };
 
       let array: any = await this._dashboard
         .getPlaceGrowthSummary(tempData1)

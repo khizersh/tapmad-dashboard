@@ -126,7 +126,7 @@
                     *ngFor="let date of weeklyDateToShow; let i = index"
                     scope="col"
                   >
-                    {{ weeklyDate[i] + " To " + weeklyDate[i + 1] }}
+                    {{ date.start + " To " + date.end }}
                   </th>
                 </tr>
               </thead>
@@ -215,7 +215,7 @@
                     *ngFor="let date of MonthDateToShow; let i = index"
                     scope="col"
                   >
-                    {{ MonthDate[i] + " To " + MonthDate[i + 1] }}
+                    {{ date.start + " To " + date.end }}
                   </th>
                 </tr>
               </thead>
